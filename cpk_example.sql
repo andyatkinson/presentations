@@ -1,35 +1,47 @@
-CREATE TABLE accounts (
-  id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+-- Clean up previous runs
+DROP TABLE IF EXISTS orders_with_cpk;
+DROP TABLE IF EXISTS orders;
+DROP TABLE IF EXISTS customers;
+DROP TABLE IF EXISTS suppliers;
+
+CREATE TABLE suppliers (
+  id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
   name text UNIQUE NOT NULL
 );
 
+CREATE TABLE customers (
+  id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+  name text UNIQUE NOT NULL,
+  email text UNIQUE NOT NULL
+);
+
 -- single column primary key
-CREATE TABLE orders_single_pk (
+CREATE TABLE orders (
   id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-  account_id INT NOT NULL,
-  CONSTRAINT fk_account_id
-    FOREIGN KEY (account_id)
-    REFERENCES accounts(id)
+  supplier_id BIGINT NOT NULL,
+  customer_id BIGINT NOT NULL,
+  CONSTRAINT fk_supplier_id
+    FOREIGN KEY (supplier_id)
+    REFERENCES suppliers(id),
+  CONSTRAINT fk_customer_id
+    FOREIGN KEY (customer_id)
+    REFERENCES customers(id)
 );
 
--- Alternative with FK
-CREATE TABLE orders_single_pk_fk (
-  id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-  account_id INT NOT NULL REFERENCES accounts(id)
-);
-
+-- Change from Single column PK to CPK
 -- Drop single column PK
-ALTER TABLE orders_single_pk DROP CONSTRAINT orders_single_pk_pkey;
+ALTER TABLE orders DROP CONSTRAINT orders_pkey;
 
--- Add CPK to what was original a single column PK
-ALTER TABLE orders_single_pk
-ADD CONSTRAINT orders_single_pk_pkey2
-PRIMARY KEY (id, account_id);
+-- Create CPK
+ALTER TABLE orders
+ADD CONSTRAINT orders_cpk
+PRIMARY KEY (id, supplier_id);
 
--- Create table with CPK from start
-CREATE TABLE orders_cpk (
+-- Alternative:
+-- Create CPK from start
+CREATE TABLE orders_with_cpk (
   id BIGINT GENERATED ALWAYS AS IDENTITY NOT NULL,
-  account_id INT NOT NULL,
+  supplier_id BIGINT NOT NULL,
   CONSTRAINT orders_pkey_cpk
-    PRIMARY KEY (id, account_id)
+    PRIMARY KEY (id, supplier_id)
 );

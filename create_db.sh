@@ -52,5 +52,9 @@ psql -U $DB_USER -d $DB_NAME -c "$create_schema"
 #
 psql -U $DB_USER -d $DB_NAME -f cpk_example.sql
 
+#
+# Populate some data
+psql -U $DB_USER -d $DB_NAME -f populate_data.sql
+
 # Connect
 psql -U $DB_USER -d $DB_NAME
