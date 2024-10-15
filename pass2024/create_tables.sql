@@ -11,7 +11,7 @@ CREATE TABLE suppliers (
 
 CREATE TABLE customers (
   id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-  name text UNIQUE NOT NULL,
+  name text NOT NULL,
   email text UNIQUE NOT NULL
 );
 
@@ -20,6 +20,7 @@ CREATE TABLE orders (
   id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
   supplier_id BIGINT NOT NULL,
   customer_id BIGINT NOT NULL,
+  quantity INTEGER NOT NULL,
   CONSTRAINT fk_supplier_id
     FOREIGN KEY (supplier_id)
     REFERENCES suppliers(id),
