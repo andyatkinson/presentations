@@ -102,10 +102,15 @@ fi
 create_schema="CREATE SCHEMA IF NOT EXISTS $DB_SCHEMA"
 run_psql_sql "$create_schema"
 
-
 #
 # Run as regular user
 # CREATE the tables
+#
+run_psql_file "create_tables.sql"
+
+#
+# Run as regular user
+# Change to use composite primary key design
 #
 run_psql_file "cpk_example.sql"
 
