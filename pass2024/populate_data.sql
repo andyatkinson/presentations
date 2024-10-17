@@ -38,3 +38,12 @@ FROM GENERATE_SERIES(1, 100) seq;
 INSERT INTO orders (supplier_id, customer_id, quantity)
 VALUES (1, 1, 1), (1, 2, 1);
 SELECT * FROM orders;
+
+
+INSERT INTO orders (supplier_id, customer_id, quantity)
+SELECT
+  s.id,                                        -- Random supplier_id from suppliers table
+  (10 + random() * 50)::int AS customer_id,            -- Random customer_id
+  (1 + random() * 10)::int AS quantity                  -- Random quantity
+FROM generate_series(1, 100000) AS g                       -- Generate 100 rows
+CROSS JOIN LATERAL (SELECT id FROM suppliers ORDER BY random() LIMIT 1) AS s;
