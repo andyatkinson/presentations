@@ -1,13 +1,14 @@
 # Presentations
 
-## PASS Data Community Summit
+## Multitenancy Patterns
 
-`./pass2024`
+- Tested on Postgres 17
+- Creates pass user
+- DB
+- Schema within DB
+- Creates some schema items
+- Populates some data
 
-### Create DB
-```sh
-sh create_db.sh
-```
 
 ## Run Postgres 17 on Docker
 ```sh
@@ -22,19 +23,12 @@ docker run -p 15432:5432 --name pg17 -e POSTGRES_PASSWORD=postgres -d postgres:1
 -c pg_stat_statements.track=all
 
 docker exec -it pg17 psql -U postgres
-
-psql -U postgres -h localhost -p 15432
 ```
 
-
-## PASS DB
-
-- Tested on Postgres 17
-- Creates pass user
-- DB
-- Schema within DB
-- Creates some schema items
-- Populates some data
+## Create DB
+```sh
+sh create_db.sh
+```
 
 ## pg_stat_statements
 
