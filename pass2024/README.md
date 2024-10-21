@@ -2,12 +2,10 @@
 
 ## Multitenancy Patterns
 
-- Tested on Postgres 17
-- Creates pass user
-- DB
-- Schema within DB
-- Creates some schema items
-- Populates some data
+- Using Docker Postgres 17
+- DB: Creates pass user, explicit grants
+- DB: App-Schema
+- Populates data
 
 
 ## Run Postgres 17 on Docker
@@ -25,15 +23,22 @@ docker run -p 15432:5432 --name pg17 -e POSTGRES_PASSWORD=postgres -d postgres:1
 docker exec -it pg17 psql -U postgres
 ```
 
-## Create DB
-```sh
-sh create_db.sh
-```
-
 ## pg_stat_statements
 
 ```sql
-create extension if not exists pg_stat_statements;
+CREATE EXTENSION IF NOT EXISTS pg_stat_statements;
 
-select * from pg_stat_statements;
+SELECT * FROM pg_stat_statements;
+```
+
+## Create DB
+```sh
+cd pass2024
+sh create_db.sh
+```
+
+## Connect DB
+```sh
+cd pass2024
+sh connect_db.sh
 ```
