@@ -65,6 +65,9 @@ SELECT id AS order_id, customer_id, quantity
 FROM orders WHERE supplier_id = 3;
 
 
+--
+-- Same query, but inside of a supplier_query() function
+--
 SELECT * FROM supplier_query('SELECT id AS order_id, customer_id, quantity FROM orders WHERE supplier_id = 1')
 AS t(order_id bigint, customer_id bigint, quantity int);
 

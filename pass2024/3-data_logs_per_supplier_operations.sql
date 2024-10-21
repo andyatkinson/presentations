@@ -53,11 +53,14 @@ FOR EACH ROW EXECUTE FUNCTION log_data_changes();
 -- Make some changes:
 
 UPDATE suppliers SET name = name || '-v2' where id = 1;
-UPDATE suppliers SET name = name || '-v2' where id = 1;
-UPDATE suppliers SET name = name || '-v2' where id = 1;
-UPDATE suppliers SET name = name || '-v2' where id = 1;
 
 UPDATE customers SET name = name || ' AdditionalSurname' where id = 1;
+
+-- Churned customer, archive then delete their orders
+UPDATE suppliers SET name = name || ' (Deleted)' where id = (select id from suppliers where name = 'Jett.com');
+SELECT * FROM suppliers;
+
+DELETE FROM suppliers WHERE name LIKE '%(Deleted)';
 
 SELECT * from data_changes;
 

@@ -29,6 +29,8 @@ docker exec -it pg17 psql -U postgres
 CREATE EXTENSION IF NOT EXISTS pg_stat_statements;
 
 SELECT * FROM pg_stat_statements;
+
+select pg_stat_statements_reset();
 ```
 
 ## Create DB

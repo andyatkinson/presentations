@@ -10,6 +10,10 @@ INSERT INTO suppliers (name)
 VALUES ('Big-Mart Store');
 SELECT * FROM suppliers;
 
+INSERT INTO suppliers (name)
+VALUES ('Jett.com');
+SELECT * FROM suppliers;
+
 INSERT INTO customers (name, email)
 VALUES
 ('Andrew Atkinson', 'customer1@example.com'),
