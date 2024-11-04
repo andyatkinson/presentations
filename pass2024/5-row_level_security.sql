@@ -14,15 +14,9 @@ GRANT INSERT, SELECT, UPDATE, DELETE ON TABLES TO bob;
 ALTER DEFAULT PRIVILEGES IN SCHEMA my_schema
 GRANT INSERT, SELECT, UPDATE, DELETE ON TABLES TO jane;
 
-GRANT SELECT ON my_schema.users TO bob;
-GRANT SELECT ON my_schema.users TO jane;
+SET search_path = 'my_schema, public';
 
-SELECT has_table_privilege('bob', 'my_schema.users', 'SELECT') AS can_read;
-SELECT has_table_privilege('jane', 'my_schema.users', 'SELECT') AS can_read;
-
-
-SET search_path = 'my_schema';
-
+-- postgres
 SELECT CURRENT_USER;
 
 CREATE TABLE my_schema.users (
@@ -34,7 +28,17 @@ VALUES ('bob'), ('jane');
 
 CREATE TABLE my_schema.user_data (data TEXT, user_id INTEGER);
 
-CREATE OR REPLACE FUNCTION current_user_id() RETURNS int AS $$
+GRANT SELECT ON my_schema.users TO bob;
+GRANT SELECT ON my_schema.users TO jane;
+
+SELECT has_table_privilege('bob', 'my_schema.users', 'SELECT') AS can_read;
+SELECT has_table_privilege('jane', 'my_schema.users', 'SELECT') AS can_read;
+
+
+-- As the postgres user
+-- Create this function in the public schema
+-- Get the users 'id' value
+CREATE OR REPLACE FUNCTION public.current_user_id() RETURNS int AS $$
 DECLARE
 found_user_id int;
 BEGIN
@@ -44,6 +48,10 @@ BEGIN
     RETURN NULL; -- or raise an exception, depending on your requirements
 END;
 $$ LANGUAGE plpgsql STABLE;
+
+select current_user_id();
+-- None for postgres
+-- try bob and jane
 
 
 -- Imagine Bob and Jane writing data into the table
@@ -58,10 +66,12 @@ VALUES ('jane data', current_user_id());
 
 select current_user;
 SET ROLE postgres;
+
 -- Must be owner of table
 -- Enable for user_data
 ALTER TABLE user_data DISABLE ROW LEVEL SECURITY;
 
+-- As the postgres role:
 -- Policy for user_data
 CREATE POLICY select_user_own_data_policy ON user_data
 FOR SELECT

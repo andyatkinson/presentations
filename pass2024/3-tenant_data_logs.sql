@@ -70,8 +70,10 @@ CREATE TRIGGER log_changes_orders
 AFTER INSERT OR UPDATE OR DELETE ON orders
 FOR EACH ROW EXECUTE FUNCTION log_supplier_data_changes();
 
--- Make some changes:
+-- Initially empty
+select * from supplier_data_changes;
 
+-- Make some changes:
 UPDATE suppliers SET name = name || '-v2' where id = 1;
 
 UPDATE customers SET name = name || ' AdditionalSurname' where id = 1;
