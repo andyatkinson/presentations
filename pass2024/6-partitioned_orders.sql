@@ -1,3 +1,4 @@
+set role postgres;
 SET search_path = 'passdata';
 
 CREATE TABLE IF NOT EXISTS orders_part (
@@ -48,4 +49,4 @@ FROM
 
 show enable_partition_pruning;
 
-EXPLAIN ANALYZE SELECT customer_id FROM orders_part WHERE supplier_id = 4;
+EXPLAIN ANALYZE SELECT customer_id FROM orders_part WHERE supplier_id = 3;
