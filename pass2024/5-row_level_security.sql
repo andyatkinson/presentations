@@ -1,6 +1,8 @@
 --
+-- Connect as superuser
+-- \! clear
 -- NOTE: superusers override RLS
--- Create less priviledged users to test with
+-- To test, connect as regular user, or use SET ROLE
 --
 CREATE USER bob;
 CREATE USER jane;
@@ -14,12 +16,12 @@ GRANT INSERT, SELECT, UPDATE, DELETE ON TABLES TO bob;
 ALTER DEFAULT PRIVILEGES IN SCHEMA my_schema
 GRANT INSERT, SELECT, UPDATE, DELETE ON TABLES TO jane;
 
-SET search_path = 'my_schema, public';
+SET search_path = my_schema, public;
 
 -- postgres
 SELECT CURRENT_USER;
 
-CREATE TABLE my_schema.users (
+CREATE TABLE IF NOT EXISTS my_schema.users (
   user_id serial PRIMARY KEY,
   username text UNIQUE NOT NULL
 );
@@ -38,7 +40,7 @@ SELECT has_table_privilege('jane', 'my_schema.users', 'SELECT') AS can_read;
 -- As the postgres user
 -- Create this function in the public schema
 -- Get the users 'id' value
-CREATE OR REPLACE FUNCTION public.current_user_id() RETURNS int AS $$
+CREATE OR REPLACE FUNCTION current_user_id() RETURNS int AS $$
 DECLARE
 found_user_id int;
 BEGIN
@@ -49,18 +51,19 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql STABLE;
 
+-- No user id for postgres, not in users table
 select current_user_id();
--- None for postgres
--- try bob and jane
 
-
--- Imagine Bob and Jane writing data into the table
+-- Try again for bob and jane
 SET ROLE bob;
 select current_user_id();
+
+-- Imagine Bob and Jane writing data into the table
 INSERT INTO user_data (data, user_id)
 VALUES ('bob data', current_user_id());
 
 SET ROLE jane;
+select current_user_id();
 INSERT INTO user_data (data, user_id)
 VALUES ('jane data', current_user_id());
 
@@ -80,14 +83,17 @@ FOR SELECT
 -- Make sure it's set to ON
 SET row_security TO ON;
 
--- Can still see all data though because RLS is disabled:
+-- As postgres superuser:
+-- Can still see all data
+-- Also: RLS is disabled
 select * from user_data;
 
--- Now we can enable RLS
+-- Enable RLS as postgres
 set role postgres;
 ALTER TABLE user_data ENABLE ROW LEVEL SECURITY;
 
--- Now we should only see Bob's data as bob
+-- Now set role to Bob
+-- Now we should only see Bob's data
 set role bob;
 select * from user_data;
 

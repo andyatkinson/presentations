@@ -11,7 +11,7 @@
 
 -- Connect as superuser
 -- sh connect_db.sh
-set search_path = 'passdata,public';
+set search_path = passdata, public;
 
 select * from passdata.suppliers;
 select * from passdata.customers;

@@ -1,5 +1,5 @@
 set role postgres;
-SET search_path = 'passdata';
+SET search_path = passdata, public;
 
 -- NOTE: no primary key on root partition
 CREATE TABLE IF NOT EXISTS orders_part (
