@@ -19,16 +19,5 @@ connect_pass() {
     -d $DB_NAME
 }
 
-connect_superuser() {
-  PGPASSWORD=$DB_SUPERUSER_PWD psql \
-    -U $DB_SUPERUSER \
-    -h $DB_HOST \
-    -p $DB_PORT \
-    -d $DB_NAME
-}
-
 # Connect as regular user
-# connect_pass
-
-connect_superuser
-# psql> SET search_path = passdata, public;
+connect_pass

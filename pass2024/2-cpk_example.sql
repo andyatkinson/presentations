@@ -7,7 +7,7 @@ ALTER TABLE orders DROP CONSTRAINT orders_pkey;
 -- Create CPK
 ALTER TABLE orders
 ADD CONSTRAINT orders_cpk
-PRIMARY KEY (id, supplier_id);
+PRIMARY KEY (supplier_id, id);
 
 -- Alternative:
 -- Create CPK from start
@@ -17,11 +17,14 @@ CREATE TABLE orders_with_cpk (
   customer_id BIGINT NOT NULL,
   quantity INTEGER NOT NULL,
   CONSTRAINT orders_pkey_cpk
-    PRIMARY KEY (id, supplier_id)
+    PRIMARY KEY (supplier_id, id)
 );
 
 
--- Sequences
+-- Normally we'd share a single sequence across all tenants
+-- What if we wanted unique sequences per tenant?
+--
+-- Create Sequences
 CREATE SEQUENCE IF NOT EXISTS supplier_1_seq;
 CREATE SEQUENCE IF NOT EXISTS supplier_2_seq;
 CREATE SEQUENCE IF NOT EXISTS supplier_3_seq;
@@ -33,10 +36,13 @@ CREATE TABLE IF NOT EXISTS orders_with_seq (
   customer_id BIGINT NOT NULL,
   quantity INTEGER NOT NULL,
   CONSTRAINT orders_with_seq_pkey_cpk
-  PRIMARY KEY (id, supplier_id)
+  PRIMARY KEY (supplier_id, id)
 );
 
 
+-- Could manually specify sequence to use for inserts
+-- assuming sequences were created in advance, and matched
+-- to suppliers
 INSERT INTO orders_with_seq (id, supplier_id, customer_id, quantity)
 VALUES (nextval('supplier_1_seq'), 1, 1, 1);
 

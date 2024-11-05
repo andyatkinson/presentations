@@ -41,5 +41,6 @@ sh create_db.sh
 ## Connect DB
 ```sh
 cd pass2024
-sh connect_db.sh
+sh connect_superuser.sh
+sh connect_user.sh
 ```
