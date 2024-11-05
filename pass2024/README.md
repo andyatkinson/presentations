@@ -1,10 +1,10 @@
 # Presentations
 
 ## Multitenancy Patterns
-
-- Using Docker Postgres 17
+- Use Docker Postgres 17
+- `create_db.sh` script
 - DB: Creates pass user, explicit grants
-- DB: App-Schema
+- DB: Creates App-Schema
 - Populates data
 
 
@@ -24,7 +24,6 @@ docker exec -it pg17 psql -U postgres
 ```
 
 ## pg_stat_statements
-
 ```sql
 CREATE EXTENSION IF NOT EXISTS pg_stat_statements;
 
