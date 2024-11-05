@@ -37,8 +37,6 @@ FROM generate_series(1, 100000) AS g                       -- Generate 100 rows
 JOIN LATERAL (SELECT id FROM suppliers ORDER BY random() LIMIT 1) AS s ON TRUE -- placeholder for join clause
 JOIN LATERAL (SELECT id FROM customers ORDER BY random() LIMIT 1) AS c ON TRUE; -- placeholder for join clause
 
-select * from orders_part;
-
 -- Count the distribution of orders in partitions
 SELECT
     count(*) AS count_all_partitions,
@@ -52,4 +50,6 @@ FROM
 
 show enable_partition_pruning;
 
-EXPLAIN ANALYZE SELECT customer_id FROM orders_part WHERE supplier_id = 3;
+EXPLAIN ANALYZE SELECT customer_id FROM orders_part WHERE supplier_id = 2;
+
+\d orders_supplier_2
