@@ -21,16 +21,16 @@ set search_path = passdata, public;
 
 
 
--- Switch to the superuser
-
+-- NOTE: Switch to the superuser
 set search_path = passdata, public;
-select * from public.pg_stat_statements;
+CREATE EXTENSION IF NOT EXISTS pg_stat_statements;
+select pg_stat_statements_reset();
+select * from pg_stat_statements;
 
--- PGSS has instance wide stats
-
+-- ISSUE #1: PGSS has instance wide stats
+-- ISSUE #2: Removes critical supplier_id info
 select * from passdata.suppliers;
 select * from passdata.customers;
-select * from passdata.orders; -- 100K
 select * from passdata.orders where supplier_id = 1;
 select * from passdata.orders where supplier_id = 2;
 select * from passdata.orders where supplier_id = 3;

@@ -1,3 +1,4 @@
+-- NOTE: connect as passdata user
 -- Changes to our tenant, "suppliers"
 -- Allow NULLs for new_data since it could be deleted
 CREATE TABLE IF NOT EXISTS supplier_data_changes (
