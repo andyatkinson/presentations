@@ -1015,12 +1015,27 @@ a { color: #fff; }
 
 ---
 <style scoped>
+section {
+    font-size: 2.5em;
+}
+</style>
+
+### 👋 Thank you!
+
+💼 Consulting [Refined Pages, LLC](refinedpages.com)
+✍️ Blog [andyatkinson.com](andyatkinson.com)
+✉️ Newsletter [pgrailsbook.com](pgrailsbook.com)
+
+
+---
+<style scoped>
 section li, section li a { 
   color: #fff; 
   font-size:12px;
 }
 .footnote {
   position:relative;
+  
 }
 ul {
   list-style-type:none;
@@ -1272,16 +1287,3 @@ HTML is generated below from this footnotes source
   59. <a href='https://github.com/andyatkinson/rideshare/pull/233'>github.com/andyatkinson/rideshare/pull/233</a>
 </li>
 </ul></div>
-
----
-<style scoped>
-section {
-    font-size: 2.5em;
-}
-</style>
-
-### 👋 Thank you!
-
-💼 Consulting [Refined Pages, LLC](refinedpages.com)
-✍️ Blog [andyatkinson.com](andyatkinson.com)
-✉️ Newsletter [pgrailsbook.com](pgrailsbook.com)
