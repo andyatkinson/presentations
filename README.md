@@ -1,6 +1,11 @@
-# Slides
-> Create decks like a hacker!
+# Presentations
 
+## PASS Data Community Summit
+- [pass2024/README.md](pass2024/README.md)
+
+
+## Presentations with Markdown
+> Create decks like a hacker!
 Quote inspired by: [blog like a hacker](https://tom.preston-werner.com/2008/11/17/blogging-like-a-hacker.html)
 
 Often a slide deck is the best way to present information. Since I'm keeping notes in Markdown anyway, Marp allows me to add a minimal amount of formatting to create a slide deck presentation, and export it to a PDF.
@@ -27,7 +32,6 @@ Visually previewed with VS Code:
 * For HTML, add `--html` option on export: <https://www.hashbangcode.com/article/seven-tips-getting-most-out-marp#using-html-in-slides>
 * In Vim, yank buffer to clipboard: `:%w !pbcopy`
 * Open a terminal from Vim with `:term` and then navigate with `Ctrl-W h/j/k/l`
-
 ## marp-cli
 Install:
 ```
@@ -60,3 +64,15 @@ Not directly supported in Marp Slides. Community:
 - <https://github.com/orgs/marp-team/discussions/150#discussioncomment-7127819>
 
 What I did was use HTML footnotes, then keep a CSV mapping of number to link, then a Ruby script produces an HTML list of links.
+||||||| 70a0d5c
+
+## Tools
+To install on macOS:
+```sh
+brew install shellcheck
+```
+
+Run shellcheck:
+```sh
+shellcheck create_db.sh
+```
