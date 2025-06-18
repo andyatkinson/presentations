@@ -935,6 +935,7 @@ a { color: #fff; }
 - *Prune and Tune* indexes,<sup><a href="#footnote-38">38</a></sup> use *pg_dba*<sup><a href="#footnote-39">39</a></sup> for psql, *rails_best_practices gem*
 - Drop unneeded tables, columns (multi-step with `ignored_columns`), constraints, indexes, functions, triggers, extensions
 - Rebuild heavily fragmented tables (pg_repack, pg_squeeze, `VACUUM FULL`, logical replication, or *copy swap drop*<sup><a href="#footnote-50">50</a></sup>)
+- Rebuild heavily fragmented indexes (`REINDEX CONCURRENTLY`)
 - Maintain your database like your application code. Podcast episode: *Maintainable...Databases?* podcast<sup><a href="#footnote-36">36</a></sup>
 
 ---
