@@ -364,9 +364,9 @@ a { color: #fff; }
 </div>
 
 ## ❌ Mistake #10—Infrequent Releases
-- Reducing DB schema evolution agility with infrequent releases (20% respondents, max few/month, 2024 Rails Survey<sup><a href="#footnote-3">3</a></sup>)
+- Reducing DB schema evolution agility with infrequent releases (20% respondents, max few/month, 2024 Rails Survey<sup><a href="#footnote-3">3</a></sup>) including ORM Migrations
 - Performing DDL changes exclusively using ORM Migrations
-- Not quantifying DevOps capabilities or improving
+- Not quantifying DevOps capabilities or shortening cycle times
 
 <div class='corner-label'>💵 Cycle time, incident response</div>
 
@@ -386,11 +386,11 @@ a { color: #fff; }
 
 <h2>❌ Mistake #10—Infrequent Releases <span style="background-color:#111;padding:5px 10px;margin:2px;">✅ 🛠️ Fixes</span></h2>
 
-- Improve DevOps capabilities using a framework like DORA<sup><a href="#footnote-4">4</a></sup>, SPACE<sup><a href="#footnote-5">5</a></sup>
+- Improve DevOps excellence, assisted by metrics frameworks DORA<sup><a href="#footnote-4">4</a></sup>, SPACE<sup><a href="#footnote-5">5</a></sup>
 - Learn tactics from *Accelerate*,<sup><a href="#footnote-49">49</a></sup> 2-Minute DORA Quick Check<sup><a href="#footnote-50">50</a></sup>
-- Increase process automation, test coverage (*Simplecov*),<sup><a href="#footnote-18">18</a></sup>, test suite speed and reliability
-- Lint DDL migrations<sup><a href="#footnote-20">20</a></sup> and SQL (*squawk*<sup><a href="#footnote-19">19</a></sup>) for safety
-- Augment ORM migrations with additional non-blocking direct DDL release process. Backfill idempotent Rails migration<sup><a href="#footnote-40">40</a></sup> for consistency.
+- Increase automation for testing and release, raise coverage (*Simplecov*),<sup><a href="#footnote-18">18</a></sup> increase speec and reliability of tests
+- Lint ORM<sup><a href="#footnote-20">20</a></sup> or SQL (*squawk*<sup><a href="#footnote-19">19</a></sup>) DDL migrations for safety
+- Augment ORM migrations with additional SQL DDL releases. Apply multi-step, non-blocking DDLs. Backfill idempotent Rails migration<sup><a href="#footnote-40">40</a></sup> for schema consistency.
 
 ---
 <style scoped>
@@ -457,8 +457,8 @@ a { color: #fff; }
     <div class="group-content">
 
 ## Active Record ORM
-- Objects, classes, methods, modules, concerns, service classes, serializers
-- Third party code and constructs, query generation Ruby gems
+- Objects, object-orientation, classes, methods, modules, concerns, services
+- First and third party code, DSLs, query generation
 
   </div>
 </div>
@@ -470,7 +470,7 @@ a { color: #fff; }
     <div class="group-content">
 
 ## Relational Database
-- SQL, indexes, query execution plans, normalization, data access
+- SQL, relations, indexes, execution plans, normalization, caches
 - IOPS, pages, buffers, locks, MVCC & bloat (Postgres)
 
   </div>
