@@ -1,5 +1,8 @@
 # Presentations
 
+## RailsConf 2025
+- [railsconf2025/README.md](railsconf2025/README.md)
+
 ## PASS Data Community Summit
 - [pass2024/README.md](pass2024/README.md)
 
