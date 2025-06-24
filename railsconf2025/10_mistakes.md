@@ -118,13 +118,48 @@ a { color: #fff; }
 section::after {
     color:#fff;
     }
+img.img {
+  float:right;
+  max-width:250px;
+
+}
+.stack-vertical {
+  width:300px;
+  float:right;
+  margin:0;
+  padding:0;
+}
+.stack-vertical img {
+  display:block;
+  margin:0;
+  padding:0;   
+  width:100%;
+  max-width:300px;
+  position:relative;
+  top:-70px;
+}
+.stack-vertical .img {
+  max-width:90%;
+}
+.stack-vertical .img.qr { 
+  max-width:95%;
+}
+.stack-vertical .img.db {
+  max-width:70%;
+}
 </style>
 
-![bg right 90%](images/Ruby_on_Rails-Logo.png)
-![bg right:30% vertical 50%](images/database.webp)
+<div class="stack-vertical">
+  <img class="img qr" src="images/bitly_rc10m.png" />
+  <img class="img rails" src="images/Ruby_on_Rails-Logo.png"/>
+  <img class="img db" src="images/database.webp"/>
+</div>
+
 
 # 10 Costly Database Performance Mistakes
-## (And How To Fix Them)
+## And How To Fix Them
+
+<code style="font-size:1.5em;">🌐 <a href="bit.ly/rc10m">bit.ly/rc10m</a></code>
 
 ---
 
@@ -1004,13 +1039,25 @@ a { color: #fff; }
 section {
     font-size: 2.5em;
 }
+.qr-code {
+  width:300px;
+  float:right;
+  display:inline;
+}
+.qr-code img {
+  float:right;
+  max-width:300px;
+}
 </style>
 
 ### 👋 Thank you!
 
-🌐 Presentation [andyatkinson.com/10-mistakes](andyatkinson.com/10-mistakes)
+🌐 Presentation [bit.ly/rc10m](bit.ly/rc10m)
 💼 Consulting [Refined Pages, LLC](refinedpages.com)
 ✉️ Newsletter [pgrailsbook.com](pgrailsbook.com)
+
+
+<span class='qr-code'><img src="images/bitly_rc10m.png"/></span>
 
 ---
 <style scoped>
