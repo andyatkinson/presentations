@@ -299,7 +299,7 @@ Ruby on Rails developer, Postgres Specialist, Author, Consultant
 <div style="display: flex; gap: 2rem;">
   <div style="flex: 1; margin: -30px px; border-radius: 5px;">
     <ul style="list-style-type:none;margin:10px 10px 10px 10px;padding:0;">
-      <li><div class='list-item mistake-1'>10. Using Gitflow</div></li>
+      <li><div class='list-item mistake-1'>10. Infrequent Releases</div></li>
       <li><div class='list-item mistake-2'>9. DB Inexperience</div></li>
       <li><div class="list-item mistake-3">8. Speculative DB Design</div></li>
       <li><div class="list-item mistake-4">7. Missing DB Monitoring</div></li>
@@ -352,10 +352,11 @@ a { color: #fff; }
   <div class="inactive">Optimizing</div>
 </div>
 
-## ❌ Mistake #10—Using Gitflow
+## ❌ Mistake #10—Infrequent Releases
 - Using Gitflow<sup><a href="#footnote-60">60</a></sup> for software delivery
 - Performing DDL changes exclusively using ORM Migrations
 - Not tracking DevOps metrics
+- Not using Feature Flags
 
 <div class='corner-label'>💵 Cycle time, incident response</div>
 
@@ -373,9 +374,9 @@ a { color: #fff; }
   <div class="inactive">Optimizing</div>
 </div>
 
-<h2>❌ Mistake #10—Using Gitflow <span style="background-color:#111;padding:5px 10px;margin:2px;">✅ 🛠️ Fixes</span></h2>
+<h2>❌ Mistake #10—Infrequent Releases <span style="background-color:#111;padding:5px 10px;margin:2px;">✅ 🛠️ Fixes</span></h2>
 
-- Use Trunk-based development (TBD).<sup><a href="#footnote-61">61</a></sup> 20% of 2024 Rails Survey<sup><a href="#footnote-3">3</a></sup> respondents release "a few per month"
+- Use Trunk-based development (TBD)<sup><a href="#footnote-61">61</a></sup> and feature flags. 20% of 2024 Rails Survey<sup><a href="#footnote-3">3</a></sup> respondents release "a few per month"
 - Track DevOps metrics. DORA<sup><a href="#footnote-4">4</a></sup>, SPACE<sup><a href="#footnote-5">5</a></sup>, *Accelerate*,<sup><a href="#footnote-49">49</a></sup>, 2-Minute DORA Quick Check<sup><a href="#footnote-50">50</a></sup>
 - Raise test coverage (*Simplecov*),<sup><a href="#footnote-18">18</a></sup> increase test speed and reliability
 - Lint ORM<sup><a href="#footnote-20">20</a></sup> and SQL (*squawk*<sup><a href="#footnote-19">19</a></sup>) migrations for safe DDL
@@ -482,12 +483,12 @@ a { color: #fff; }
 ## ❌ Mistake #9—DB Inexperience
 
 - Not hiring DB specialists or DBAs
-- Generating AI solutions but not being able to verify them
 - Not using SQL in application code or business intelligence
 - Not able to read and interpret query execution plans
-- Limited understanding of *cardinality*, *selectivity*, or how to use `BUFFERS`
+- Not learning how to use *cardinality*, *selectivity*, or execution plan `BUFFERS` info
 - Adding indexes haphazardly (over-indexing)<sup><a href="#footnote-6">6</a></sup>
 - Choosing schema designs with poor performance
+- Generating AI solutions but not being able to verify them
 
 <div class="corner-label">💵 Server costs, Developer time</div>
 
@@ -509,10 +510,10 @@ a { color: #fff; }
 <h2>❌ Mistake #9—DB Inexperience <span style="background-color:#111;padding:5px 10px;margin:2px;">✅ 🛠️ Fixes</span></h2>
 
 
-- Gain experience through hiring: DB specialists, DBAs, and consultants
-- Invest in training materials like books and courses.
-- Provide a production-like database instance for experiments, and encourage engineers to use it
-- Learn fundamental concepts like *pages*, latency sources, *selectivity*, *cardinality*, *correlation*, and *locality* to improve designs
+- Hire for experience: DB specialists, DBAs, and consultants
+- Grow experience internally with books, courses, conferences, communities.
+- Provide a production-like database instance and data for experimenting. Maintain it and use it in your workflow.
+- Learn to use *pages*, identify latency sources, *selectivity*, *cardinality*, *correlation*, and *locality* to improve your designs
 - Avoid performance-unfriendly schema designs like random UUID<sup><a href="#footnote-8">8</a></sup> primary keys
 
 ---
