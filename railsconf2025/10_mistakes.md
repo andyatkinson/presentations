@@ -446,7 +446,7 @@ a { color: #fff; }
     <div class="group-content">
 
 ## Active Record ORM
-- Object-orientation, inheritence, classes, methods, Ruby code
+- Object-orientation, inheritance, classes, methods, Ruby code
 - ORM, query generation gems. Abstraction, reusability, portability.
 
   </div>
@@ -801,7 +801,7 @@ a { color: #fff; }
 </div>
 
 ## ❌ Mistake #4—Excessive Data Access
-- Returning or operation on huge results 10K+ rows, causing seconds of wait time for users
+- Operating in huge sets of 10K+ rows, causing seconds of wait time for users
 - Ineffective filtering and indexing on *low cardinality* columns
 - Missing indexes for *high cardinality* filter columns, foreign keys
 - Not using advanced indexing like multicolumn or partial (Postgres)
@@ -828,7 +828,7 @@ a { color: #fff; }
 
 <h2>❌ Mistake #4—Excessive Data Access <span style="background-color:#111;padding:5px 10px;margin:2px;">✅ 🛠️ Fixes</span></h2>
 
-- Reduce data access.<sup><a href="#footnote-25">25</a></sup> Restructure queries to select fewer rows, columns, and perform fewer joins.
+- Work on small sets of data.<sup><a href="#footnote-25">25</a></sup> Restructure queries to select fewer rows, columns, and perform fewer joins.
 - Create "missing indexes"<sup><a href="#footnote-23">23</a></sup> on high cardinality columns<sup><a href="#footnote-24">24</a></sup>
 - Use advanced indexing like multicolumn, partial indexes, GIN, GiST.
 - Improve UX by pre-calculating aggregates with *rollup*<sup><a href="#footnote-26">26</a></sup>, or with materialized views of denormalize data, managed with *scenic*<sup><a href="#footnote-27">27</a></sup>
