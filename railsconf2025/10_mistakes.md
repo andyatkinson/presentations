@@ -1007,10 +1007,9 @@ section {
 
 ### 👋 Thank you!
 
+🌐 Presentation [andyatkinson.com/10-mistakes](andyatkinson.com/10-mistakes)
 💼 Consulting [Refined Pages, LLC](refinedpages.com)
-✍️ Blog [andyatkinson.com](andyatkinson.com)
 ✉️ Newsletter [pgrailsbook.com](pgrailsbook.com)
-
 
 ---
 <style scoped>
@@ -1101,6 +1100,7 @@ HTML is generated below from this footnotes source
 63,cybertec-postgresql.com/en/products/pg_squeeze/
 }}
 -->
+
 <div class='footnote'><ul class='two-column-list'><li id='footnote-1'>
   1. <a href='https://railsdeveloper.com/survey/2024/#databases'>railsdeveloper.com/survey/2024/#databases</a>
 </li>

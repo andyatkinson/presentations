@@ -78,3 +78,6 @@ Run shellcheck:
 ```sh
 shellcheck create_db.sh
 ```
+
+## VS Code
+- Choose "Trust", not Restricted Mode, which doesn't support all the HTML
