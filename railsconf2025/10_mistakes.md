@@ -301,7 +301,7 @@ Ruby on Rails developer, Postgres Specialist, Author, Consultant
     <ul style="list-style-type:none;margin:10px 10px 10px 10px;padding:0;">
       <li><div class='list-item mistake-1'>10. Using Gitflow</div></li>
       <li><div class='list-item mistake-2'>9. DB Inexperience</div></li>
-      <li><div class="list-item mistake-3">8. Speculative DB Defaults</div></li>
+      <li><div class="list-item mistake-3">8. Speculative DB Design</div></li>
       <li><div class="list-item mistake-4">7. Missing DB Monitoring</div></li>
     </ul>
   </div>
@@ -586,11 +586,11 @@ a { color: #fff; }
   <div class="inactive">Optimizing</div>
 </div>
 
-## ❌ Mistake #8—Speculative DB Defaults
-- Skipping conventional use of constraints due to speculation on future needs
-- Casting doubt evolving the schema design in the future
-- Avoiding data backfills using heroic code workarounds
-- *Not* removing duplication through normalization by default
+## ❌ Mistake #8—Speculative DB Design
+- Avoiding beneficial database constraints due to speculation about the future
+- Casting doubt about the ability to evolve the schema design
+- Avoiding complex data backfills using heroic code workarounds
+- *Not* using data normalization practices by default, avoiding duplication
 - Avoiding *all* denormalization, even for cases like multi-tenancy<sup><a href="#footnote-55">55</a></sup>
 
 <div class="corner-label">💵 Data bugs, high maintenance costs</div>
@@ -614,13 +614,13 @@ a { color: #fff; }
   <div class="inactive">Optimizing</div>
 </div>
 
-<h2>❌ Mistake #8—Speculative DB Defaults <span style="background-color:#111;padding:5px 10px;margin:2px;">✅ 🛠️ Fixes</span></h2>
+<h2>❌ Mistake #8—Speculative DB Design <span style="background-color:#111;padding:5px 10px;margin:2px;">✅ 🛠️ Fixes</span></h2>
 
 - Use all available constraints for data consistency, integrity, quality (CORE: *constraint-driven*<sup><a href="#footnote-53">53</a></sup>)
-- Learn non-blocking schema evolution tactics, perform big data migrations, conduct dry run evidence on production-like instance.
-- Create DB constraints to match application validation. Match PK/FK types.<sup><a href="#footnote-7">7</a></sup>
-- Normalize by default. Design for today. Expected data growth.
-- Denormalize for some use cases like multi-tenancy.
+- Use non-blocking, multi-step online schema evolution, for big data migrations at very high scale
+- Create matching DB constraints for code validation. Match PK/FK types.<sup><a href="#footnote-7">7</a></sup>
+- Normalize by default. Design for today, but anticipate growth in data and query volume.
+- Use denormalization sometimes, for example with multi-tenancy.
 
 ---
 
