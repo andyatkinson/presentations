@@ -589,7 +589,6 @@ a { color: #fff; }
 ## ❌ Mistake #8—Speculative DB Design
 - Avoiding beneficial database constraints due to speculation about the future
 - Casting doubt about the ability to evolve the schema design
-- Avoiding complex data backfills using heroic code workarounds
 - *Not* using data normalization practices by default, avoiding duplication
 - Avoiding *all* denormalization, even for cases like multi-tenancy<sup><a href="#footnote-55">55</a></sup>
 
@@ -617,7 +616,6 @@ a { color: #fff; }
 <h2>❌ Mistake #8—Speculative DB Design <span style="background-color:#111;padding:5px 10px;margin:2px;">✅ 🛠️ Fixes</span></h2>
 
 - Use all available constraints for data consistency, integrity, quality (CORE: *constraint-driven*<sup><a href="#footnote-53">53</a></sup>)
-- Use non-blocking, multi-step online schema evolution, for big data migrations at very high scale
 - Create matching DB constraints for code validation. Match PK/FK types.<sup><a href="#footnote-7">7</a></sup>
 - Normalize by default. Design for today, but anticipate growth in data and query volume.
 - Use denormalization sometimes, for example with multi-tenancy.
@@ -669,7 +667,7 @@ a { color: #fff; }
 - Log and store SQL query generation source code line numbers,<sup><a href="#footnote-16">16</a></sup> prefer *SQLCommenter*
 - Collect query execution plans, manually or automatically with *auto_explain*<sup><a href="#footnote-41">41</a></sup>
 - Review `BUFFERS` counts from execution plans<sup><a href="#footnote-42">42</a></sup> to improve designs
-- Complement APM with DB observability. Postgres: *pg_stat_statements*, *PgHero*, *PgAnalyze*, *PgBadger*
+- Add DB observability. Postgres: *pg_stat_statements*, *PgHero*, *PgAnalyze*, *PgBadger*
 - MySQL: *Percona Monitoring and Management (PMM)*, *Oracle Enterprise Manager for MySQL*<sup><a href="#footnote-43">43</a></sup>, SQLite: *SQLite Database Analyzer*<sup><a href="#footnote-44">44</a></sup>
 
 ---
@@ -688,10 +686,10 @@ a { color: #fff; }
 </div>
 
 ## ❌ Mistake #6—ORM Pitfalls
-- Allowing ORM generated inefficient queries
-- Not restricting column access, using `SELECT *`<sup><a href="#footnote-11">11</a></sup>
-- Not replacing poor performing query patterns like huge `IN` lists<sup><a href="#footnote-12">12</a></sup>
-- Performing unnecessary `COUNT(*)`, `ORDER BY` queries from ORM defaults
+- Allowing inefficient queries that are ORM generated
+- Never restricting column access, always using `SELECT *`<sup><a href="#footnote-11">11</a></sup>
+- Using non-scalable query patterns like huge `IN` lists<sup><a href="#footnote-12">12</a></sup>
+- Not removing unnecessary `COUNT(*)`, `ORDER BY` queries from ORM defaults
 - Using ORM `LIMIT` / `OFFSET` pagination over alternatives
 - Not using ORM *counter caches* or the *prepared statement* cache
 
@@ -740,9 +738,10 @@ a { color: #fff; }
 
 ## ❌ Mistake #5—DDL Fear
 - Creating code workarounds to avoid schema evolution and data backfills
-- No automated heavy lock checking for DDL migrations, no big instance to practice DDL changes on
-- Not using safety timeouts for DDL changes (Postgres, MySQL, SQLite)
-- Performing DDLs without understanding locking, safe alternatives, or multi-step operations
+- No safety linting for DDL migrations
+- Not using a production-like instance for practice big DDL changes
+- Not using safety timeouts for Postgres, MySQL, SQLite
+- Not learning the underlying locking mechanisms, or safer, multi-step alternatives
 
 <div class="corner-label">💵 Longer cycles, maintainability</div>
 
@@ -763,12 +762,11 @@ a { color: #fff; }
 
 <h2>❌ Mistake #5—DDL Fear <span style="background-color:#111;padding:5px 10px;margin:2px;">✅ 🛠️ Fixes</span></h2>
 
-- Perform DDL changes on a production-like instance as dry runs. Collect timing. Study lock behavior.
-- Use multi-step tactics for increased safety. `ignored_columns`,<sup><a href="#footnote-22">22</a></sup>. `INVALID` `CHECK` constraint before `NOT NULL`
-- Detect unsafe DDL in linting stage (PostgreSQL) *strong_migrations*<sup><a href="#footnote-25">25</a></sup> (MySQL/MariaDB) *online_migrations*<sup><a href="#footnote-21">21</a></sup>, or *squawk*<sup><a href="#footnote-24">24</a></sup> for SQL
-- Learn about lock types for operations, tables, rows using `pglocks.org`
-- Set a low `lock_timeout` when performing DDL changes
-- For backfills, use batches, add pauses for replication
+- Practice DDL changes on a production-like instance. Collect timing. Study lock behavior.
+- Use multi-step safe alternatives. `ignored_columns`,<sup><a href="#footnote-22">22</a></sup>. `INVALID` `CHECK` constraint before `NOT NULL`
+- Lint DDL in Active Record (PostgreSQL) *strong_migrations*<sup><a href="#footnote-25">25</a></sup> (MySQL/MariaDB) *online_migrations*<sup><a href="#footnote-21">21</a></sup>, *Squawk*<sup><a href="#footnote-24">24</a></sup> for SQL
+- Learn lock types for operations, tables, rows using `pglocks.org`
+- Use a low `lock_timeout` for DDL changes with retries
 
 ---
 <style scoped>
@@ -803,7 +801,7 @@ a { color: #fff; }
 </div>
 
 ## ❌ Mistake #4—Excessive Data Access
-- Returning or operation on huge results, 10K+ rows, seconds of load time, blocking user
+- Returning or operation on huge results 10K+ rows, causing seconds of wait time for users
 - Ineffective filtering and indexing on *low cardinality* columns
 - Missing indexes for *high cardinality* filter columns, foreign keys
 - Not using advanced indexing like multicolumn or partial (Postgres)
@@ -831,10 +829,10 @@ a { color: #fff; }
 <h2>❌ Mistake #4—Excessive Data Access <span style="background-color:#111;padding:5px 10px;margin:2px;">✅ 🛠️ Fixes</span></h2>
 
 - Reduce data access.<sup><a href="#footnote-25">25</a></sup> Restructure queries to select fewer rows, columns, and perform fewer joins.
-- Add "missing indexes"<sup><a href="#footnote-23">23</a></sup> on high cardinality columns<sup><a href="#footnote-24">24</a></sup> to reduce latency
-- Use advanced indexing like multicolumn, partial indexes, GIN, GiST. Exclude unnecessary rows like *soft deleted* rows.
-- Optimize reads by pre-calculating aggregates with the *rollup gem*<sup><a href="#footnote-26">26</a></sup>, or by using materialized views to denormalize data. Manage views using the *scenic gem*<sup><a href="#footnote-27">27</a></sup>
-- Migrate huge time-based table data into a partitioned table<sup><a href="#footnote-28">28</a></sup> for improved performance and parallel maintenance
+- Create "missing indexes"<sup><a href="#footnote-23">23</a></sup> on high cardinality columns<sup><a href="#footnote-24">24</a></sup>
+- Use advanced indexing like multicolumn, partial indexes, GIN, GiST.
+- Improve UX by pre-calculating aggregates with *rollup*<sup><a href="#footnote-26">26</a></sup>, or with materialized views of denormalize data, managed with *scenic*<sup><a href="#footnote-27">27</a></sup>
+- Migrate time-based data into a partitioned table<sup><a href="#footnote-28">28</a></sup> for improved performance and maintenance
 
 ---
 <style scoped>
@@ -851,10 +849,10 @@ a { color: #fff; }
 </div>
 
 ## ❌ Mistake #3—Missing Data Archival
-- Significant proportion of data in tables and indexes that's never queried, adds latency, consumes space, slows down backups and restores
-- High growth data from gems like *public_activity*,<sup><a href="#footnote-29">29</a></sup> *papertrail*,<sup><a href="#footnote-30">30</a></sup> *audited*,<sup><a href="#footnote-42">42</a></sup> or *ahoy*<sup><a href="#footnote-32">32</a></sup>, not archived
-- Churned customer data, retired feature data, soft deleted data, never archived
-- Performance issues from resource-intensive massive `DELETE` operations instead of alternatives
+- Storing a significant proportion of data in tables and indexes that's never queried
+- Using high growth data gems like *public_activity*,<sup><a href="#footnote-29">29</a></sup> *papertrail*,<sup><a href="#footnote-30">30</a></sup> *audited*,<sup><a href="#footnote-42">42</a></sup> or *ahoy*<sup><a href="#footnote-32">32</a></sup>, and not archiving data
+- Not archiving app data from churned customers, retired features, or soft deleted rows
+- Performing resource-intensive massive `DELETE` operations
 
 <div class="corner-label">💵 Server costs, user experience</div>
 
@@ -875,10 +873,10 @@ a { color: #fff; }
 <h2>❌ Mistake #3—Missing Data Archival <span style="background-color:#111;padding:5px 10px;margin:2px;">✅ 🛠️ Fixes</span></h2>
 
 - Archive **ALL** data that's not regularly queried!
-- Perform a one-time effective table shrink with *copy swap drop*<sup><a href="#footnote-34">34</a></sup>
-- Use partitioned table-friendly gems like *logidze gem*<sup><a href="#footnote-35">35</a></sup> or migrate your high growth data and make Rails code compatibility changes<sup><a href="#footnote-51">51</a></sup>
-- Archive data from churned customers, retired features (track code execution with *coverband* gem<sup><a href="#footnote-33">33</a></sup>), soft deletes
-- Replace massive `DELETE` operations. Migrate data to a time-partitioned table. Use `DETACH CONCURRENTLY`.
+- Shrink a table using *copy swap drop*<sup><a href="#footnote-34">34</a></sup>
+- Use partition-friendly gems like *logidze gem*<sup><a href="#footnote-35">35</a></sup> or partition your big tables, making necessary Rails compatibility changes<sup><a href="#footnote-51">51</a></sup>
+- Archive app data from churned customers, soft deleted rows, and retired features (discover with *Coverband*),<sup><a href="#footnote-33">33</a></sup>)
+- Replace massive `DELETE` operations by using time-partitioned tables, and efficient `DETACH CONCURRENTLY`
 
 ---
 <style scoped>
@@ -897,7 +895,7 @@ a { color: #fff; }
 
 ## ❌ Mistake #2—Missing DB Maintenance
 - Running unsupported versions of Postgres, MySQL, or SQLite
-- Keeping unneeded tables, columns, constraints, indexes, functions, triggers, extensions, row data in your database
+- Keeping unneeded tables, columns, constraints, indexes, functions, triggers, or extensions in your database
 - Not monitoring or fixing heavily fragmented tables and indexes
 - Leaving Autovacuum and other maintenance parameters untuned
 
@@ -923,15 +921,10 @@ a { color: #fff; }
 
 - Upgrade your database. Postgres *why upgrade*?<sup><a href="#footnote-37">37</a></sup>
 - *Prune and Tune* indexes,<sup><a href="#footnote-38">38</a></sup> use *pg_dba*<sup><a href="#footnote-39">39</a></sup> for psql, *rails_best_practices gem*
-- Drop unneeded tables, columns (multi-step with `ignored_columns`), constraints, indexes, functions, triggers, extensions
-- Rebuild heavily fragmented tables (pg_repack, pg_squeeze, `VACUUM FULL`, logical replication, or *copy swap drop*<sup><a href="#footnote-50">50</a></sup>)
-- Rebuild heavily fragmented indexes (`REINDEX CONCURRENTLY`)
-- Maintain your database like your application code. Podcast episode: *Maintainable...Databases?* podcast<sup><a href="#footnote-36">36</a></sup>
-
----
-
-![rails_best_practices gem 90%](images/rbp.jpg)
-<small>rails_best_practices gem</small>
+- Drop unneeded tables, columns, constraints, indexes, functions, triggers, and extensions
+- Rebuild fragmented tables (pg_repack, pg_squeeze,<sup><a href="#footnote-63">63</a></sup> `VACUUM FULL`, logical replication, or *copy swap drop*<sup><a href="#footnote-50">50</a></sup>)
+- Reindex fragmented indexes (`REINDEX CONCURRENTLY`)
+- Maintain your database like your application code. *Maintainable...Databases?* podcast<sup><a href="#footnote-36">36</a></sup>
 
 ---
 <style scoped>
@@ -949,8 +942,8 @@ a, blockquote { color: #fff; }
 </div>
 
 ## *Mechanical Sympathy*
-
 > *Mechanical sympathy is when you use a tool or system with an understanding of how it operates best.*<sup><a href="#footnote-56">56</a></sup>
+
 
 ---
 <style scoped>
@@ -968,10 +961,10 @@ a { color: #fff; }
 </div>
 
 ## ❌ Mistake #1—Rejecting Mechanical Sympathy
-- Using inefficient queries from Active Record or libraries like *jsonapi-resources*,<sup><a href="#footnote-45">45</a></sup> *graphql-ruby*,<sup><a href="#footnote-46">46</a></sup>, *ActiveAdmin*<sup><a href="#footnote-47">47</a></sup>
-- Allowing lazy loading, allowing N+1s
-- Not adding resiliency, allowing runaway queries, long idle transactions, runaway schema migrations
-- For Postgres, using designs that don't well with tuples, MVCC, and Vacuum
+- Excessive CPU and memory use from inefficient long queries. ORM or query generation libraries. *jsonapi-resources*,<sup><a href="#footnote-45">45</a></sup> *graphql-ruby*,<sup><a href="#footnote-46">46</a></sup>, *ActiveAdmin*<sup><a href="#footnote-47">47</a></sup>
+- Excessive resource use from short queries, lazy loading and N+1s
+- Not auto-cancelling excessively long queries, idle transactions, or schema migrations
+- In Postgres, using designs that don't well with immutable row versions (tuples), MVCC, and Autovacuum
 
 <div class="corner-label">💵 ALL the costs</div>
 
@@ -992,17 +985,18 @@ a { color: #fff; }
 
 <h2>❌ Mistake #1—Rejecting Mechanical Sympathy <span style="background-color:#111;padding:5px 10px;margin:2px;">✅ 🛠️ Fixes</span></h2>
 
-- Refactor towards strengths, minimize weaknesses!
-- Take control of application SQL queries (`to_sql()`), execution plans (`.explain()`). Reduce their CPU, memory, data access.
-- Avoid high update churn designs. Replace in-place updates with mostly-appends, e.g. *slotted counters.<sup><a href="#footnote-59">59</a></sup>* Increase *HOT updates*.<sup><a href="#footnote-57">57</a></sup>
-- Prevent lazy loading with *strict loading*<sup><a href="#footnote-48">48</a></sup> partially or globally
-- Add resiliency by disallowing long running statements, idle transactions, or runaway schema migrations.
+- Take control of your SQL (`to_sql()`) and execution plans (`.explain()`).
+- Improve efficiency, reduce the use of CPU, memory, and data access.
+- Avoid high update churn designs, replacing in-place updates with "append-mostly", e.g. *slotted counters.<sup><a href="#footnote-59">59</a></sup>* Increase *HOT updates*.<sup><a href="#footnote-57">57</a></sup>
+- Prevent lazy loading by using *Strict Loading*<sup><a href="#footnote-48">48</a></sup> partially or globally
+- Add system resiliency by auto-cancelling long running queries, idle transactions, or runaway schema migrations.
 
 ---
 
-## **EMBRACE** *Mechanical Sympathy*
+## 🌱 ***Cultivate*** Mechanical Sympathy
 > When you understand how a system is designed to be used, you can align with the design to gain optimal performance.
 
+🏎️ 🌬️
 
 ---
 <style scoped>
@@ -1101,8 +1095,9 @@ HTML is generated below from this footnotes source
 57,cybertec-postgresql.com/en/hot-updates-in-postgresql-for-better-performance
 58,bigbinary.com/blog/rails-6-adds-implicit_order_column
 59,github.com/andyatkinson/rideshare/pull/233
-60,https://www.atlassian.com/git/tutorials/comparing-workflows/gitflow-workflow
-61,https://www.atlassian.com/continuous-delivery/continuous-integration/trunk-based-development
-62,https://github.com/andyatkinson/anchor_migrations
+60,atlassian.com/git/tutorials/comparing-workflows/gitflow-workflow
+61,atlassian.com/continuous-delivery/continuous-integration/trunk-based-development
+62,github.com/andyatkinson/anchor_migrations
+63,cybertec-postgresql.com/en/products/pg_squeeze/
 }}
 -->
