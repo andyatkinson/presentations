@@ -157,9 +157,9 @@ img.img {
 
 
 # 10 Costly Database Performance Mistakes
-## And How To Fix Them
+## (And How To Fix Them)
 
-<code style="font-size:1.5em;">🌐 <a href="bit.ly/rc10m">bit.ly/rc10m</a></code>
+<code style="font-size:1.5em;">🌐 <a href="https://bit.ly/rc10m">bit.ly/rc10m</a></code>
 
 ---
 
@@ -1040,24 +1040,29 @@ section {
     font-size: 2.5em;
 }
 .qr-code {
+  max-width:300px;
   width:300px;
   float:right;
-  display:inline;
+  position:absolute;
+  right:0;
+  top:0;
+  padding:200px 100px 0 0;
 }
 .qr-code img {
   float:right;
-  max-width:300px;
+  max-width:400px;
 }
 </style>
 
 ### 👋 Thank you!
 
-🌐 Presentation [bit.ly/rc10m](bit.ly/rc10m)
+<code style="font-size:1.5em;">🌐 <a href="https://bit.ly/rc10m">bit.ly/rc10m</a></code>
+
 💼 Consulting [Refined Pages, LLC](refinedpages.com)
 ✉️ Newsletter [pgrailsbook.com](pgrailsbook.com)
 
 
-<span class='qr-code'><img src="images/bitly_rc10m.png"/></span>
+<div class='qr-code'><img src="images/bitly_rc10m.png"/></div>
 
 ---
 <style scoped>
