@@ -1,4 +1,4 @@
-# Presentations
+# PASS 2024
 
 ## Multitenancy Patterns
 - Use Docker Postgres 17

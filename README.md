@@ -1,8 +1,10 @@
 # Presentations
 
+## RailsConf 2025
+- [railsconf2025/README.md](railsconf2025/README.md)
+
 ## PASS Data Community Summit
 - [pass2024/README.md](pass2024/README.md)
-
 
 ## Presentations with Markdown
 > Create decks like a hacker!
@@ -32,14 +34,15 @@ Visually previewed with VS Code:
 * For HTML, add `--html` option on export: <https://www.hashbangcode.com/article/seven-tips-getting-most-out-marp#using-html-in-slides>
 * In Vim, yank buffer to clipboard: `:%w !pbcopy`
 * Open a terminal from Vim with `:term` and then navigate with `Ctrl-W h/j/k/l`
+
 ## marp-cli
 Install:
-```
+```sh
 brew install marp-cli
 ```
 
 Example use to generate PDF and fill in metadata:
-```
+```sh
 marp --pdf \
     --title "Partitioning 1 Billion Rows Without Downtime" \
     --description "Range Partitioning Case Study with Rails and pgslice" \
@@ -64,7 +67,6 @@ Not directly supported in Marp Slides. Community:
 - <https://github.com/orgs/marp-team/discussions/150#discussioncomment-7127819>
 
 What I did was use HTML footnotes, then keep a CSV mapping of number to link, then a Ruby script produces an HTML list of links.
-||||||| 70a0d5c
 
 ## Tools
 To install on macOS:
