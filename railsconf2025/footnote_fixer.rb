@@ -2,6 +2,9 @@
 
 require 'csv'
 require 'set'
+require 'net/http'
+require 'uri'
+
 class FootnoteFixer
   def initialize(full_text)
     @full_text = full_text
@@ -17,10 +20,24 @@ class FootnoteFixer
       exit
     end
 
+    # check_link_status(rows)
+
     puts create_html_list(rows)
   end
 
   private
+
+  def check_link_status(rows)
+    rows.each do |row|
+      url = row[1]
+      uri = URI.parse("https://#{url}")
+      response = Net::HTTP.get_response(uri)
+      unless response.is_a?(Net::HTTPSuccess)
+        puts "Found a bad link #{uri}, got response: #{response.code}"
+      end
+    end
+  end
+
   def create_html_list(rows)
     html = "<div class='footnote'><ul class='two-column-list'>"
     rows.each do |row|
