@@ -133,17 +133,6 @@ Ruby on Rails developer, Postgres Specialist, Author, Consultant
 
 ![bg right 80%](images/collage-railsworld-2024.jpg)
 
-
----
-
-## RailsConf 2025: The Past, the Present, and the Future of Rails
-
-- Past: 1970s!<sup><a href="#footnote-15">15</a></sup>
-- Present: PostgreSQL, MySQL, SQLite, 2024 Rails Survey*,<sup><a href="#footnote-1">1</a></sup> 2700 responses
-- Future: PostgreSQL, MySQL, SQLite, in top 10 of *424* per *db-engines*<sup><a href="#footnote-2">2</a></sup>
-
-![bg contain right 90%](images/db-engines-10-small.jpg)
-
 ---
 
 <style scoped>
@@ -219,7 +208,7 @@ Ruby on Rails developer, Postgres Specialist, Author, Consultant
 
 <div class="receipt">
   <div class="receipt-header">
-    <h3>Bill for DB Problems</h3>
+    <h3>Bill: Costly DB Mistakes</h3>
     <div>July 8, 2025</div>
   </div>
   <table>
@@ -310,7 +299,7 @@ Ruby on Rails developer, Postgres Specialist, Author, Consultant
 <div style="display: flex; gap: 2rem;">
   <div style="flex: 1; margin: -30px px; border-radius: 5px;">
     <ul style="list-style-type:none;margin:10px 10px 10px 10px;padding:0;">
-      <li><div class='list-item mistake-1'>10. Infrequent Releases</div></li>
+      <li><div class='list-item mistake-1'>10. Using Gitflow</div></li>
       <li><div class='list-item mistake-2'>9. DB Inexperience</div></li>
       <li><div class="list-item mistake-3">8. Speculative DB Defaults</div></li>
       <li><div class="list-item mistake-4">7. Missing DB Monitoring</div></li>
@@ -363,10 +352,10 @@ a { color: #fff; }
   <div class="inactive">Optimizing</div>
 </div>
 
-## ❌ Mistake #10—Infrequent Releases
-- Reducing DB schema evolution agility with infrequent releases (20% respondents, max few/month, 2024 Rails Survey<sup><a href="#footnote-3">3</a></sup>) including ORM Migrations
+## ❌ Mistake #10—Using Gitflow
+- Using Gitflow<sup><a href="#footnote-60">60</a></sup> for software delivery
 - Performing DDL changes exclusively using ORM Migrations
-- Not quantifying DevOps capabilities or shortening cycle times
+- Not tracking DevOps metrics
 
 <div class='corner-label'>💵 Cycle time, incident response</div>
 
@@ -384,13 +373,13 @@ a { color: #fff; }
   <div class="inactive">Optimizing</div>
 </div>
 
-<h2>❌ Mistake #10—Infrequent Releases <span style="background-color:#111;padding:5px 10px;margin:2px;">✅ 🛠️ Fixes</span></h2>
+<h2>❌ Mistake #10—Using Gitflow <span style="background-color:#111;padding:5px 10px;margin:2px;">✅ 🛠️ Fixes</span></h2>
 
-- Improve DevOps excellence, assisted by metrics frameworks DORA<sup><a href="#footnote-4">4</a></sup>, SPACE<sup><a href="#footnote-5">5</a></sup>
-- Learn tactics from *Accelerate*,<sup><a href="#footnote-49">49</a></sup> 2-Minute DORA Quick Check<sup><a href="#footnote-50">50</a></sup>
-- Increase automation for testing and release, raise coverage (*Simplecov*),<sup><a href="#footnote-18">18</a></sup> increase speec and reliability of tests
-- Lint ORM<sup><a href="#footnote-20">20</a></sup> or SQL (*squawk*<sup><a href="#footnote-19">19</a></sup>) DDL migrations for safety
-- Augment ORM migrations with additional SQL DDL releases. Apply multi-step, non-blocking DDLs. Backfill idempotent Rails migration<sup><a href="#footnote-40">40</a></sup> for schema consistency.
+- Use Trunk-based development (TBD).<sup><a href="#footnote-61">61</a></sup> 20% of 2024 Rails Survey<sup><a href="#footnote-3">3</a></sup> respondents release "a few per month"
+- Track DevOps metrics. DORA<sup><a href="#footnote-4">4</a></sup>, SPACE<sup><a href="#footnote-5">5</a></sup>, *Accelerate*,<sup><a href="#footnote-49">49</a></sup>, 2-Minute DORA Quick Check<sup><a href="#footnote-50">50</a></sup>
+- Raise test coverage (*Simplecov*),<sup><a href="#footnote-18">18</a></sup> increase test speed and reliability
+- Lint ORM<sup><a href="#footnote-20">20</a></sup> and SQL (*squawk*<sup><a href="#footnote-19">19</a></sup>) migrations for safe DDL
+- Enhance Rails migrations with ⚓ Anchor Migrations,<sup><a href="#footnote-62">62</a></sup> safety-linted, non-blocking, idempotent & consistent.<sup><a href="#footnote-40">40</a></sup>
 
 ---
 <style scoped>
@@ -457,8 +446,8 @@ a { color: #fff; }
     <div class="group-content">
 
 ## Active Record ORM
-- Objects, object-orientation, classes, methods, modules, concerns, services
-- First and third party code, DSLs, query generation
+- Object-orientation, inheritence, classes, methods, Ruby code
+- ORM, query generation gems. Abstraction, reusability, portability.
 
   </div>
 </div>
@@ -470,8 +459,8 @@ a { color: #fff; }
     <div class="group-content">
 
 ## Relational Database
-- SQL, relations, indexes, execution plans, normalization, caches
-- IOPS, pages, buffers, locks, MVCC & bloat (Postgres)
+- Data. Storage and retrieval. SQL, relations, indexes, execution plans, normalization, caches
+- Pages, buffers, locks, MVCC & bloat in PostgreSQL
 
   </div>
 </div>
@@ -493,12 +482,12 @@ a { color: #fff; }
 ## ❌ Mistake #9—DB Inexperience
 
 - Not hiring DB specialists or DBAs
-- Generating AI solutions but lacking ability to verify or deeply understand
-- Lack of use of SQL in application code or analytics reporting
-- Limited ability to read and interpret query execution plans
-- Limited understanding of concepts like *cardinality*, *selectivity*, `BUFFERS`
+- Generating AI solutions but not being able to verify them
+- Not using SQL in application code or business intelligence
+- Not able to read and interpret query execution plans
+- Limited understanding of *cardinality*, *selectivity*, or how to use `BUFFERS`
 - Adding indexes haphazardly (over-indexing)<sup><a href="#footnote-6">6</a></sup>
-- Choosing schema designs with inherent poor performance
+- Choosing schema designs with poor performance
 
 <div class="corner-label">💵 Server costs, Developer time</div>
 
@@ -520,10 +509,11 @@ a { color: #fff; }
 <h2>❌ Mistake #9—DB Inexperience <span style="background-color:#111;padding:5px 10px;margin:2px;">✅ 🛠️ Fixes</span></h2>
 
 
-- Hire DB specialists, DBAs, bring in a consultant!
-- Train your team: books, courses. Experiment and build skills and repetition on a production-like instance.
-- Learn fundamentals: *pages*, *latency* sources, *selectivity*, *cardinality*, *correlation*, *locality* to improve designs
-- Use performance-friendly schema designs like `integer` and sequences over random UUIDs<sup><a href="#footnote-8">8</a></sup>
+- Gain experience through hiring: DB specialists, DBAs, and consultants
+- Invest in training materials like books and courses.
+- Provide a production-like database instance for experiments, and encourage engineers to use it
+- Learn fundamental concepts like *pages*, latency sources, *selectivity*, *cardinality*, *correlation*, and *locality* to improve designs
+- Avoid performance-unfriendly schema designs like random UUID<sup><a href="#footnote-8">8</a></sup> primary keys
 
 ---
 <style scoped>
@@ -535,7 +525,7 @@ a { color: #fff; }
 </style>
 
 ## Tuples & MVCC
-- Which Spiderman is the live tuple?
+Which Spiderman is the live tuple?
 
 ![bg contain right 90%](images/spiderman.png.webp)
 
@@ -549,7 +539,7 @@ a { color: #fff; }
 </style>
 
 ## Fixed-size 8KB Pages
-- How do I find which card box contains the card I'm looking for?
+How do I fit all my data into these small boxes?
 
 ![bg contain right 95%](images/records-small.jpg)
 
@@ -1111,180 +1101,8 @@ HTML is generated below from this footnotes source
 57,cybertec-postgresql.com/en/hot-updates-in-postgresql-for-better-performance
 58,bigbinary.com/blog/rails-6-adds-implicit_order_column
 59,github.com/andyatkinson/rideshare/pull/233
+60,https://www.atlassian.com/git/tutorials/comparing-workflows/gitflow-workflow
+61,https://www.atlassian.com/continuous-delivery/continuous-integration/trunk-based-development
+62,https://github.com/andyatkinson/anchor_migrations
 }}
 -->
-<div class='footnote'><ul class='two-column-list'><li id='footnote-1'>
-  1. <a href='https://railsdeveloper.com/survey/2024/#databases'>railsdeveloper.com/survey/2024/#databases</a>
-</li>
-<li id='footnote-2'>
-  2. <a href='https://db-engines.com/en/ranking'>db-engines.com/en/ranking</a>
-</li>
-<li id='footnote-3'>
-  3. <a href='https://railsdeveloper.com/survey/2024/#deployment-devops'>railsdeveloper.com/survey/2024/#deployment-devops</a>
-</li>
-<li id='footnote-4'>
-  4. <a href='https://dora.dev/guides/dora-metrics-four-keys'>dora.dev/guides/dora-metrics-four-keys</a>
-</li>
-<li id='footnote-5'>
-  5. <a href='https://octopus.com/devops/metrics/space-framework'>octopus.com/devops/metrics/space-framework</a>
-</li>
-<li id='footnote-6'>
-  6. <a href='https://postgres.fm/episodes/over-indexing'>postgres.fm/episodes/over-indexing</a>
-</li>
-<li id='footnote-7'>
-  7. <a href='https://github.com/djezzzl/database_consistency'>github.com/djezzzl/database_consistency</a>
-</li>
-<li id='footnote-8'>
-  8. <a href='https://andyatkinson.com/generating-short-alphanumeric-public-id-postgres'>andyatkinson.com/generating-short-alphanumeric-public-id-postgres</a>
-</li>
-<li id='footnote-10'>
-  10. <a href='https://andyatkinson.com/tip-track-sql-queries-quantity-ruby-rails-postgresql'>andyatkinson.com/tip-track-sql-queries-quantity-ruby-rails-postgresql</a>
-</li>
-<li id='footnote-11'>
-  11. <a href='https://andyatkinson.com/blog/2024/05/28/top-5-postgresql-surprises-from-rails-developers#4-enumerating-columns-vs-select'>andyatkinson.com/blog/2024/05/28/top-5-postgresql-surprises-from-rails-developers#4-enumerating-columns-vs-select</a>
-</li>
-<li id='footnote-12'>
-  12. <a href='https://andyatkinson.com/big-problems-big-in-clauses-postgresql-ruby-on-rails'>andyatkinson.com/big-problems-big-in-clauses-postgresql-ruby-on-rails</a>
-</li>
-<li id='footnote-13'>
-  13. <a href='https://flexport.engineering/avoiding-activerecord-preparedstatementcacheexpired-errors-4499a4f961cf'>flexport.engineering/avoiding-activerecord-preparedstatementcacheexpired-errors-4499a4f961cf</a>
-</li>
-<li id='footnote-14'>
-  14. <a href='https://depesz.com/2024/12/01/sql-best-practices-dont-compare-count-with-0'>depesz.com/2024/12/01/sql-best-practices-dont-compare-count-with-0</a>
-</li>
-<li id='footnote-15'>
-  15. <a href='https://ibm.com/history/relational-database'>ibm.com/history/relational-database</a>
-</li>
-<li id='footnote-16'>
-  16. <a href='https://andyatkinson.com/source-code-line-numbers-ruby-on-rails-marginalia-query-logs'>andyatkinson.com/source-code-line-numbers-ruby-on-rails-marginalia-query-logs</a>
-</li>
-<li id='footnote-17'>
-  17. <a href='https://blog.appsignal.com/2018/06/19/activerecords-counter-cache.html'>blog.appsignal.com/2018/06/19/activerecords-counter-cache.html</a>
-</li>
-<li id='footnote-18'>
-  18. <a href='https://github.com/simplecov-ruby/simplecov'>github.com/simplecov-ruby/simplecov</a>
-</li>
-<li id='footnote-19'>
-  19. <a href='https://github.com/sbdchd/squawk'>github.com/sbdchd/squawk</a>
-</li>
-<li id='footnote-20'>
-  20. <a href='https://github.com/ankane/strong_migrations'>github.com/ankane/strong_migrations</a>
-</li>
-<li id='footnote-21'>
-  21. <a href='https://github.com/fatkodima/online_migrations?tab=readme-ov-file#comparison-to-strong_migrations'>github.com/fatkodima/online_migrations?tab=readme-ov-file#comparison-to-strong_migrations</a>
-</li>
-<li id='footnote-22'>
-  22. <a href='https://andycroll.com/ruby/safely-remove-a-column-field-from-active-record/'>andycroll.com/ruby/safely-remove-a-column-field-from-active-record/</a>
-</li>
-<li id='footnote-23'>
-  23. <a href='https://github.com/andyatkinson/pg_scripts/blob/main/find_missing_indexes.sql'>github.com/andyatkinson/pg_scripts/blob/main/find_missing_indexes.sql</a>
-</li>
-<li id='footnote-24'>
-  24. <a href='https://github.com/andyatkinson/pg_scripts/pull/19'>github.com/andyatkinson/pg_scripts/pull/19</a>
-</li>
-<li id='footnote-25'>
-  25. <a href='https://github.com/andyatkinson/pg_scripts/pull/18'>github.com/andyatkinson/pg_scripts/pull/18</a>
-</li>
-<li id='footnote-26'>
-  26. <a href='https://github.com/andyatkinson/rideshare/pull/232'>github.com/andyatkinson/rideshare/pull/232</a>
-</li>
-<li id='footnote-27'>
-  27. <a href='https://github.com/scenic-views/scenic'>github.com/scenic-views/scenic</a>
-</li>
-<li id='footnote-28'>
-  28. <a href='https://andyatkinson.com/blog/2023/07/27/partitioning-growing-practice'>andyatkinson.com/blog/2023/07/27/partitioning-growing-practice</a>
-</li>
-<li id='footnote-29'>
-  29. <a href='https://github.com/public-activity/public_activity'>github.com/public-activity/public_activity</a>
-</li>
-<li id='footnote-30'>
-  30. <a href='https://github.com/paper-trail-gem/paper_trail'>github.com/paper-trail-gem/paper_trail</a>
-</li>
-<li id='footnote-31'>
-  31. <a href='https://github.com/collectiveidea/audited'>github.com/collectiveidea/audited</a>
-</li>
-<li id='footnote-32'>
-  32. <a href='https://github.com/ankane/ahoy'>github.com/ankane/ahoy</a>
-</li>
-<li id='footnote-33'>
-  33. <a href='https://github.com/danmayer/coverband'>github.com/danmayer/coverband</a>
-</li>
-<li id='footnote-34'>
-  34. <a href='https://andyatkinson.com/copy-swap-drop-postgres-table-shrink'>andyatkinson.com/copy-swap-drop-postgres-table-shrink</a>
-</li>
-<li id='footnote-35'>
-  35. <a href='https://github.com/palkan/logidze'>github.com/palkan/logidze</a>
-</li>
-<li id='footnote-36'>
-  36. <a href='https://maintainable.fm/episodes/andrew-atkinson-maintainable-databases'>maintainable.fm/episodes/andrew-atkinson-maintainable-databases</a>
-</li>
-<li id='footnote-37'>
-  37. <a href='https://why-upgrade.depesz.com'>why-upgrade.depesz.com</a>
-</li>
-<li id='footnote-38'>
-  38. <a href='https://andyatkinson.com/blog/2021/07/30/postgresql-index-maintenance'>andyatkinson.com/blog/2021/07/30/postgresql-index-maintenance</a>
-</li>
-<li id='footnote-39'>
-  39. <a href='https://github.com/NikolayS/postgres_dba'>github.com/NikolayS/postgres_dba</a>
-</li>
-<li id='footnote-40'>
-  40. <a href='https://github.com/andyatkinson/rideshare/pull/230'>github.com/andyatkinson/rideshare/pull/230</a>
-</li>
-<li id='footnote-41'>
-  41. <a href='https://postgresql.org/docs/current/auto-explain.html'>postgresql.org/docs/current/auto-explain.html</a>
-</li>
-<li id='footnote-42'>
-  42. <a href='https://postgres.ai/blog/20220106-explain-analyze-needs-buffers-to-improve-the-postgres-query-optimization-process'>postgres.ai/blog/20220106-explain-analyze-needs-buffers-to-improve-the-postgres-query-optimization-process</a>
-</li>
-<li id='footnote-43'>
-  43. <a href='https://mysql.com/products/enterprise/em.html'>mysql.com/products/enterprise/em.html</a>
-</li>
-<li id='footnote-44'>
-  44. <a href='https://sqlite.org/sqlanalyze.html'>sqlite.org/sqlanalyze.html</a>
-</li>
-<li id='footnote-45'>
-  45. <a href='https://github.com/cerebris/jsonapi-resources'>github.com/cerebris/jsonapi-resources</a>
-</li>
-<li id='footnote-46'>
-  46. <a href='https://github.com/rmosolgo/graphql-ruby'>github.com/rmosolgo/graphql-ruby</a>
-</li>
-<li id='footnote-47'>
-  47. <a href='https://github.com/activeadmin/activeadmin'>github.com/activeadmin/activeadmin</a>
-</li>
-<li id='footnote-48'>
-  48. <a href='https://andyatkinson.com/blog/2022/10/07/pgsqlphriday-2-truths-lie'>andyatkinson.com/blog/2022/10/07/pgsqlphriday-2-truths-lie</a>
-</li>
-<li id='footnote-49'>
-  49. <a href='https://a.co/d/0Sk81B9'>a.co/d/0Sk81B9</a>
-</li>
-<li id='footnote-50'>
-  50. <a href='https://dora.dev/quickcheck'>dora.dev/quickcheck</a>
-</li>
-<li id='footnote-51'>
-  51. <a href='https://github.com/andyatkinson/presentations/tree/main/pass2024'>github.com/andyatkinson/presentations/tree/main/pass2024</a>
-</li>
-<li id='footnote-52'>
-  52. <a href='https://en.wikipedia.org/wiki/Object–relational_impedance_mismatch'>en.wikipedia.org/wiki/Object–relational_impedance_mismatch</a>
-</li>
-<li id='footnote-53'>
-  53. <a href='https://andyatkinson.com/constraint-driven-optimized-responsive-efficient-core-db-design'>andyatkinson.com/constraint-driven-optimized-responsive-efficient-core-db-design</a>
-</li>
-<li id='footnote-54'>
-  54. <a href='https://ddnexus.github.io/pagy/docs/api/keyset/'>ddnexus.github.io/pagy/docs/api/keyset/</a>
-</li>
-<li id='footnote-55'>
-  55. <a href='https://andyatkinson.com/blog/2023/08/17/postgresql-sfpug-table-partitioning-presentation'>andyatkinson.com/blog/2023/08/17/postgresql-sfpug-table-partitioning-presentation</a>
-</li>
-<li id='footnote-56'>
-  56. <a href='https://wa.aws.amazon.com/wellarchitected/2020-07-02T19-33-23/wat.concept.mechanical-sympathy.en.html'>wa.aws.amazon.com/wellarchitected/2020-07-02T19-33-23/wat.concept.mechanical-sympathy.en.html</a>
-</li>
-<li id='footnote-57'>
-  57. <a href='https://cybertec-postgresql.com/en/hot-updates-in-postgresql-for-better-performance'>cybertec-postgresql.com/en/hot-updates-in-postgresql-for-better-performance</a>
-</li>
-<li id='footnote-58'>
-  58. <a href='https://bigbinary.com/blog/rails-6-adds-implicit_order_column'>bigbinary.com/blog/rails-6-adds-implicit_order_column</a>
-</li>
-<li id='footnote-59'>
-  59. <a href='https://github.com/andyatkinson/rideshare/pull/233'>github.com/andyatkinson/rideshare/pull/233</a>
-</li>
-</ul></div>
