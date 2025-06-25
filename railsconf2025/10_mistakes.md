@@ -411,7 +411,7 @@ a { color: #fff; }
 
 <h2>❌ Mistake #10—Infrequent Releases <span style="background-color:#111;padding:5px 10px;margin:2px;">✅ 🛠️ Fixes</span></h2>
 
-- Use Trunk-based development (TBD)<sup><a href="#footnote-61">61</a></sup> and feature flags. 20% of 2024 Rails Survey<sup><a href="#footnote-3">3</a></sup> respondents release "a few per month"
+- Use Trunk-based development (TBD)<sup><a href="#footnote-61">61</a></sup> and feature flags. 2024 Rails Survey<sup><a href="#footnote-3">3</a></sup>: 20% (500+) "multiple/month", 2% (50+) "multiple/quarter"
 - Track DevOps metrics. DORA<sup><a href="#footnote-4">4</a></sup>, SPACE<sup><a href="#footnote-5">5</a></sup>, *Accelerate*,<sup><a href="#footnote-49">49</a></sup>, 2-Minute DORA Quick Check<sup><a href="#footnote-50">50</a></sup>
 - Raise test coverage (*Simplecov*),<sup><a href="#footnote-18">18</a></sup> increase test speed and reliability
 - Lint ORM<sup><a href="#footnote-20">20</a></sup> and SQL (*squawk*<sup><a href="#footnote-19">19</a></sup>) migrations for safe DDL
