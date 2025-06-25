@@ -1060,6 +1060,7 @@ section {
 
 💼 Consulting [Refined Pages, LLC](refinedpages.com)
 ✉️ Newsletter [pgrailsbook.com](pgrailsbook.com)
+🦋 [@andyatkinson.com](https://bsky.app/profile/andyatkinson.com)
 
 
 <div class='qr-code'><img src="images/bitly_rc10m.png"/></div>
