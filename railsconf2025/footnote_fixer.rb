@@ -57,17 +57,25 @@ class FootnoteFixer
       # replace the footnote HTML <a> value "1" in the document
       # using the new_index value
       @full_text.gsub(pattern) do |match|
-         id = Regexp.last_match[:id]
-         text= Regexp.last_match[:text]
-         puts "new_index: #{new_index} original_idx: #{id} and text: #{text}"
+         orig_id = Regexp.last_match[:id]
+         inner_text = Regexp.last_match[:text]
+         new_content = "footnote-#{orig_id}\">#{new_index}</a>"
+         puts
+         puts "For original id: #{orig_id}"
+         puts "Replacing inner text: #{inner_text}"
+         puts "With new index: #{new_index}"
+         puts "match: #{match}"
+         puts "new_content: #{new_content}"
+         puts
+         new_content
       end
 
-      # generate list item
-      # html += <<~ROW
-      #   <li id='footnote-#{new_index}'>
-      #     #{new_index}. <a href='https://#{url}'>#{url}</a>
-      #   </li>
-      # ROW
+      generate list item
+      html += <<~ROW
+        <li id='footnote-#{new_index}'>
+          #{new_index}. <a href='https://#{url}'>#{url}</a>
+        </li>
+      ROW
     end
     html += '</ul></div>'
   end

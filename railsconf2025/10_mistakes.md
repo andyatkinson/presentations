@@ -420,8 +420,8 @@ a { color: #fff; }
 - Use Trunk-based development (TBD)<sup><a href="#footnote-1-2">1</a></sup> and feature flags. 2024 Rails Survey<sup><a href="#footnote-1-3">1</a></sup>: 20% (500+) "multiple/month", 2% (50+) "multiple/quarter"
 - Track DevOps metrics. DORA<sup><a href="#footnote-1-4">1</a></sup>, SPACE<sup><a href="#footnote-1-5">1</a></sup>, *Accelerate*,<sup><a href="#footnote-1-6">1</a></sup>, 2-Minute DORA Quick Check<sup><a href="#footnote-1-7">1</a></sup>
 - Raise test coverage (*Simplecov*),<sup><a href="#footnote-1-8">1</a></sup> increase test speed and reliability
-- Lint ORM<sup><a href="#footnote-1-9">1</a></sup> and SQL (*Squawk*<sup><a href="#footnote-1-10">1</a></sup>) migrations for safe DDL
-- Enhance Rails migrations with ⚓ Anchor Migrations,<sup><a href="#footnote-1-11">1</a></sup> safety-linted, non-blocking, idempotent & consistent.<sup><a href="#footnote-1-12">1</a></sup>
+- Lint ORM<sup><a href="#footnote-1-9">1</a></sup> and SQL (*Squawk*<sup><a href="#footnote-1-9-1">1</a></sup>) migrations for safe DDL
+- Enhance Rails migrations with ⚓ Anchor Migrations,<sup><a href="#footnote-1-9-2">1</a></sup> safety-linted, non-blocking, idempotent & consistent.<sup><a href="#footnote-1-9-3">1</a></sup>
 
 
 ---
@@ -985,7 +985,7 @@ a, blockquote { color: #fff; }
 </div>
 
 ## *Mechanical Sympathy*
-> *Mechanical sympathy is when you use a tool or system with an understanding of how it operates best.*<sup><a href="#footnote-10-1">1</a></sup>
+> *Mechanical sympathy is when you use a tool or system with an understanding of how it operates best.*<sup><a href="#footnote-9-5-1">1</a></sup>
 
 
 ---
@@ -1004,7 +1004,7 @@ a { color: #fff; }
 </div>
 
 ## ❌ Mistake #1—Rejecting Mechanical Sympathy
-- Excessive CPU and memory use from inefficient long queries. ORM or query generation libraries. *jsonapi-resources*,<sup><a href="#footnote-10-2">1</a></sup> *graphql-ruby*,<sup><a href="#footnote-10-3">1</a></sup>, *ActiveAdmin*<sup><a href="#footnote-10-4">1</a></sup>
+- Excessive CPU and memory use from inefficient long queries. ORM or query generation libraries. *jsonapi-resources*,<sup><a href="#footnote-9-5-2">1</a></sup> *graphql-ruby*,<sup><a href="#footnote-9-5-3">1</a></sup>, *ActiveAdmin*<sup><a href="#footnote-9-5-4">1</a></sup>
 - Excessive resource use from short queries, lazy loading and N+1s
 - Not auto-cancelling excessively long queries, idle transactions, or schema migrations
 - In Postgres, using designs that don't well with immutable row versions (tuples), MVCC, and Autovacuum
@@ -1030,8 +1030,8 @@ a { color: #fff; }
 
 - Take control of your SQL (`to_sql()`) and execution plans (`.explain()`).
 - Improve efficiency, reduce the use of CPU, memory, and data access.
-- Avoid high update churn designs, replacing in-place updates with "append-mostly", e.g. *slotted counters.<sup><a href="#footnote-10-5">1</a></sup>* Increase *HOT updates*.<sup><a href="#footnote-10-6">1</a></sup>
-- Prevent lazy loading by using *Strict Loading*<sup><a href="#footnote-10-7">1</a></sup> partially or globally
+- Avoid high update churn designs, replacing in-place updates with "append-mostly", e.g. *slotted counters.<sup><a href="#footnote-9-5-5">1</a></sup>* Increase *HOT updates*.<sup><a href="#footnote-9-5-6">1</a></sup>
+- Prevent lazy loading by using *Strict Loading*<sup><a href="#footnote-9-5-7">1</a></sup> partially or globally
 - Add system resiliency by auto-cancelling long running queries, idle transactions, or runaway schema migrations.
 
 ---
@@ -1106,9 +1106,9 @@ HTML is generated below from this footnotes source
 1-7,dora.dev/quickcheck
 1-8,github.com/simplecov-ruby/simplecov
 1-9,github.com/ankane/strong_migrations
-1-10,github.com/sbdchd/squawk
-1-11,github.com/andyatkinson/anchor_migrations
-1-12,github.com/andyatkinson/rideshare/pull/230
+1-9-1,github.com/sbdchd/squawk
+1-9-2,github.com/andyatkinson/anchor_migrations
+1-9-3,github.com/andyatkinson/rideshare/pull/230
 
 2-1,en.wikipedia.org/wiki/Object–relational_impedance_mismatch
 2-2,postgres.fm/episodes/over-indexing
@@ -1158,12 +1158,12 @@ HTML is generated below from this footnotes source
 9-4,cybertec-postgresql.com/en/products/pg_squeeze
 9-5,maintainable.fm/episodes/andrew-atkinson-maintainable-databases
 
-10-1,wa.aws.amazon.com/wellarchitected/2020-07-02T19-33-23/wat.concept.mechanical-sympathy.en.html
-10-2,github.com/cerebris/jsonapi-resources
-10-3,github.com/rmosolgo/graphql-ruby
-10-4,github.com/activeadmin/activeadmin
-10-5,github.com/andyatkinson/rideshare/pull/233
-10-6,cybertec-postgresql.com/en/hot-updates-in-postgresql-for-better-performance
-10-7,andyatkinson.com/blog/2022/10/07/pgsqlphriday-2-truths-lie
+9-5-1,wa.aws.amazon.com/wellarchitected/2020-07-02T19-33-23/wat.concept.mechanical-sympathy.en.html
+9-5-2,github.com/cerebris/jsonapi-resources
+9-5-3,github.com/rmosolgo/graphql-ruby
+9-5-4,github.com/activeadmin/activeadmin
+9-5-5,github.com/andyatkinson/rideshare/pull/233
+9-5-6,cybertec-postgresql.com/en/hot-updates-in-postgresql-for-better-performance
+9-5-7,andyatkinson.com/blog/2022/10/07/pgsqlphriday-2-truths-lie
 }}
 -->
