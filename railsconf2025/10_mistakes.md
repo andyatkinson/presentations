@@ -958,7 +958,7 @@ a { color: #fff; }
 - Upgrade your database. Postgres *why upgrade*?<sup><a href="#footnote-37">37</a></sup>
 - *Prune and Tune* indexes,<sup><a href="#footnote-38">38</a></sup> use *pg_dba*<sup><a href="#footnote-39">39</a></sup> for psql, *rails_best_practices gem*
 - Drop unneeded tables, columns, constraints, indexes, functions, triggers, and extensions
-- Rebuild fragmented tables (pg_repack, pg_squeeze,<sup><a href="#footnote-63">63</a></sup> `VACUUM FULL`, logical replication, or *copy swap drop*<sup><a href="#footnote-50">50</a></sup>)
+- Rebuild fragmented tables (pg_repack, pg_squeeze,<sup><a href="#footnote-63">63</a></sup> `VACUUM FULL`, logical replication, or *copy swap drop*<sup><a href="#footnote-34">34</a></sup>)
 - Reindex fragmented indexes (`REINDEX CONCURRENTLY`)
 - Maintain your database like your application code. *Maintainable...Databases?* podcast<sup><a href="#footnote-36">36</a></sup>
 
