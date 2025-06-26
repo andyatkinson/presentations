@@ -707,11 +707,11 @@ a { color: #fff; }
 
 <h2>❌ Mistake #7—Missing DB Monitoring <span class="corner-fixes">✅ 🛠️ Fixes</span></h2>
 
-- Log and store SQL query generation source code line numbers,<sup><a href="#footnote-l">l</a></sup> prefer *SQLCommenter*
-- Collect query execution plans, manually or automatically with *auto_explain*<sup><a href="#footnote-41">41</a></sup>
-- Review `BUFFERS` counts from execution plans<sup><a href="#footnote-42">42</a></sup> to improve designs
+- Log and store SQL query generation source code line numbers,<sup><a href="#footnote-4-1">1</a></sup> prefer *SQLCommenter*
+- Collect query execution plans, manually or automatically with *auto_explain*<sup><a href="#footnote-4-2">1</a></sup>
+- Review `BUFFERS` counts from execution plans<sup><a href="#footnote-4-3">1</a></sup> to improve designs
 - Add DB observability. Postgres: *pg_stat_statements*, *PgHero*, *PgAnalyze*, *PgBadger*
-- MySQL: *Percona Monitoring and Management (PMM)*, *Oracle Enterprise Manager for MySQL*<sup><a href="#footnote-43">43</a></sup>, SQLite: *SQLite Database Analyzer*<sup><a href="#footnote-44">44</a></sup>
+- MySQL: *Percona Monitoring and Management (PMM)*, *Oracle Enterprise Manager for MySQL*<sup><a href="#footnote-4-4">1</a></sup>, SQLite: *SQLite Database Analyzer*<sup><a href="#footnote-4-5">1</a></sup>
 
 ---
 <style scoped>
@@ -730,8 +730,8 @@ a { color: #fff; }
 
 ## ❌ Mistake #6—ORM Pitfalls
 - Allowing inefficient queries that are ORM generated
-- Never restricting column access, always using `SELECT *`<sup><a href="#footnote-h">h</a></sup>
-- Using non-scalable query patterns like huge `IN` lists<sup><a href="#footnote-i">i</a></sup>
+- Never restricting column access, always using `SELECT *`<sup><a href="#footnote-5-1">1</a></sup>
+- Using non-scalable query patterns like huge `IN` lists<sup><a href="#footnote-5-2">1</a></sup>
 - Not removing unnecessary `COUNT(*)`, `ORDER BY` queries from ORM defaults
 - Using ORM `LIMIT` / `OFFSET` pagination over alternatives
 - Not using ORM *counter caches* or the *prepared statement* cache
@@ -755,14 +755,14 @@ a { color: #fff; }
 
 <h2>❌ Mistake #6—ORM Pitfalls <span class="corner-fixes">✅ 🛠️ Fixes</span></h2>
 
-- Put your app on a SQL Query Diet<sup><a href="#footnote-g">g</a></sup> (find sources<sup><a href="#footnote-20">20</a></sup>)
+- Put your app on a SQL Query Diet<sup><a href="#footnote-5-3">1</a></sup> (find sources<sup><a href="#footnote-4-1">1</a></sup>)
 - Load only needed columns: `select()`, `pluck()`, for better use of indexes
-- Refactor huge `IN`<sup><a href="#footnote-31">31</a></sup> lists. Use a join, `VALUES`, or `ANY`+`ARRAY` (Postgres)
-- Use endless (*keyset*) pagination (*pagy gem*<sup><a href="#footnote-54">54</a></sup>) over ORM `LIMIT`/`OFFSET`
-- Use the ORM prepared statement cache<sup><a href="#footnote-j">j</a></sup> to skip repeated parsing/planning
-- Skip unnecessary count queries with a *counter cache*<sup><a href="#footnote-m">m</a></sup>
+- Refactor huge `IN`<sup><a href="#footnote-5-2">1</a></sup> lists. Use a join, `VALUES`, or `ANY`+`ARRAY` (Postgres)
+- Use endless (*keyset*) pagination (*pagy gem*<sup><a href="#footnote-5-3">1</a></sup>) over ORM `LIMIT`/`OFFSET`
+- Use the ORM prepared statement cache<sup><a href="#footnote-5-5">1</a></sup> to skip repeated parsing/planning
+- Skip unnecessary count queries with a *counter cache*<sup><a href="#footnote-5-6">m</a></sup>
 - Use `size()` over `count()` and `length()`
-- Use `EXISTS`<sup><a href="#footnote-k">k</a></sup>, control `implicit_order_column`<sup><a href="#footnote-58">58</a></sup>
+- Use `EXISTS`<sup><a href="#footnote-5-7">1</a></sup>, set `implicit_order_column`<sup><a href="#footnote-5-8">1</a></sup>
 
 ---
 <style scoped>
@@ -1118,13 +1118,21 @@ HTML is generated below from this footnotes source
 3-2,andyatkinson.com/constraint-driven-optimized-responsive-efficient-core-db-design
 3-3,github.com/djezzzl/database_consistency
 
-g,andyatkinson.com/tip-track-sql-queries-quantity-ruby-rails-postgresql
-h,andyatkinson.com/blog/2024/05/28/top-5-postgresql-surprises-from-rails-developers
-i,andyatkinson.com/big-problems-big-in-clauses-postgresql-ruby-on-rails
-j,https://island94.org/2024/03/rails-active-record-will-it-bind
-k,depesz.com/2024/12/01/sql-best-practices-dont-compare-count-with-0
-l,andyatkinson.com/source-code-line-numbers-ruby-on-rails-marginalia-query-logs
-m,blog.appsignal.com/2018/06/19/activerecords-counter-cache.html
+4-1,andyatkinson.com/source-code-line-numbers-ruby-on-rails-marginalia-query-logs
+4-2,postgresql.org/docs/current/auto-explain.html
+4-3,postgres.ai/blog/20220106-explain-analyze-needs-buffers-to-improve-the-postgres-query-optimization-process
+4-4,mysql.com/products/enterprise/em.html
+4-5,sqlite.org/sqlanalyze.html
+
+5-1,andyatkinson.com/blog/2024/05/28/top-5-postgresql-surprises-from-rails-developers
+5-2,andyatkinson.com/big-problems-big-in-clauses-postgresql-ruby-on-rails
+5-3,andyatkinson.com/tip-track-sql-queries-quantity-ruby-rails-postgresql
+5-4,ddnexus.github.io/pagy/docs/api/keyset/
+5-5,https://island94.org/2024/03/rails-active-record-will-it-bind
+5-6,blog.appsignal.com/2018/06/19/activerecords-counter-cache.html
+5-7,depesz.com/2024/12/01/sql-best-practices-dont-compare-count-with-0
+5-8,bigbinary.com/blog/rails-6-adds-implicit_order_column
+
 
 
 p,github.com/fatkodima/online_migrations
@@ -1148,10 +1156,10 @@ z,github.com/paper-trail-gem/paper_trail
 38,andyatkinson.com/blog/2021/07/30/postgresql-index-maintenance
 39,github.com/NikolayS/postgres_dba
 
-41,postgresql.org/docs/current/auto-explain.html
-42,postgres.ai/blog/20220106-explain-analyze-needs-buffers-to-improve-the-postgres-query-optimization-process
-43,mysql.com/products/enterprise/em.html
-44,sqlite.org/sqlanalyze.html
+
+
+
+
 45,github.com/cerebris/jsonapi-resources
 46,github.com/rmosolgo/graphql-ruby
 47,github.com/activeadmin/activeadmin
@@ -1159,11 +1167,11 @@ z,github.com/paper-trail-gem/paper_trail
 51,github.com/andyatkinson/presentations/tree/main/pass2024
 
 
-54,ddnexus.github.io/pagy/docs/api/keyset/
+
 
 56,wa.aws.amazon.com/wellarchitected/2020-07-02T19-33-23/wat.concept.mechanical-sympathy.en.html
 57,cybertec-postgresql.com/en/hot-updates-in-postgresql-for-better-performance
-58,bigbinary.com/blog/rails-6-adds-implicit_order_column
+
 59,github.com/andyatkinson/rideshare/pull/233
 
 63,cybertec-postgresql.com/en/products/pg_squeeze/
