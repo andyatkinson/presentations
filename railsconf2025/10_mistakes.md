@@ -411,8 +411,8 @@ a { color: #fff; }
 
 <h2>❌ Mistake #10—Infrequent Releases <span style="background-color:#111;padding:5px 10px;margin:2px;">✅ 🛠️ Fixes</span></h2>
 
-- Use Trunk-based development (TBD)<sup><a href="#footnote-61">61</a></sup> and feature flags. 2024 Rails Survey<sup><a href="#footnote-3">3</a></sup>: 20% (500+) "multiple/month", 2% (50+) "multiple/quarter"
-- Track DevOps metrics. DORA<sup><a href="#footnote-4">4</a></sup>, SPACE<sup><a href="#footnote-5">5</a></sup>, *Accelerate*,<sup><a href="#footnote-49">49</a></sup>, 2-Minute DORA Quick Check<sup><a href="#footnote-50">50</a></sup>
+- Use Trunk-based development (TBD)<sup><a href="#footnote-61">61</a></sup> and feature flags. 2024 Rails Survey<sup><a href="#footnote-1">1</a></sup>: 20% (500+) "multiple/month", 2% (50+) "multiple/quarter"
+- Track DevOps metrics. DORA<sup><a href="#footnote-2">2</a></sup>, SPACE<sup><a href="#footnote-3">3</a></sup>, *Accelerate*,<sup><a href="#footnote-49">49</a></sup>, 2-Minute DORA Quick Check<sup><a href="#footnote-50">50</a></sup>
 - Raise test coverage (*Simplecov*),<sup><a href="#footnote-18">18</a></sup> increase test speed and reliability
 - Lint ORM<sup><a href="#footnote-20">20</a></sup> and SQL (*squawk*<sup><a href="#footnote-19">19</a></sup>) migrations for safe DDL
 - Enhance Rails migrations with ⚓ Anchor Migrations,<sup><a href="#footnote-62">62</a></sup> safety-linted, non-blocking, idempotent & consistent.<sup><a href="#footnote-40">40</a></sup>
@@ -521,7 +521,7 @@ a { color: #fff; }
 - Not using SQL in application code or business intelligence
 - Not able to read and interpret query execution plans
 - Not learning how to use *cardinality*, *selectivity*, or execution plan `BUFFERS` info
-- Adding indexes haphazardly (over-indexing)<sup><a href="#footnote-6">6</a></sup>
+- Adding indexes haphazardly (over-indexing)<sup><a href="#footnote-4">4</a></sup>
 - Choosing schema designs with poor performance
 - Generating AI solutions but not being able to verify them
 
@@ -549,7 +549,7 @@ a { color: #fff; }
 - Grow experience internally with books, courses, conferences, communities.
 - Provide a production-like database instance and data for experimenting. Maintain it and use it in your workflow.
 - Learn to use *pages*, identify latency sources, *selectivity*, *cardinality*, *correlation*, and *locality* to improve your designs
-- Avoid performance-unfriendly schema designs like random UUID<sup><a href="#footnote-8">8</a></sup> primary keys
+- Avoid performance-unfriendly schema designs like random UUID<sup><a href="#footnote-6">6</a></sup> primary keys
 
 ---
 <style scoped>
@@ -652,7 +652,7 @@ a { color: #fff; }
 <h2>❌ Mistake #8—Speculative DB Design <span style="background-color:#111;padding:5px 10px;margin:2px;">✅ 🛠️ Fixes</span></h2>
 
 - Use all available constraints for data consistency, integrity, quality (CORE: *constraint-driven*<sup><a href="#footnote-53">53</a></sup>)
-- Create matching DB constraints for code validation. Match PK/FK types.<sup><a href="#footnote-7">7</a></sup>
+- Create matching DB constraints for code validation. Match PK/FK types.<sup><a href="#footnote-5">5</a></sup>
 - Normalize by default. Design for today, but anticipate growth in data and query volume.
 - Use denormalization sometimes, for example with multi-tenancy.
 
@@ -748,7 +748,7 @@ a { color: #fff; }
 
 <h2>❌ Mistake #6—ORM Pitfalls <span style="background-color:#111;padding:5px 10px;margin:2px;">✅ 🛠️ Fixes</span></h2>
 
-- Put your app on a SQL Query Diet<sup><a href="#footnote-10">10</a></sup> (find sources<sup><a href="#footnote-20">20</a></sup>)
+- Put your app on a SQL Query Diet<sup><a href="#footnote-8">8</a></sup> (find sources<sup><a href="#footnote-20">20</a></sup>)
 - Load only needed columns: `select()`, `pluck()`, for better use of indexes
 - Refactor huge `IN`<sup><a href="#footnote-31">31</a></sup> lists. Use a join, `VALUES`, or `ANY`+`ARRAY` (Postgres)
 - Use endless (*keyset*) pagination (*pagy gem*<sup><a href="#footnote-54">54</a></sup>) over ORM `LIMIT`/`OFFSET`
@@ -1090,13 +1090,13 @@ ul.two-column-list {
 <!--
 HTML is generated below from this footnotes source
 {{
-3,railsdeveloper.com/survey/2024/#deployment-devops
-4,dora.dev/guides/dora-metrics-four-keys
-5,octopus.com/devops/metrics/space-framework
-6,postgres.fm/episodes/over-indexing
-7,github.com/djezzzl/database_consistency
-8,andyatkinson.com/generating-short-alphanumeric-public-id-postgres
-10,andyatkinson.com/tip-track-sql-queries-quantity-ruby-rails-postgresql
+1,railsdeveloper.com/survey/2024/#deployment-devops
+2,dora.dev/guides/dora-metrics-four-keys
+3,octopus.com/devops/metrics/space-framework
+4,postgres.fm/episodes/over-indexing
+5,github.com/djezzzl/database_consistency
+6,andyatkinson.com/generating-short-alphanumeric-public-id-postgres
+8,andyatkinson.com/tip-track-sql-queries-quantity-ruby-rails-postgresql
 11,andyatkinson.com/blog/2024/05/28/top-5-postgresql-surprises-from-rails-developers#4-enumerating-columns-vs-select
 12,andyatkinson.com/big-problems-big-in-clauses-postgresql-ruby-on-rails
 13,flexport.engineering/avoiding-activerecord-preparedstatementcacheexpired-errors-4499a4f961cf
