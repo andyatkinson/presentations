@@ -1114,7 +1114,7 @@ HTML is generated below from this footnotes source
 2-2,postgres.fm/episodes/over-indexing
 2-3,andyatkinson.com/generating-short-alphanumeric-public-id-postgres
 
-3-1,andyatkinson.com/blog/2023/08/17/postgresql-sfpug-table-partitioning-presentation
+3-1,andyatkinson/presentations/blob/main/pass2024/README.md
 3-2,andyatkinson.com/constraint-driven-optimized-responsive-efficient-core-db-design
 3-3,github.com/djezzzl/database_consistency
 

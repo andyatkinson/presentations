@@ -12,8 +12,8 @@ class FootnoteFixer
 
   def perform
     footnotes = extract_between(@full_text, "{{", "}}").first
-    rows = CSV.parse(footnotes, headers: false).reject(&:empty?)
-    duplicates = rows.map{|r| r[1]}.tally.select { |_, count| count > 1 }.keys
+    rows = CSV.parse(footnotes, headers: false).reject(&:empty?).sort # remove spaces, sort
+    duplicates = rows.map{|r| r[1]}.tally.select { |_, count| count > 1 }.keys # detect duplicates so they can be fixed
     if duplicates.any?
       puts "found duplicates: #{duplicates}"
       puts "exiting."
@@ -28,8 +28,10 @@ class FootnoteFixer
   private
 
   def check_link_status(rows)
-    rows.each do |row|
+    rows.each_with_index do |row, idx|
+      original_id = row[0]
       url = row[1]
+      index = idx + 1
       uri = URI.parse("https://#{url}")
       response = Net::HTTP.get_response(uri)
       unless response.is_a?(Net::HTTPSuccess)
@@ -38,16 +40,34 @@ class FootnoteFixer
     end
   end
 
+  # assumes sorted order
   def create_html_list(rows)
+
     html = "<div class='footnote'><ul class='two-column-list'>"
-    rows.each do |row|
-      idx = row[0]
+    rows.each_with_index do |row, idx|
+      original_idx = row[0]
       url = row[1]
-      html += <<~ROW
-        <li id='footnote-#{idx}'>
-          #{idx}. <a href='https://#{url}'>#{url}</a>
-        </li>
-      ROW
+      new_index = idx + 1
+
+      # pattern must match the original_idx
+      # (?<id>\d+): Named capture for the footnote number in the href.
+      # (?<text>\d+): Named capture for the text inside the anchor.
+      pattern = /footnote-(?<id>#{original_idx})">(?<text>\d+)<\/a>/
+
+      # replace the footnote HTML <a> value "1" in the document
+      # using the new_index value
+      @full_text.gsub(pattern) do |match|
+         id = Regexp.last_match[:id]
+         text= Regexp.last_match[:text]
+         puts "new_index: #{new_index} original_idx: #{id} and text: #{text}"
+      end
+
+      # generate list item
+      # html += <<~ROW
+      #   <li id='footnote-#{new_index}'>
+      #     #{new_index}. <a href='https://#{url}'>#{url}</a>
+      #   </li>
+      # ROW
     end
     html += '</ul></div>'
   end
