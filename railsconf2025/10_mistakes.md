@@ -141,7 +141,7 @@ img.img {
 .stack-vertical .img {
   max-width:90%;
 }
-.stack-vertical .img.qr { 
+.stack-vertical .img.qr {
   max-width:95%;
 }
 .stack-vertical .img.db {
@@ -279,7 +279,7 @@ Ruby on Rails developer, Postgres Specialist, Author, Consultant
       <tr class="dashed"><td colspan="4"></td></tr>
       <tr class="summary">
         <td colspan="3">Total</td>
-        <td class="total">$61,000.00</td>
+        <td class="total">$61,_000.00</td>
       </tr>
     </tfoot>
   </table>
@@ -388,7 +388,7 @@ a { color: #fff; }
 </div>
 
 ## ❌ Mistake #10—Infrequent Releases
-- Using Gitflow<sup><a href="#footnote-60">60</a></sup> for software delivery
+- Using Gitflow<sup><a href="#footnote-1-1">1</a></sup> for software delivery
 - Performing DDL changes exclusively using ORM Migrations
 - Not tracking DevOps metrics
 - Not using Feature Flags
@@ -411,11 +411,12 @@ a { color: #fff; }
 
 <h2>❌ Mistake #10—Infrequent Releases <span style="background-color:#111;padding:5px 10px;margin:2px;">✅ 🛠️ Fixes</span></h2>
 
-- Use Trunk-based development (TBD)<sup><a href="#footnote-61">61</a></sup> and feature flags. 2024 Rails Survey<sup><a href="#footnote-1">1</a></sup>: 20% (500+) "multiple/month", 2% (50+) "multiple/quarter"
-- Track DevOps metrics. DORA<sup><a href="#footnote-2">2</a></sup>, SPACE<sup><a href="#footnote-3">3</a></sup>, *Accelerate*,<sup><a href="#footnote-49">49</a></sup>, 2-Minute DORA Quick Check<sup><a href="#footnote-50">50</a></sup>
-- Raise test coverage (*Simplecov*),<sup><a href="#footnote-18">18</a></sup> increase test speed and reliability
-- Lint ORM<sup><a href="#footnote-20">20</a></sup> and SQL (*squawk*<sup><a href="#footnote-19">19</a></sup>) migrations for safe DDL
-- Enhance Rails migrations with ⚓ Anchor Migrations,<sup><a href="#footnote-62">62</a></sup> safety-linted, non-blocking, idempotent & consistent.<sup><a href="#footnote-40">40</a></sup>
+- Use Trunk-based development (TBD)<sup><a href="#footnote-1-2">1</a></sup> and feature flags. 2024 Rails Survey<sup><a href="#footnote-1-3">1</a></sup>: 20% (500+) "multiple/month", 2% (50+) "multiple/quarter"
+- Track DevOps metrics. DORA<sup><a href="#footnote-1-4">1</a></sup>, SPACE<sup><a href="#footnote-1-5">1</a></sup>, *Accelerate*,<sup><a href="#footnote-1-6">1</a></sup>, 2-Minute DORA Quick Check<sup><a href="#footnote-1-7">1</a></sup>
+- Raise test coverage (*Simplecov*),<sup><a href="#footnote-1-8">1</a></sup> increase test speed and reliability
+- Lint ORM<sup><a href="#footnote-1-9">1</a></sup> and SQL (*Squawk*<sup><a href="#footnote-1-10">1</a></sup>) migrations for safe DDL
+- Enhance Rails migrations with ⚓ Anchor Migrations,<sup><a href="#footnote-1-11">1</a></sup> safety-linted, non-blocking, idempotent & consistent.<sup><a href="#footnote-1-12">1</a></sup>
+
 
 ---
 <style scoped>
@@ -521,7 +522,7 @@ a { color: #fff; }
 - Not using SQL in application code or business intelligence
 - Not able to read and interpret query execution plans
 - Not learning how to use *cardinality*, *selectivity*, or execution plan `BUFFERS` info
-- Adding indexes haphazardly (over-indexing)<sup><a href="#footnote-4">4</a></sup>
+- Adding indexes haphazardly (over-indexing)<sup><a href="#footnote-d">d</a></sup>
 - Choosing schema designs with poor performance
 - Generating AI solutions but not being able to verify them
 
@@ -549,7 +550,7 @@ a { color: #fff; }
 - Grow experience internally with books, courses, conferences, communities.
 - Provide a production-like database instance and data for experimenting. Maintain it and use it in your workflow.
 - Learn to use *pages*, identify latency sources, *selectivity*, *cardinality*, *correlation*, and *locality* to improve your designs
-- Avoid performance-unfriendly schema designs like random UUID<sup><a href="#footnote-6">6</a></sup> primary keys
+- Avoid performance-unfriendly schema designs like random UUID<sup><a href="#footnote-f">f</a></sup> primary keys
 
 ---
 <style scoped>
@@ -652,7 +653,7 @@ a { color: #fff; }
 <h2>❌ Mistake #8—Speculative DB Design <span style="background-color:#111;padding:5px 10px;margin:2px;">✅ 🛠️ Fixes</span></h2>
 
 - Use all available constraints for data consistency, integrity, quality (CORE: *constraint-driven*<sup><a href="#footnote-53">53</a></sup>)
-- Create matching DB constraints for code validation. Match PK/FK types.<sup><a href="#footnote-5">5</a></sup>
+- Create matching DB constraints for code validation. Match PK/FK types.<sup><a href="#footnote-e">e</a></sup>
 - Normalize by default. Design for today, but anticipate growth in data and query volume.
 - Use denormalization sometimes, for example with multi-tenancy.
 
@@ -700,7 +701,7 @@ a { color: #fff; }
 
 <h2>❌ Mistake #7—Missing DB Monitoring <span style="background-color:#111;padding:5px 10px;margin:2px;">✅ 🛠️ Fixes</span></h2>
 
-- Log and store SQL query generation source code line numbers,<sup><a href="#footnote-16">16</a></sup> prefer *SQLCommenter*
+- Log and store SQL query generation source code line numbers,<sup><a href="#footnote-l">l</a></sup> prefer *SQLCommenter*
 - Collect query execution plans, manually or automatically with *auto_explain*<sup><a href="#footnote-41">41</a></sup>
 - Review `BUFFERS` counts from execution plans<sup><a href="#footnote-42">42</a></sup> to improve designs
 - Add DB observability. Postgres: *pg_stat_statements*, *PgHero*, *PgAnalyze*, *PgBadger*
@@ -723,8 +724,8 @@ a { color: #fff; }
 
 ## ❌ Mistake #6—ORM Pitfalls
 - Allowing inefficient queries that are ORM generated
-- Never restricting column access, always using `SELECT *`<sup><a href="#footnote-11">11</a></sup>
-- Using non-scalable query patterns like huge `IN` lists<sup><a href="#footnote-12">12</a></sup>
+- Never restricting column access, always using `SELECT *`<sup><a href="#footnote-h">h</a></sup>
+- Using non-scalable query patterns like huge `IN` lists<sup><a href="#footnote-i">i</a></sup>
 - Not removing unnecessary `COUNT(*)`, `ORDER BY` queries from ORM defaults
 - Using ORM `LIMIT` / `OFFSET` pagination over alternatives
 - Not using ORM *counter caches* or the *prepared statement* cache
@@ -748,14 +749,14 @@ a { color: #fff; }
 
 <h2>❌ Mistake #6—ORM Pitfalls <span style="background-color:#111;padding:5px 10px;margin:2px;">✅ 🛠️ Fixes</span></h2>
 
-- Put your app on a SQL Query Diet<sup><a href="#footnote-8">8</a></sup> (find sources<sup><a href="#footnote-20">20</a></sup>)
+- Put your app on a SQL Query Diet<sup><a href="#footnote-g">g</a></sup> (find sources<sup><a href="#footnote-20">20</a></sup>)
 - Load only needed columns: `select()`, `pluck()`, for better use of indexes
 - Refactor huge `IN`<sup><a href="#footnote-31">31</a></sup> lists. Use a join, `VALUES`, or `ANY`+`ARRAY` (Postgres)
 - Use endless (*keyset*) pagination (*pagy gem*<sup><a href="#footnote-54">54</a></sup>) over ORM `LIMIT`/`OFFSET`
-- Use the ORM prepared statement cache<sup><a href="#footnote-13">13</a></sup> to skip repeated parsing/planning
-- Skip unnecessary count queries with a *counter cache*<sup><a href="#footnote-17">17</a></sup>
+- Use the ORM prepared statement cache<sup><a href="#footnote-j">j</a></sup> to skip repeated parsing/planning
+- Skip unnecessary count queries with a *counter cache*<sup><a href="#footnote-m">m</a></sup>
 - Use `size()` over `count()` and `length()`
-- Use `EXISTS`<sup><a href="#footnote-14">14</a></sup>, control `implicit_order_column`<sup><a href="#footnote-58">58</a></sup>
+- Use `EXISTS`<sup><a href="#footnote-k">k</a></sup>, control `implicit_order_column`<sup><a href="#footnote-58">58</a></sup>
 
 ---
 <style scoped>
@@ -799,8 +800,8 @@ a { color: #fff; }
 <h2>❌ Mistake #5—DDL Fear <span style="background-color:#111;padding:5px 10px;margin:2px;">✅ 🛠️ Fixes</span></h2>
 
 - Practice DDL changes on a production-like instance. Collect timing. Study lock behavior.
-- Use multi-step safe alternatives. `ignored_columns`,<sup><a href="#footnote-22">22</a></sup>. `INVALID` `CHECK` constraint before `NOT NULL`
-- Lint DDL in Active Record (PostgreSQL) *strong_migrations*<sup><a href="#footnote-25">25</a></sup> (MySQL/MariaDB) *online_migrations*<sup><a href="#footnote-21">21</a></sup>, *Squawk*<sup><a href="#footnote-24">24</a></sup> for SQL
+- Use multi-step safe alternatives. `ignored_columns`,<sup><a href="#footnote-r">r</a></sup>. `INVALID` `CHECK` constraint before `NOT NULL`
+- Lint DDL in Active Record (PostgreSQL) *strong_migrations*<sup><a href="#footnote-o">o</a></sup> (MySQL/MariaDB) *online_migrations*<sup><a href="#footnote-p">p</a></sup>, *Squawk*<sup><a href="#footnote-q">q</a></sup> for SQL
 - Learn lock types for operations, tables, rows using `pglocks.org`
 - Use a low `lock_timeout` for DDL changes with retries
 
@@ -864,11 +865,11 @@ a { color: #fff; }
 
 <h2>❌ Mistake #4—Excessive Data Access <span style="background-color:#111;padding:5px 10px;margin:2px;">✅ 🛠️ Fixes</span></h2>
 
-- Work on small sets of data.<sup><a href="#footnote-25">25</a></sup> Restructure queries to select fewer rows, columns, and perform fewer joins.
-- Create "missing indexes"<sup><a href="#footnote-23">23</a></sup> on high cardinality columns<sup><a href="#footnote-24">24</a></sup>
+- Work on small sets of data.<sup><a href="#footnote-u">u</a></sup> Restructure queries to select fewer rows, columns, and perform fewer joins.
+- Create "missing indexes"<sup><a href="#footnote-s">s</a></sup> on high cardinality columns<sup><a href="#footnote-t">t</a></sup>
 - Use advanced indexing like multicolumn, partial indexes, GIN, GiST.
-- Improve UX by pre-calculating aggregates with *rollup*<sup><a href="#footnote-26">26</a></sup>, or with materialized views of denormalize data, managed with *scenic*<sup><a href="#footnote-27">27</a></sup>
-- Migrate time-based data into a partitioned table<sup><a href="#footnote-28">28</a></sup> for improved performance and maintenance
+- Improve UX by pre-calculating aggregates with *rollup*<sup><a href="#footnote-v">v</a></sup>, or with materialized views of denormalize data, managed with *scenic*<sup><a href="#footnote-w">w</a></sup>
+- Migrate time-based data into a partitioned table<sup><a href="#footnote-x">x</a></sup> for improved performance and maintenance
 
 ---
 <style scoped>
@@ -886,7 +887,7 @@ a { color: #fff; }
 
 ## ❌ Mistake #3—Missing Data Archival
 - Storing a significant proportion of data in tables and indexes that's never queried
-- Using high growth data gems like *public_activity*,<sup><a href="#footnote-29">29</a></sup> *papertrail*,<sup><a href="#footnote-30">30</a></sup> *audited*,<sup><a href="#footnote-42">42</a></sup> or *ahoy*<sup><a href="#footnote-32">32</a></sup>, and not archiving data
+- Using high growth data gems like *public_activity*,<sup><a href="#footnote-y">y</a></sup> *papertrail*,<sup><a href="#footnote-z">z</a></sup> *audited*,<sup><a href="#footnote-42">42</a></sup> or *ahoy*<sup><a href="#footnote-32">32</a></sup>, and not archiving data
 - Not archiving app data from churned customers, retired features, or soft deleted rows
 - Performing resource-intensive massive `DELETE` operations
 
@@ -1090,32 +1091,42 @@ ul.two-column-list {
 <!--
 HTML is generated below from this footnotes source
 {{
-1,railsdeveloper.com/survey/2024/#deployment-devops
-2,dora.dev/guides/dora-metrics-four-keys
-3,octopus.com/devops/metrics/space-framework
-4,postgres.fm/episodes/over-indexing
-5,github.com/djezzzl/database_consistency
-6,andyatkinson.com/generating-short-alphanumeric-public-id-postgres
-8,andyatkinson.com/tip-track-sql-queries-quantity-ruby-rails-postgresql
-11,andyatkinson.com/blog/2024/05/28/top-5-postgresql-surprises-from-rails-developers#4-enumerating-columns-vs-select
-12,andyatkinson.com/big-problems-big-in-clauses-postgresql-ruby-on-rails
-13,flexport.engineering/avoiding-activerecord-preparedstatementcacheexpired-errors-4499a4f961cf
-14,depesz.com/2024/12/01/sql-best-practices-dont-compare-count-with-0
-16,andyatkinson.com/source-code-line-numbers-ruby-on-rails-marginalia-query-logs
-17,blog.appsignal.com/2018/06/19/activerecords-counter-cache.html
-18,github.com/simplecov-ruby/simplecov
-19,github.com/sbdchd/squawk
-20,github.com/ankane/strong_migrations
-21,github.com/fatkodima/online_migrations?tab=readme-ov-file#comparison-to-strong_migrations
-22,andycroll.com/ruby/safely-remove-a-column-field-from-active-record/
-23,github.com/andyatkinson/pg_scripts/blob/main/find_missing_indexes.sql
-24,github.com/andyatkinson/pg_scripts/pull/19
-25,github.com/andyatkinson/pg_scripts/pull/18
-26,github.com/andyatkinson/rideshare/pull/232
-27,github.com/scenic-views/scenic
-28,andyatkinson.com/blog/2023/07/27/partitioning-growing-practice
-29,github.com/public-activity/public_activity
-30,github.com/paper-trail-gem/paper_trail
+1-1,atlassian.com/git/tutorials/comparing-workflows/gitflow-workflow
+1-2,atlassian.com/continuous-delivery/continuous-integration/trunk-based-development
+1-3,railsdeveloper.com/survey/2024/#deployment-devops
+1-4,dora.dev/guides/dora-metrics-four-keys
+1-5,octopus.com/devops/metrics/space-framework
+1-6,a.co/d/0Sk81B9
+1-7,dora.dev/quickcheck
+1-8,github.com/simplecov-ruby/simplecov
+1-9,github.com/ankane/strong_migrations
+1-10,github.com/sbdchd/squawk
+1-11,github.com/andyatkinson/anchor_migrations
+1-12,github.com/andyatkinson/rideshare/pull/230
+
+d,postgres.fm/episodes/over-indexing
+e,github.com/djezzzl/database_consistency
+f,andyatkinson.com/generating-short-alphanumeric-public-id-postgres
+g,andyatkinson.com/tip-track-sql-queries-quantity-ruby-rails-postgresql
+h,andyatkinson.com/blog/2024/05/28/top-5-postgresql-surprises-from-rails-developers
+i,andyatkinson.com/big-problems-big-in-clauses-postgresql-ruby-on-rails
+j,https://island94.org/2024/03/rails-active-record-will-it-bind
+k,depesz.com/2024/12/01/sql-best-practices-dont-compare-count-with-0
+l,andyatkinson.com/source-code-line-numbers-ruby-on-rails-marginalia-query-logs
+m,blog.appsignal.com/2018/06/19/activerecords-counter-cache.html
+
+
+p,github.com/fatkodima/online_migrations
+
+r,andycroll.com/ruby/safely-remove-a-column-field-from-active-record
+s,github.com/andyatkinson/pg_scripts/blob/main/find_missing_indexes.sql
+t,github.com/andyatkinson/pg_scripts/pull/19
+u,github.com/andyatkinson/pg_scripts/pull/18
+v,github.com/andyatkinson/rideshare/pull/232
+w,github.com/scenic-views/scenic
+x,andyatkinson.com/blog/2023/07/27/partitioning-growing-practice
+y,github.com/public-activity/public_activity
+z,github.com/paper-trail-gem/paper_trail
 31,github.com/collectiveidea/audited
 32,github.com/ankane/ahoy
 33,github.com/danmayer/coverband
@@ -1125,7 +1136,7 @@ HTML is generated below from this footnotes source
 37,why-upgrade.depesz.com
 38,andyatkinson.com/blog/2021/07/30/postgresql-index-maintenance
 39,github.com/NikolayS/postgres_dba
-40,github.com/andyatkinson/rideshare/pull/230
+
 41,postgresql.org/docs/current/auto-explain.html
 42,postgres.ai/blog/20220106-explain-analyze-needs-buffers-to-improve-the-postgres-query-optimization-process
 43,mysql.com/products/enterprise/em.html
@@ -1134,8 +1145,6 @@ HTML is generated below from this footnotes source
 46,github.com/rmosolgo/graphql-ruby
 47,github.com/activeadmin/activeadmin
 48,andyatkinson.com/blog/2022/10/07/pgsqlphriday-2-truths-lie
-49,a.co/d/0Sk81B9
-50,dora.dev/quickcheck
 51,github.com/andyatkinson/presentations/tree/main/pass2024
 52,en.wikipedia.org/wiki/Object–relational_impedance_mismatch
 53,andyatkinson.com/constraint-driven-optimized-responsive-efficient-core-db-design
@@ -1145,9 +1154,7 @@ HTML is generated below from this footnotes source
 57,cybertec-postgresql.com/en/hot-updates-in-postgresql-for-better-performance
 58,bigbinary.com/blog/rails-6-adds-implicit_order_column
 59,github.com/andyatkinson/rideshare/pull/233
-60,atlassian.com/git/tutorials/comparing-workflows/gitflow-workflow
-61,atlassian.com/continuous-delivery/continuous-integration/trunk-based-development
-62,github.com/andyatkinson/anchor_migrations
+
 63,cybertec-postgresql.com/en/products/pg_squeeze/
 }}
 -->
