@@ -106,6 +106,12 @@ style: |
     .content {
       padding-top: 70px;
     }
+    .corner-fixes {
+      background-color:#111;
+      padding:5px 10px;
+      margin:2px;
+    }
+    
 
 ---
 <!-- _color: #fff; -->
@@ -409,7 +415,7 @@ a { color: #fff; }
   <div class="inactive">Optimizing</div>
 </div>
 
-<h2>❌ Mistake #10—Infrequent Releases <span style="background-color:#111;padding:5px 10px;margin:2px;">✅ 🛠️ Fixes</span></h2>
+<h2>❌ Mistake #10—Infrequent Releases <span class="corner-fixes">✅ 🛠️ Fixes</span></h2>
 
 - Use Trunk-based development (TBD)<sup><a href="#footnote-1-2">1</a></sup> and feature flags. 2024 Rails Survey<sup><a href="#footnote-1-3">1</a></sup>: 20% (500+) "multiple/month", 2% (50+) "multiple/quarter"
 - Track DevOps metrics. DORA<sup><a href="#footnote-1-4">1</a></sup>, SPACE<sup><a href="#footnote-1-5">1</a></sup>, *Accelerate*,<sup><a href="#footnote-1-6">1</a></sup>, 2-Minute DORA Quick Check<sup><a href="#footnote-1-7">1</a></sup>
@@ -489,7 +495,7 @@ a { color: #fff; }
   </div>
 </div>
 
-<span style="margin:0px 10px 0px 50px;">🔄 Object–relational mismatch<sup><a href="#footnote-52">52</a></sup></span>
+<span style="margin:0px 10px 0px 50px;">🔄 Object–relational mismatch<sup><a href="#footnote-2-1">1</a></sup></span>
 
 <div class="group-container">
     <div class="group-label">Database</div>
@@ -522,7 +528,7 @@ a { color: #fff; }
 - Not using SQL in application code or business intelligence
 - Not able to read and interpret query execution plans
 - Not learning how to use *cardinality*, *selectivity*, or execution plan `BUFFERS` info
-- Adding indexes haphazardly (over-indexing)<sup><a href="#footnote-d">d</a></sup>
+- Adding indexes haphazardly (over-indexing)<sup><a href="#footnote-2-2">1</a></sup>
 - Choosing schema designs with poor performance
 - Generating AI solutions but not being able to verify them
 
@@ -543,14 +549,14 @@ a { color: #fff; }
   <div class="inactive">Optimizing</div>
 </div>
 
-<h2>❌ Mistake #9—DB Inexperience <span style="background-color:#111;padding:5px 10px;margin:2px;">✅ 🛠️ Fixes</span></h2>
+<h2>❌ Mistake #9—DB Inexperience <span class="corner-fixes">✅ 🛠️ Fixes</span></h2>
 
 
 - Hire for experience: DB specialists, DBAs, and consultants
 - Grow experience internally with books, courses, conferences, communities.
 - Provide a production-like database instance and data for experimenting. Maintain it and use it in your workflow.
 - Learn to use *pages*, identify latency sources, *selectivity*, *cardinality*, *correlation*, and *locality* to improve your designs
-- Avoid performance-unfriendly schema designs like random UUID<sup><a href="#footnote-f">f</a></sup> primary keys
+- Avoid performance-unfriendly schema designs like random UUID<sup><a href="#footnote-2-3">1</a></sup> primary keys
 
 ---
 <style scoped>
@@ -627,7 +633,7 @@ a { color: #fff; }
 - Avoiding beneficial database constraints due to speculation about the future
 - Casting doubt about the ability to evolve the schema design
 - *Not* using data normalization practices by default, avoiding duplication
-- Avoiding *all* denormalization, even for cases like multi-tenancy<sup><a href="#footnote-55">55</a></sup>
+- Avoiding *all* denormalization, even for cases like multi-tenancy<sup><a href="#footnote-3-1">1</a></sup>
 
 <div class="corner-label">💵 Data bugs, high maintenance costs</div>
 
@@ -650,10 +656,10 @@ a { color: #fff; }
   <div class="inactive">Optimizing</div>
 </div>
 
-<h2>❌ Mistake #8—Speculative DB Design <span style="background-color:#111;padding:5px 10px;margin:2px;">✅ 🛠️ Fixes</span></h2>
+<h2>❌ Mistake #8—Speculative DB Design <span class="corner-fixes">✅ 🛠️ Fixes</span></h2>
 
-- Use all available constraints for data consistency, integrity, quality (CORE: *constraint-driven*<sup><a href="#footnote-53">53</a></sup>)
-- Create matching DB constraints for code validation. Match PK/FK types.<sup><a href="#footnote-e">e</a></sup>
+- Use all available constraints for data consistency, integrity, quality (CORE: *constraint-driven*<sup><a href="#footnote-3-2">1</a></sup>)
+- Create matching DB constraints for code validation. Match PK/FK types.<sup><a href="#footnote-3-3">1</a></sup>
 - Normalize by default. Design for today, but anticipate growth in data and query volume.
 - Use denormalization sometimes, for example with multi-tenancy.
 
@@ -699,7 +705,7 @@ a { color: #fff; }
   <div class="inactive">Optimizing</div>
 </div>
 
-<h2>❌ Mistake #7—Missing DB Monitoring <span style="background-color:#111;padding:5px 10px;margin:2px;">✅ 🛠️ Fixes</span></h2>
+<h2>❌ Mistake #7—Missing DB Monitoring <span class="corner-fixes">✅ 🛠️ Fixes</span></h2>
 
 - Log and store SQL query generation source code line numbers,<sup><a href="#footnote-l">l</a></sup> prefer *SQLCommenter*
 - Collect query execution plans, manually or automatically with *auto_explain*<sup><a href="#footnote-41">41</a></sup>
@@ -747,7 +753,7 @@ a { color: #fff; }
   <div class="inactive">Optimizing</div>
 </div>
 
-<h2>❌ Mistake #6—ORM Pitfalls <span style="background-color:#111;padding:5px 10px;margin:2px;">✅ 🛠️ Fixes</span></h2>
+<h2>❌ Mistake #6—ORM Pitfalls <span class="corner-fixes">✅ 🛠️ Fixes</span></h2>
 
 - Put your app on a SQL Query Diet<sup><a href="#footnote-g">g</a></sup> (find sources<sup><a href="#footnote-20">20</a></sup>)
 - Load only needed columns: `select()`, `pluck()`, for better use of indexes
@@ -797,7 +803,7 @@ a { color: #fff; }
   <div class="inactive">Optimizing</div>
 </div>
 
-<h2>❌ Mistake #5—DDL Fear <span style="background-color:#111;padding:5px 10px;margin:2px;">✅ 🛠️ Fixes</span></h2>
+<h2>❌ Mistake #5—DDL Fear <span class="corner-fixes">✅ 🛠️ Fixes</span></h2>
 
 - Practice DDL changes on a production-like instance. Collect timing. Study lock behavior.
 - Use multi-step safe alternatives. `ignored_columns`,<sup><a href="#footnote-r">r</a></sup>. `INVALID` `CHECK` constraint before `NOT NULL`
@@ -863,7 +869,7 @@ a { color: #fff; }
   <div class="inactive">Optimizing</div>
 </div>
 
-<h2>❌ Mistake #4—Excessive Data Access <span style="background-color:#111;padding:5px 10px;margin:2px;">✅ 🛠️ Fixes</span></h2>
+<h2>❌ Mistake #4—Excessive Data Access <span class="corner-fixes">✅ 🛠️ Fixes</span></h2>
 
 - Work on small sets of data.<sup><a href="#footnote-u">u</a></sup> Restructure queries to select fewer rows, columns, and perform fewer joins.
 - Create "missing indexes"<sup><a href="#footnote-s">s</a></sup> on high cardinality columns<sup><a href="#footnote-t">t</a></sup>
@@ -907,7 +913,7 @@ a { color: #fff; }
   <div class="active">Optimizing</div>
 </div>
 
-<h2>❌ Mistake #3—Missing Data Archival <span style="background-color:#111;padding:5px 10px;margin:2px;">✅ 🛠️ Fixes</span></h2>
+<h2>❌ Mistake #3—Missing Data Archival <span class="corner-fixes">✅ 🛠️ Fixes</span></h2>
 
 - Archive **ALL** data that's not regularly queried!
 - Shrink a table using *copy swap drop*<sup><a href="#footnote-34">34</a></sup>
@@ -954,7 +960,7 @@ a { color: #fff; }
 </div>
 
 
-<h2>❌ Mistake #2—Missing DB Maintenance <span style="background-color:#111;padding:5px 10px;margin:2px;">✅ 🛠️ Fixes</span></h2>
+<h2>❌ Mistake #2—Missing DB Maintenance <span class="corner-fixes">✅ 🛠️ Fixes</span></h2>
 
 - Upgrade your database. Postgres *why upgrade*?<sup><a href="#footnote-37">37</a></sup>
 - *Prune and Tune* indexes,<sup><a href="#footnote-38">38</a></sup> use *pg_dba*<sup><a href="#footnote-39">39</a></sup> for psql, *rails_best_practices gem*
@@ -1020,7 +1026,7 @@ a { color: #fff; }
   <div class="active">Optimizing</div>
 </div>
 
-<h2>❌ Mistake #1—Rejecting Mechanical Sympathy <span style="background-color:#111;padding:5px 10px;margin:2px;">✅ 🛠️ Fixes</span></h2>
+<h2>❌ Mistake #1—Rejecting Mechanical Sympathy <span class="corner-fixes">✅ 🛠️ Fixes</span></h2>
 
 - Take control of your SQL (`to_sql()`) and execution plans (`.explain()`).
 - Improve efficiency, reduce the use of CPU, memory, and data access.
@@ -1104,9 +1110,14 @@ HTML is generated below from this footnotes source
 1-11,github.com/andyatkinson/anchor_migrations
 1-12,github.com/andyatkinson/rideshare/pull/230
 
-d,postgres.fm/episodes/over-indexing
-e,github.com/djezzzl/database_consistency
-f,andyatkinson.com/generating-short-alphanumeric-public-id-postgres
+2-1,en.wikipedia.org/wiki/Object–relational_impedance_mismatch
+2-2,postgres.fm/episodes/over-indexing
+2-3,andyatkinson.com/generating-short-alphanumeric-public-id-postgres
+
+3-1,andyatkinson.com/blog/2023/08/17/postgresql-sfpug-table-partitioning-presentation
+3-2,andyatkinson.com/constraint-driven-optimized-responsive-efficient-core-db-design
+3-3,github.com/djezzzl/database_consistency
+
 g,andyatkinson.com/tip-track-sql-queries-quantity-ruby-rails-postgresql
 h,andyatkinson.com/blog/2024/05/28/top-5-postgresql-surprises-from-rails-developers
 i,andyatkinson.com/big-problems-big-in-clauses-postgresql-ruby-on-rails
@@ -1146,10 +1157,10 @@ z,github.com/paper-trail-gem/paper_trail
 47,github.com/activeadmin/activeadmin
 48,andyatkinson.com/blog/2022/10/07/pgsqlphriday-2-truths-lie
 51,github.com/andyatkinson/presentations/tree/main/pass2024
-52,en.wikipedia.org/wiki/Object–relational_impedance_mismatch
-53,andyatkinson.com/constraint-driven-optimized-responsive-efficient-core-db-design
+
+
 54,ddnexus.github.io/pagy/docs/api/keyset/
-55,andyatkinson.com/blog/2023/08/17/postgresql-sfpug-table-partitioning-presentation
+
 56,wa.aws.amazon.com/wellarchitected/2020-07-02T19-33-23/wat.concept.mechanical-sympathy.en.html
 57,cybertec-postgresql.com/en/hot-updates-in-postgresql-for-better-performance
 58,bigbinary.com/blog/rails-6-adds-implicit_order_column
