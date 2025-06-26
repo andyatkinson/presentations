@@ -25,9 +25,13 @@ class FootnoteFixer
 
     # this should gsub all the footnotes
     # and append the HTML footnotes
-    new_full_content = create_html_list(rows)
+    replace_footnote_inner_text(rows)
 
-    File.write(@file_path, new_full_content)
+    new_html = create_html_list(rows)
+
+    new_content = @full_text.concat(new_html)
+
+    File.write(@file_path, new_content)
   end
 
   private
@@ -45,10 +49,7 @@ class FootnoteFixer
     end
   end
 
-  # assumes sorted order
-  def create_html_list(rows)
-
-    html = "<div class='footnote'><ul class='two-column-list'>"
+  def replace_footnote_inner_text(rows)
     rows.each_with_index do |row, idx|
       original_idx = row[0]
       url = row[1]
@@ -61,7 +62,7 @@ class FootnoteFixer
 
       # replace the footnote HTML <a> value "1" in the document
       # using the new_index value
-      @full_text.gsub(pattern) do |match|
+      @full_text.gsub!(pattern) do |match|
          orig_id = Regexp.last_match[:id]
          inner_text = Regexp.last_match[:text]
          new_content = "footnote-#{orig_id}\">#{new_index}</a>"
@@ -74,10 +75,19 @@ class FootnoteFixer
          puts
          new_content
       end
+    end
+  end
 
-      generate list item
+  # assumes sorted order
+  def create_html_list(rows)
+    html = "<div class='footnote'><ul class='two-column-list'>"
+    rows.each_with_index do |row, idx|
+      original_idx = row[0]
+      url = row[1]
+      new_index = idx + 1
+
       html += <<~ROW
-        <li id='footnote-#{new_index}'>
+        <li id='footnote-#{original_idx}'>
           #{new_index}. <a href='https://#{url}'>#{url}</a>
         </li>
       ROW
@@ -109,10 +119,7 @@ end
 begin
   full_text = File.read(file_path)
 
-  FootnoteFixer.new(
-    full_text,
-    file_path
-  ).perform
+  FootnoteFixer.new(full_text, file_path).perform
 
 rescue => e
   puts "Failed to read the file: #{e.message}"
