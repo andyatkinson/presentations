@@ -6,8 +6,9 @@ require 'net/http'
 require 'uri'
 
 class FootnoteFixer
-  def initialize(full_text)
+  def initialize(full_text, file_path)
     @full_text = full_text
+    @file_path = file_path
   end
 
   def perform
@@ -22,7 +23,11 @@ class FootnoteFixer
 
     # check_link_status(rows)
 
-    puts create_html_list(rows)
+    # this should gsub all the footnotes
+    # and append the HTML footnotes
+    new_full_content = create_html_list(rows)
+
+    File.write(@file_path, new_full_content)
   end
 
   private
@@ -105,7 +110,8 @@ begin
   full_text = File.read(file_path)
 
   FootnoteFixer.new(
-    full_text
+    full_text,
+    file_path
   ).perform
 
 rescue => e
