@@ -806,8 +806,8 @@ a { color: #fff; }
 <h2>❌ Mistake #5—DDL Fear <span class="corner-fixes">✅ 🛠️ Fixes</span></h2>
 
 - Practice DDL changes on a production-like instance. Collect timing. Study lock behavior.
-- Use multi-step safe alternatives. `ignored_columns`,<sup><a href="#footnote-r">r</a></sup>. `INVALID` `CHECK` constraint before `NOT NULL`
-- Lint DDL in Active Record (PostgreSQL) *strong_migrations*<sup><a href="#footnote-o">o</a></sup> (MySQL/MariaDB) *online_migrations*<sup><a href="#footnote-p">p</a></sup>, *Squawk*<sup><a href="#footnote-q">q</a></sup> for SQL
+- Use multi-step safe alternatives. `ignored_columns`,<sup><a href="#footnote-6-1">1</a></sup>. `INVALID` `CHECK` constraint before `NOT NULL`
+- Lint DDL in Active Record (PostgreSQL) *strong_migrations*<sup><a href="#footnote-1-9">1</a></sup> (MySQL/MariaDB) *online_migrations*<sup><a href="#footnote-6-2">1</a></sup>, *Squawk*<sup><a href="#footnote-1-10">1</a></sup> for SQL
 - Learn lock types for operations, tables, rows using `pglocks.org`
 - Use a low `lock_timeout` for DDL changes with retries
 
@@ -871,11 +871,11 @@ a { color: #fff; }
 
 <h2>❌ Mistake #4—Excessive Data Access <span class="corner-fixes">✅ 🛠️ Fixes</span></h2>
 
-- Work on small sets of data.<sup><a href="#footnote-u">u</a></sup> Restructure queries to select fewer rows, columns, and perform fewer joins.
-- Create "missing indexes"<sup><a href="#footnote-s">s</a></sup> on high cardinality columns<sup><a href="#footnote-t">t</a></sup>
+- Work on small sets of data.<sup><a href="#footnote-7-1">1</a></sup> Restructure queries to select fewer rows, columns, and perform fewer joins.
+- Create "missing indexes"<sup><a href="#footnote-7-2">1</a></sup> on high cardinality columns<sup><a href="#footnote-7-3">1</a></sup>
 - Use advanced indexing like multicolumn, partial indexes, GIN, GiST.
-- Improve UX by pre-calculating aggregates with *rollup*<sup><a href="#footnote-v">v</a></sup>, or with materialized views of denormalize data, managed with *scenic*<sup><a href="#footnote-w">w</a></sup>
-- Migrate time-based data into a partitioned table<sup><a href="#footnote-x">x</a></sup> for improved performance and maintenance
+- Improve UX by pre-calculating aggregates with *rollup*<sup><a href="#footnote-7-4">v</a></sup>, or with materialized views of denormalize data, managed with *scenic*<sup><a href="#footnote-7-5">1</a></sup>
+- Migrate time-based data into a partitioned table<sup><a href="#footnote-7-6">1</a></sup> for improved performance and maintenance
 
 ---
 <style scoped>
@@ -893,7 +893,7 @@ a { color: #fff; }
 
 ## ❌ Mistake #3—Missing Data Archival
 - Storing a significant proportion of data in tables and indexes that's never queried
-- Using high growth data gems like *public_activity*,<sup><a href="#footnote-y">y</a></sup> *papertrail*,<sup><a href="#footnote-z">z</a></sup> *audited*,<sup><a href="#footnote-42">42</a></sup> or *ahoy*<sup><a href="#footnote-32">32</a></sup>, and not archiving data
+- Using high growth data gems like *public_activity*,<sup><a href="#footnote-8-1">1</a></sup> *papertrail*,<sup><a href="#footnote-8-2">1</a></sup> *audited*,<sup><a href="#footnote-8-3">1</a></sup> or *ahoy*<sup><a href="#footnote-8-4">1</a></sup>, and not archiving data
 - Not archiving app data from churned customers, retired features, or soft deleted rows
 - Performing resource-intensive massive `DELETE` operations
 
@@ -916,9 +916,9 @@ a { color: #fff; }
 <h2>❌ Mistake #3—Missing Data Archival <span class="corner-fixes">✅ 🛠️ Fixes</span></h2>
 
 - Archive **ALL** data that's not regularly queried!
-- Shrink a table using *copy swap drop*<sup><a href="#footnote-34">34</a></sup>
-- Use partition-friendly gems like *logidze gem*<sup><a href="#footnote-35">35</a></sup> or partition your big tables, making necessary Rails compatibility changes<sup><a href="#footnote-51">51</a></sup>
-- Archive app data from churned customers, soft deleted rows, and retired features (discover with *Coverband*),<sup><a href="#footnote-33">33</a></sup>)
+- Shrink a table using *copy swap drop*<sup><a href="#footnote-8-5">1</a></sup>
+- Use partition-friendly gems like *logidze gem*<sup><a href="#footnote-8-6">1</a></sup> or partition your big tables, making necessary Rails compatibility changes<sup><a href="#footnote-8-7">1</a></sup>
+- Archive app data from churned customers, soft deleted rows, and retired features (discover with *Coverband*),<sup><a href="#footnote-8-8">1</a></sup>)
 - Replace massive `DELETE` operations by using time-partitioned tables, and efficient `DETACH CONCURRENTLY`
 
 ---
@@ -962,12 +962,12 @@ a { color: #fff; }
 
 <h2>❌ Mistake #2—Missing DB Maintenance <span class="corner-fixes">✅ 🛠️ Fixes</span></h2>
 
-- Upgrade your database. Postgres *why upgrade*?<sup><a href="#footnote-37">37</a></sup>
-- *Prune and Tune* indexes,<sup><a href="#footnote-38">38</a></sup> use *pg_dba*<sup><a href="#footnote-39">39</a></sup> for psql, *rails_best_practices gem*
+- Upgrade your database. Postgres *why upgrade*?<sup><a href="#footnote-9-1">1</a></sup>
+- *Prune and Tune* indexes,<sup><a href="#footnote-9-2">1</a></sup> use *pg_dba*<sup><a href="#footnote-9-3">1</a></sup> for psql, *rails_best_practices gem*
 - Drop unneeded tables, columns, constraints, indexes, functions, triggers, and extensions
-- Rebuild fragmented tables (pg_repack, pg_squeeze,<sup><a href="#footnote-63">63</a></sup> `VACUUM FULL`, logical replication, or *copy swap drop*<sup><a href="#footnote-34">34</a></sup>)
+- Rebuild fragmented tables (pg_repack, pg_squeeze,<sup><a href="#footnote-9-4">1</a></sup> `VACUUM FULL`, logical replication, or *copy swap drop*<sup><a href="#footnote-8-5">1</a></sup>)
 - Reindex fragmented indexes (`REINDEX CONCURRENTLY`)
-- Maintain your database like your application code. *Maintainable...Databases?* podcast<sup><a href="#footnote-36">36</a></sup>
+- Maintain your database like your application code. *Maintainable...Databases?* podcast<sup><a href="#footnote-9-4">1</a></sup>
 
 ---
 <style scoped>
@@ -985,7 +985,7 @@ a, blockquote { color: #fff; }
 </div>
 
 ## *Mechanical Sympathy*
-> *Mechanical sympathy is when you use a tool or system with an understanding of how it operates best.*<sup><a href="#footnote-56">56</a></sup>
+> *Mechanical sympathy is when you use a tool or system with an understanding of how it operates best.*<sup><a href="#footnote-10-1">1</a></sup>
 
 
 ---
@@ -1004,7 +1004,7 @@ a { color: #fff; }
 </div>
 
 ## ❌ Mistake #1—Rejecting Mechanical Sympathy
-- Excessive CPU and memory use from inefficient long queries. ORM or query generation libraries. *jsonapi-resources*,<sup><a href="#footnote-45">45</a></sup> *graphql-ruby*,<sup><a href="#footnote-46">46</a></sup>, *ActiveAdmin*<sup><a href="#footnote-47">47</a></sup>
+- Excessive CPU and memory use from inefficient long queries. ORM or query generation libraries. *jsonapi-resources*,<sup><a href="#footnote-10-2">1</a></sup> *graphql-ruby*,<sup><a href="#footnote-10-3">1</a></sup>, *ActiveAdmin*<sup><a href="#footnote-10-4">1</a></sup>
 - Excessive resource use from short queries, lazy loading and N+1s
 - Not auto-cancelling excessively long queries, idle transactions, or schema migrations
 - In Postgres, using designs that don't well with immutable row versions (tuples), MVCC, and Autovacuum
@@ -1030,8 +1030,8 @@ a { color: #fff; }
 
 - Take control of your SQL (`to_sql()`) and execution plans (`.explain()`).
 - Improve efficiency, reduce the use of CPU, memory, and data access.
-- Avoid high update churn designs, replacing in-place updates with "append-mostly", e.g. *slotted counters.<sup><a href="#footnote-59">59</a></sup>* Increase *HOT updates*.<sup><a href="#footnote-57">57</a></sup>
-- Prevent lazy loading by using *Strict Loading*<sup><a href="#footnote-48">48</a></sup> partially or globally
+- Avoid high update churn designs, replacing in-place updates with "append-mostly", e.g. *slotted counters.<sup><a href="#footnote-10-5">1</a></sup>* Increase *HOT updates*.<sup><a href="#footnote-10-6">1</a></sup>
+- Prevent lazy loading by using *Strict Loading*<sup><a href="#footnote-10-7">1</a></sup> partially or globally
 - Add system resiliency by auto-cancelling long running queries, idle transactions, or runaway schema migrations.
 
 ---
@@ -1133,47 +1133,37 @@ HTML is generated below from this footnotes source
 5-7,depesz.com/2024/12/01/sql-best-practices-dont-compare-count-with-0
 5-8,bigbinary.com/blog/rails-6-adds-implicit_order_column
 
+6-1,andycroll.com/ruby/safely-remove-a-column-field-from-active-record
+6-2,github.com/fatkodima/online_migrations
 
+7-1,github.com/andyatkinson/pg_scripts/pull/18
+7-2,github.com/andyatkinson/pg_scripts/blob/main/find_missing_indexes.sql
+7-3,github.com/andyatkinson/pg_scripts/pull/19
+7-4,github.com/andyatkinson/rideshare/pull/232
+7-5,github.com/scenic-views/scenic
+7-6,andyatkinson.com/blog/2023/07/27/partitioning-growing-practice
 
-p,github.com/fatkodima/online_migrations
+8-1,github.com/public-activity/public_activity
+8-2,github.com/paper-trail-gem/paper_trail
+8-3,github.com/collectiveidea/audited
+8-4,github.com/ankane/ahoy
+8-5,andyatkinson.com/copy-swap-drop-postgres-table-shrink
+8-6,github.com/palkan/logidze
+8-7,andyatkinson.com/blog/2023/08/17/postgresql-sfpug-table-partitioning-presentation
+8-8,github.com/danmayer/coverband
 
-r,andycroll.com/ruby/safely-remove-a-column-field-from-active-record
-s,github.com/andyatkinson/pg_scripts/blob/main/find_missing_indexes.sql
-t,github.com/andyatkinson/pg_scripts/pull/19
-u,github.com/andyatkinson/pg_scripts/pull/18
-v,github.com/andyatkinson/rideshare/pull/232
-w,github.com/scenic-views/scenic
-x,andyatkinson.com/blog/2023/07/27/partitioning-growing-practice
-y,github.com/public-activity/public_activity
-z,github.com/paper-trail-gem/paper_trail
-31,github.com/collectiveidea/audited
-32,github.com/ankane/ahoy
-33,github.com/danmayer/coverband
-34,andyatkinson.com/copy-swap-drop-postgres-table-shrink
-35,github.com/palkan/logidze
-36,maintainable.fm/episodes/andrew-atkinson-maintainable-databases
-37,why-upgrade.depesz.com
-38,andyatkinson.com/blog/2021/07/30/postgresql-index-maintenance
-39,github.com/NikolayS/postgres_dba
+9-1,why-upgrade.depesz.com
+9-2,andyatkinson.com/blog/2021/07/30/postgresql-index-maintenance
+9-3,github.com/NikolayS/postgres_dba
+9-4,cybertec-postgresql.com/en/products/pg_squeeze
+9-5,maintainable.fm/episodes/andrew-atkinson-maintainable-databases
 
-
-
-
-
-45,github.com/cerebris/jsonapi-resources
-46,github.com/rmosolgo/graphql-ruby
-47,github.com/activeadmin/activeadmin
-48,andyatkinson.com/blog/2022/10/07/pgsqlphriday-2-truths-lie
-51,github.com/andyatkinson/presentations/tree/main/pass2024
-
-
-
-
-56,wa.aws.amazon.com/wellarchitected/2020-07-02T19-33-23/wat.concept.mechanical-sympathy.en.html
-57,cybertec-postgresql.com/en/hot-updates-in-postgresql-for-better-performance
-
-59,github.com/andyatkinson/rideshare/pull/233
-
-63,cybertec-postgresql.com/en/products/pg_squeeze/
+10-1,wa.aws.amazon.com/wellarchitected/2020-07-02T19-33-23/wat.concept.mechanical-sympathy.en.html
+10-2,github.com/cerebris/jsonapi-resources
+10-3,github.com/rmosolgo/graphql-ruby
+10-4,github.com/activeadmin/activeadmin
+10-5,github.com/andyatkinson/rideshare/pull/233
+10-6,cybertec-postgresql.com/en/hot-updates-in-postgresql-for-better-performance
+10-7,andyatkinson.com/blog/2022/10/07/pgsqlphriday-2-truths-lie
 }}
 -->
