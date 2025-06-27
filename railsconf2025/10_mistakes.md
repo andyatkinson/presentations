@@ -298,7 +298,7 @@ Ruby on Rails developer, Postgres Specialist, Author, Consultant
       <tr class="dashed"><td colspan="4"></td></tr>
       <tr class="summary">
         <td colspan="3">Total</td>
-        <td class="total">$61,_000.00</td>
+        <td class="total">$61,000.00</td>
       </tr>
     </tfoot>
   </table>
@@ -786,7 +786,7 @@ a { color: #fff; }
 ## ❌ Mistake #7—Missing DB Monitoring
 - Not logging slow queries or collecting query statistics and execution plans
 - Not using the `BUFFERS` information in PostgreSQL execution plans
-- Spending time finding looking up application source code locations for SQL queries
+- Spending time finding application source code locations for SQL queries
 - Not monitoring critical background processes like Autovacuum
 
 <div class="corner-label">💵 Triage, incident resolution</div>
@@ -808,7 +808,7 @@ a { color: #fff; }
 
 <h2>❌ Mistake #7—Missing DB Monitoring <span class="corner-fixes">✅ 🛠️ Fixes</span></h2>
 
-- Log and store SQL query generation source code line numbers,<sup><a href="#footnote-4-1">19</a></sup> prefer *SQLCommenter*
+- Log and store SQL query source code line numbers,<sup><a href="#footnote-4-1">19</a></sup> using Query Logs (*SQLCommenter* formatted), visibile in Rails log
 - Collect query execution plans, manually or automatically with *auto_explain*<sup><a href="#footnote-4-2">20</a></sup>
 - Review `BUFFERS` counts from execution plans<sup><a href="#footnote-4-3">21</a></sup> to improve designs
 - Add DB observability. Postgres: *pg_stat_statements*, *PgHero*, *PgAnalyze*, *PgBadger*
@@ -892,9 +892,9 @@ a { color: #fff; }
 - Refactor huge `IN`<sup><a href="#footnote-5-2">25</a></sup> lists. Use a join, `VALUES`, or `ANY`+`ARRAY` (Postgres)
 - Use endless (*keyset*) pagination (*pagy gem*<sup><a href="#footnote-5-3">26</a></sup>) over ORM `LIMIT`/`OFFSET`
 - Use the ORM prepared statement cache<sup><a href="#footnote-5-5">28</a></sup> to skip repeated parsing/planning
-- Skip unnecessary count queries with a *counter cache*<sup><a href="#footnote-5-6">m</a></sup>
+- Skip unnecessary count queries with a *counter cache*<sup><a href="#footnote-5-6">29</a></sup>
 - Use `size()` over `count()` and `length()`
-- Use `EXISTS`<sup><a href="#footnote-5-7">30</a></sup>, set `implicit_order_column`<sup><a href="#footnote-5-8">31</a></sup>
+- Use `EXISTS`,<sup><a href="#footnote-5-7">30</a></sup> set `implicit_order_column`<sup><a href="#footnote-5-8">31</a></sup>
 
 ---
 
@@ -1031,7 +1031,7 @@ a { color: #fff; }
 - Work on small sets of data.<sup><a href="#footnote-7-1">34</a></sup> Restructure queries to select fewer rows, columns, and perform fewer joins.
 - Add "missing indexes"<sup><a href="#footnote-7-2">35</a></sup> on high cardinality columns<sup><a href="#footnote-7-3">38</a></sup>, try out *pganalyze_lint*<sup><a href="#footnote-7-2-1">36</a></sup> (and *hypopg*<sup><a href="#footnote-7-2-2">37</a></sup>)
 - Use advanced indexing like multicolumn, partial indexes, GIN, GiST.
-- Improve UX by pre-calculating aggregates with *rollup* gem<sup><a href="#footnote-7-4">39</a></sup>, or with materialized views of denormalize data, managed with *scenic*<sup><a href="#footnote-7-5">40</a></sup>
+- Improve UX by pre-calculating aggregates with *rollup* gem,<sup><a href="#footnote-7-4">39</a></sup> or with materialized views of denormalize data, managed with *scenic*<sup><a href="#footnote-7-5">40</a></sup>
 - Migrate time-based data into a partitioned table<sup><a href="#footnote-7-6">41</a></sup> for improved performance and maintenance
 
 ---
@@ -1064,7 +1064,7 @@ a { color: #fff; }
 
 ## ❌ Mistake #3—Missing Data Archival
 - Storing a significant proportion of data in tables and indexes that's never queried
-- Using high growth data gems like *public_activity*,<sup><a href="#footnote-8-1">42</a></sup> *papertrail*,<sup><a href="#footnote-8-2">43</a></sup> *audited*,<sup><a href="#footnote-8-3">44</a></sup> or *ahoy*<sup><a href="#footnote-8-4">45</a></sup>, and not archiving data
+- Using high growth data gems like *public_activity*,<sup><a href="#footnote-8-1">42</a></sup> *papertrail*,<sup><a href="#footnote-8-2">43</a></sup> *audited*,<sup><a href="#footnote-8-3">44</a></sup> or *ahoy*,<sup><a href="#footnote-8-4">45</a></sup> and not archiving data
 - Not archiving app data from churned customers, retired features, or soft deleted rows
 - Performing resource-intensive massive `DELETE` operations
 
@@ -1566,6 +1566,6 @@ HTML is generated below from this footnotes source
   62. <a href='https://andyatkinson.com/blog/2022/10/07/pgsqlphriday-2-truths-lie'>andyatkinson.com/blog/2022/10/07/pgsqlphriday-2-truths-lie</a>
 </li>
 <li id='footnote-9-5-8'>
-  63. <a href='https://jordanhollinger.com/2023/11/11/rails-strict-loading/'>jordanhollinger.com/2023/11/11/rails-strict-loading/</a>
+  63. <a href='https://jordanhollinger.com/2023/11/11/rails-strict-loading'>jordanhollinger.com/2023/11/11/rails-strict-loading</a>
 </li>
 </ul></div>
