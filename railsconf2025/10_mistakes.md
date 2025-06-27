@@ -1183,11 +1183,11 @@ a { color: #fff; }
 </div>
 
 ## ❌ Mistake #1—Rejecting Mechanical Sympathy
-- Using excessive CPU, memory, and disk IO by writing inefficient ORM queries
-- Allowing inefficient queries from libraries like *jsonapi-resources*,<sup><a href="#footnote-9-5-2">56</a></sup> *graphql-ruby*,<sup><a href="#footnote-9-5-3">57</a></sup>, *ActiveAdmin*<sup><a href="#footnote-9-5-4">58</a></sup>
-- Using lazy loading and allowing N+1s
-- Not auto-cancelling excessively long queries, idle transactions, or schema migrations
 - Using designs for Postgres that don't work well with immutable row versions (tuples), MVCC, and Autovacuum
+- Excessive CPU, memory, and IO from inefficient ORM queries
+- Allowing inefficient queries from gems like *jsonapi-resources*,<sup><a href="#footnote-9-5-2">56</a></sup> *graphql-ruby*,<sup><a href="#footnote-9-5-3">57</a></sup>, *ActiveAdmin*<sup><a href="#footnote-9-5-4">58</a></sup>
+- Allowing lazy loading and N+1s
+- Not cancelling excessively long queries, idle transactions, or schema migrations
 
 <div class="corner-label">💵 ALL the costs</div>
 
@@ -1208,11 +1208,11 @@ a { color: #fff; }
 
 <h2>❌ Mistake #1—Rejecting Mechanical Sympathy <span class="corner-fixes">✅ 🛠️ Fixes</span></h2>
 
+- Improve efficiency by reducing the use of CPU, memory, and IO
 - Take control of your SQL (`to_sql()`)<sup><a href="#footnote-9-5-4-1">59</a></sup> and execution plans (`.explain()`).
-- Improve efficiency, reduce the use of CPU, memory, and data access.
 - Avoid high update churn designs, replacing in-place updates with "append-mostly", e.g. *slotted counters*,<sup><a href="#footnote-9-5-5">60</a></sup> Increase *HOT updates*.<sup><a href="#footnote-9-5-6">61</a></sup>
-- Prevent lazy loading by using *Strict Loading*<sup><a href="#footnote-9-5-7">62</a></sup> for queries, records, models, or apps<sup><a href="#footnote-9-5-8">63</a></sup>
-- Improve resiliency by setting upper limits on time spent in queries, idle transactions, connections, and schema migrations.
+- Prevent lazy loading with *Strict Loading*<sup><a href="#footnote-9-5-7">62</a></sup> or log violations<sup><a href="#footnote-9-5-8">63</a></sup>
+- Improve resiliency by setting upper limits for queries, idle transactions, connections, and schema migrations
 
 ---
 
