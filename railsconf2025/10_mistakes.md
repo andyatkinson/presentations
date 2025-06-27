@@ -175,8 +175,14 @@ Ruby on Rails developer, Postgres Specialist, Author, Consultant
 ![bg right 80%](images/collage-railsworld-2024.jpg)
 
 ---
-
 <style scoped>
+  footer {
+    color:#000;
+  }
+  section::after {
+    color:#000;
+  }
+
   section {
     border: 10px dashed green;
     background:lightgreen;
@@ -297,6 +303,12 @@ Ruby on Rails developer, Postgres Specialist, Author, Consultant
 
 ---
 <style scoped>
+  footer {
+    color:#000;
+  }
+  section::after {
+    color:#000;
+  }
   section {
     background-color:#666;
   }
@@ -470,6 +482,12 @@ a { color: #fff; }
 
 ---
 <style scoped>
+  footer {
+    color:#000;
+  }
+  section::after {
+    color:#000;
+  }
 section {
   color:#fff;
   background-color: var(--theme-mistake-2);
@@ -487,6 +505,7 @@ a { color: #fff; }
 
 ---
 <style scoped>
+  
   section {
     margin:0;
     padding:0;
@@ -541,6 +560,12 @@ a { color: #fff; }
 
 ---
 <style scoped>
+  footer {
+    color:#000;
+  }
+  section::after {
+    color:#000;
+  }
 section {
   color:#fff;
   background-color: var(--theme-mistake-2);
@@ -567,6 +592,12 @@ a { color: #fff; }
 
 ---
 <style scoped>
+  footer {
+    color:#000;
+  }
+  section::after {
+    color:#000;
+  }
 section {
   color:#fff;
   background-color: var(--theme-mistake-2);
@@ -591,6 +622,12 @@ a { color: #fff; }
 
 ---
 <style scoped>
+  footer {
+    color:#000;
+  }
+  section::after {
+    color:#000;
+  }
 section {
   color:#fff;
   background-color: var(--theme-mistake-2);
@@ -605,6 +642,12 @@ Which Spiderman is the live tuple?
 
 ---
 <style scoped>
+  footer {
+    color:#000;
+  }
+  section::after {
+    color:#000;
+  }
 section {
   color:#fff;
   background-color: var(--theme-mistake-2);
@@ -770,6 +813,12 @@ a { color: #fff; }
 
 ---
 <style scoped>
+  footer {
+    color:#000;
+  }
+  section::after {
+    color:#000;
+  }
 section {
   color:#fff;
   background-color: var(--theme-mistake-5);
@@ -795,6 +844,12 @@ a { color: #fff; }
 
 ---
 <style scoped>
+  footer {
+    color:#000;
+  }
+  section::after {
+    color:#000;
+  }
 section {
   color:#fff;
   background-color: var(--theme-mistake-5);
