@@ -894,7 +894,7 @@ WHERE author_id = ANY(
   SELECT unnest(ARRAY(
     SELECT id
     FROM authors
-    WHERE id < 10
+    WHERE id <= 10
   ))
 );
 ```
@@ -1146,7 +1146,7 @@ a { color: #fff; }
 - Excessive CPU and memory use from inefficient long queries. ORM or query generation libraries. *jsonapi-resources*,<sup><a href="#footnote-9-5-2">54</a></sup> *graphql-ruby*,<sup><a href="#footnote-9-5-3">55</a></sup>, *ActiveAdmin*<sup><a href="#footnote-9-5-4">56</a></sup>
 - Excessive resource use from short queries, lazy loading and N+1s
 - Not auto-cancelling excessively long queries, idle transactions, or schema migrations
-- In Postgres, using designs that don't well with immutable row versions (tuples), MVCC, and Autovacuum
+- In Postgres, with immutable row versions (tuples), MVCC, and Autovacuum, using designs that heavily create dead rows
 
 <div class="corner-label">💵 ALL the costs</div>
 
