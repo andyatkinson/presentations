@@ -81,3 +81,8 @@ shellcheck create_db.sh
 
 ## VS Code
 - Choose "Trust", not Restricted Mode, which doesn't support all the HTML
+
+## Magick
+```sh
+magick images/pghero.png -resize 50% -quality 85 images/pghero.jpg
+```
