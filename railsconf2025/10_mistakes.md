@@ -8,7 +8,7 @@ footer: 'RailsConf 2025 - 10 Mistakes'
 style: |
     footer {
       color:#bbb;
-      font-family:Avenir, sans-serif;
+      font-family:Red Hat, sans-serif;
       font-size:0.6em;
     }
     * {
@@ -157,8 +157,16 @@ img.img {
 .stack-vertical .img.qr {
   max-width:95%;
 }
+.stack-vertical .img.rails {
+  position:relative;
+  left:-10px;
+  top:-80px;
+}
 .stack-vertical .img.db {
   max-width:70%;
+  position:relative;
+  left:-40px;
+  top:-90px;
 }
 </style>
 
@@ -172,14 +180,40 @@ img.img {
 # 10 Costly Database Performance Mistakes
 ## (And How To Fix Them)
 
-<code style="font-size:1.5em;">🌐 <a href="https://bit.ly/rc10m">bit.ly/rc10m</a></code>
+<code style="font-size:2em;">🌐 <a href="https://bit.ly/rc10m">bit.ly/rc10m</a></code>
 
 ---
+<style scoped>
+  img.rc17 {
+    position:absolute;
+    top:30px;
+    right:30px;
+    max-width:600px;
+  }
+  img.rw24 {
+    position:relative;
+    bottom:370px;
+    left:420px;
+    max-width:400px;
+  }
+</style>
 
-# My Background
-Ruby on Rails developer, Postgres Specialist, Author, Consultant
+#### My Background
+- Rails Developer (2008—)
+- Author
+- Consultant
 
-![bg right 80%](images/collage-railsworld-2024.jpg)
+#### Thank You RailsConf!
+- 2010 Baltimore 🎟️
+- 2011 Baltimore 🎟️
+- 2017 Phoenix 🎟️
+- 2022 Portland 🎟️ 🗣️
+- 2024 Detroit 🎟️ 🗣️
+- 2025 Philly 🎟️ 🗣️
+
+<img class="rc17" src="images/railsconf-2017.jpg"/>
+
+<img class="rw24" src="images/collage-railsworld-2024.jpg"/>
 
 ---
 <style scoped>
@@ -690,7 +724,10 @@ How do I fit all my data into these small boxes?
 
 ![bg right 80% vertical](images/mastering-pg-small.jpg)
 
-## [Scaling Postgres](scalingpostgres.com/courses/): Ludicrous Speed
+## [Scaling Postgres](https://scalingpostgres.com/courses)
+- PostgreSQL Performance Starter Kit (*Free*)
+- Postgres Performance Demystified (*Free*)
+- Ludicrous Speed
 
 
 ![bg right 70%](images/scaling-pg-small.jpg)
@@ -745,6 +782,11 @@ a { color: #fff; }
 - Use denormalization sometimes, for example with multi-tenancy.
 
 ---
+<style scoped>
+  section {
+    font-size:2.5em;
+  }
+</style>
 
 <pre>
 -[ RECORD 1 ]----------------+----------
@@ -758,7 +800,7 @@ unique_count                 | 0
 check_count                  | 57
 not_null_ratio               | 0.83
 pk_per_table                 | 1.00
-<span class="highlight">fk_per_table                                           | 0.80</span>
+<span class="highlight">fk_per_table                                           | 0.80</span> 👈
 check_per_column             | 0.88
 total_constraints_per_column | 1.15
 </pre>
@@ -815,6 +857,11 @@ a { color: #fff; }
 - MySQL: *Percona Monitoring and Management (PMM)*, *Oracle Enterprise Manager for MySQL*<sup><a href="#footnote-4-4">22</a></sup>, SQLite: *SQLite Database Analyzer*<sup><a href="#footnote-4-5">23</a></sup>
 
 ---
+<style scoped>
+  section {
+    font-size:2.5em;
+  }
+</style>
 
 <pre>
 ID: 7
@@ -826,12 +873,11 @@ Query Text w/o annotations: SELECT "users".* FROM "users" \
 Annotations: <span class="highlight">controller=trip_requests
 action=create
 application=Rideshare
-source_location=app/models/trip.rb:6:in `rider'</span>
+source_location=app/models/trip.rb:6:in `rider'</span> 👈
 Main Command: SELECT
 FROM table: "users"
 WHERE clause: "users"."id" = $1
 </pre>
-<small>*from my unlaunched Postgres App performance tool*</small>
 
 ---
 <style scoped>
@@ -903,6 +949,7 @@ books = Book.includes(:author).limit(10)
 ```
 
 ```sql
+-- Generated SQL from Active Record "includes"
 SELECT books.* FROM books LIMIT 10;
 
 SELECT authors.* FROM authors
@@ -910,10 +957,11 @@ SELECT authors.* FROM authors
 ```
 
 ```sql
+-- Alternative SQL using ANY + ARRAY
 SELECT books.*
 FROM books
 WHERE author_id = ANY(
-  SELECT unnest(ARRAY(
+  SELECT UNNEST(ARRAY(
     SELECT id
     FROM authors
     WHERE id <= 10
@@ -1031,7 +1079,7 @@ a { color: #fff; }
 - Work on small sets of data.<sup><a href="#footnote-7-1">34</a></sup> Restructure queries to select fewer rows, columns, and perform fewer joins.
 - Add "missing indexes"<sup><a href="#footnote-7-2">35</a></sup> on high cardinality columns<sup><a href="#footnote-7-3">38</a></sup>, try out *pganalyze_lint*<sup><a href="#footnote-7-2-1">36</a></sup> (and *hypopg*<sup><a href="#footnote-7-2-2">37</a></sup>)
 - Use advanced indexing like multicolumn, partial indexes, GIN, GiST.
-- Improve UX by pre-calculating aggregates with *rollup* gem,<sup><a href="#footnote-7-4">39</a></sup> or with materialized views of denormalize data, managed with *scenic*<sup><a href="#footnote-7-5">40</a></sup>
+- Improve UX by pre-calculating aggregates with *rollup* gem,<sup><a href="#footnote-7-4">39</a></sup> or with materialized views of denormalized data, managed with *scenic*<sup><a href="#footnote-7-5">40</a></sup>
 - Migrate time-based data into a partitioned table<sup><a href="#footnote-7-6">41</a></sup> for improved performance and maintenance
 
 ---
@@ -1045,7 +1093,7 @@ Index Selection Settings:
 {"Options":{"Goals":[{"Name":"Minimize Total Cost","Tolerance":0.1},
 {"Name":"Minimize Number of Indexes"}]}}
 
-<span class="highlight">Missing indexes found:</span>
+<span class="highlight">Missing indexes found:</span> 👈
 <span class="highlight">CREATE INDEX ON rideshare.users USING btree (type)</span> 👈</pre>
 
 ---
