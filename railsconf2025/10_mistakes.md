@@ -123,9 +123,11 @@ style: |
 ---
 <!-- _color: #fff; -->
 <!-- _backgroundColor: #fff; -->
-<!-- _backgroundImage: linear-gradient(45deg, #000000 25%, #04619f 50%, #fff 67%); -->
+<!-- _backgroundImage: linear-gradient(45deg, #000000 15%, #529FD4 55%, #fff 67%); -->
 
 <style scoped>
+  section {
+  }
 h1 { font-size:2.3em;}
 a { color: #fff; }
 section::after {
@@ -1303,6 +1305,10 @@ EXPLAIN (ANALYZE, BUFFERS) SELECT "trips".* FROM "trips" ORDER BY "trips"."creat
 🏎️ 🌬️
 
 ---
+<!-- _color: #fff; -->
+<!-- _backgroundColor: #fff; -->
+<!-- _backgroundImage: linear-gradient(45deg, #000000 15%, #529FD4 55%, #fff 67%); -->
+
 <style scoped>
 section {
     font-size: 2.5em;
