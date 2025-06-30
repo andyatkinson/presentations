@@ -1311,7 +1311,7 @@ EXPLAIN (ANALYZE, BUFFERS) SELECT "trips".* FROM "trips" ORDER BY "trips"."creat
 
 <style scoped>
 section {
-    font-size: 2.5em;
+    font-size: 2em;
 }
 .qr-code {
   max-width:300px;
