@@ -784,7 +784,7 @@ a { color: #fff; }
 ---
 <style scoped>
   section {
-    font-size:2.5em;
+    font-size:2em;
   }
 </style>
 
@@ -860,6 +860,9 @@ a { color: #fff; }
 <style scoped>
   section {
     font-size:2.5em;
+  }
+  pre {
+    overflow:hidden;
   }
 </style>
 
@@ -943,6 +946,11 @@ a { color: #fff; }
 - Use `EXISTS`,<sup><a href="#footnote-5-7">30</a></sup> set `implicit_order_column`<sup><a href="#footnote-5-8">31</a></sup>
 
 ---
+<style scoped>
+section {
+  font-size:1.7em;
+}
+</style>
 
 ```rb
 books = Book.includes(:author).limit(10)
