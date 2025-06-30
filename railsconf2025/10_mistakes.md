@@ -471,7 +471,7 @@ a { color: #fff; }
 <h2>❌ Mistake #10—Infrequent Releases <span class="corner-fixes">✅ 🛠️ Fixes</span></h2>
 
 - Use Trunk-based development (TBD)<sup><a href="#footnote-1-2">2</a></sup> and feature flags. 2024 Rails Survey<sup><a href="#footnote-1-3">3</a></sup>: 20% (500+) "multiple/month", 2% (50+) "multiple/quarter"
-- Track DevOps metrics. DORA<sup><a href="#footnote-1-4">4</a></sup>, SPACE<sup><a href="#footnote-1-5">5</a></sup>, *Accelerate*,<sup><a href="#footnote-1-6">6</a></sup> 2-Minute DORA Quick Check<sup><a href="#footnote-1-7">7</a></sup>
+- Track DevOps metrics. DORA,<sup><a href="#footnote-1-4">4</a></sup> SPACE,<sup><a href="#footnote-1-5">5</a></sup> *Accelerate*,<sup><a href="#footnote-1-6">6</a></sup> 2-Minute DORA Quick Check<sup><a href="#footnote-1-7">7</a></sup>
 - Raise test coverage (*Simplecov*),<sup><a href="#footnote-1-8">8</a></sup> increase test speed and reliability
 - Lint ORM<sup><a href="#footnote-1-9">9</a></sup> and SQL (*Squawk*<sup><a href="#footnote-1-9-1">10</a></sup>) migrations for safe DDL
 - Enhance Rails migrations with ⚓ Anchor Migrations,<sup><a href="#footnote-1-9-2">11</a></sup> safety-linted, non-blocking, idempotent & consistent.<sup><a href="#footnote-1-9-3">12</a></sup>
@@ -854,7 +854,7 @@ a { color: #fff; }
 - Collect query execution plans, manually or automatically with *auto_explain*<sup><a href="#footnote-4-2">20</a></sup>
 - Review `BUFFERS` counts from execution plans<sup><a href="#footnote-4-3">21</a></sup> to improve designs
 - Add DB observability. Postgres: *pg_stat_statements*, *PgHero*, *PgAnalyze*, *PgBadger*
-- MySQL: *Percona Monitoring and Management (PMM)*, *Oracle Enterprise Manager for MySQL*<sup><a href="#footnote-4-4">22</a></sup>, SQLite: *SQLite Database Analyzer*<sup><a href="#footnote-4-5">23</a></sup>
+- MySQL: *Percona Monitoring and Management (PMM)*, *Oracle Enterprise Manager for MySQL*,<sup><a href="#footnote-4-4">22</a></sup> SQLite: *SQLite Database Analyzer*<sup><a href="#footnote-4-5">23</a></sup>
 
 ---
 <style scoped>
@@ -1020,7 +1020,7 @@ a { color: #fff; }
 
 - Practice DDL changes on a production-like instance. Collect timing. Study lock behavior.
 - Use multi-step safe alternatives. `ignored_columns`,<sup><a href="#footnote-6-1">32</a></sup>. `INVALID` `CHECK` constraint before `NOT NULL`
-- Lint DDL in Active Record (PostgreSQL) *strong_migrations*<sup><a href="#footnote-1-9">9</a></sup> (MySQL/MariaDB) *online_migrations*<sup><a href="#footnote-6-2">33</a></sup>, *Squawk*<sup><a href="#footnote-1-10">1</a></sup> for SQL
+- Lint DDL in Active Record (PostgreSQL) *strong_migrations*<sup><a href="#footnote-1-9">9</a></sup> (MySQL/MariaDB) *online_migrations*,<sup><a href="#footnote-6-2">33</a></sup> *Squawk*<sup><a href="#footnote-1-10">1</a></sup> for SQL
 - Learn lock types for operations, tables, rows using `pglocks.org`
 - Use a low `lock_timeout` for DDL changes with retries
 
@@ -1085,7 +1085,7 @@ a { color: #fff; }
 <h2>❌ Mistake #4—Excessive Data Access <span class="corner-fixes">✅ 🛠️ Fixes</span></h2>
 
 - Work on small sets of data.<sup><a href="#footnote-7-1">34</a></sup> Restructure queries to select fewer rows, columns, and perform fewer joins.
-- Add "missing indexes"<sup><a href="#footnote-7-2">35</a></sup> on high cardinality columns<sup><a href="#footnote-7-3">38</a></sup>, try out *pganalyze_lint*<sup><a href="#footnote-7-2-1">36</a></sup> (and *hypopg*<sup><a href="#footnote-7-2-2">37</a></sup>)
+- Add "missing indexes"<sup><a href="#footnote-7-2">35</a></sup> on high cardinality columns,<sup><a href="#footnote-7-3">38</a></sup> try out *pganalyze_lint*<sup><a href="#footnote-7-2-1">36</a></sup> (and *hypopg*<sup><a href="#footnote-7-2-2">37</a></sup>)
 - Use advanced indexing like multicolumn, partial indexes, GIN, GiST.
 - Improve UX by pre-calculating aggregates with *rollup* gem,<sup><a href="#footnote-7-4">39</a></sup> or with materialized views of denormalized data, managed with *scenic*<sup><a href="#footnote-7-5">40</a></sup>
 - Migrate time-based data into a partitioned table<sup><a href="#footnote-7-6">41</a></sup> for improved performance and maintenance
@@ -1241,7 +1241,7 @@ a { color: #fff; }
 ## ❌ Mistake #1—Rejecting Mechanical Sympathy
 - Using designs for Postgres that don't work well with immutable row versions (tuples), MVCC, and Autovacuum
 - Excessive CPU, memory, and IO from inefficient ORM queries
-- Allowing inefficient queries from gems like *jsonapi-resources*,<sup><a href="#footnote-9-5-2">56</a></sup> *graphql-ruby*,<sup><a href="#footnote-9-5-3">57</a></sup>, *ActiveAdmin*<sup><a href="#footnote-9-5-4">58</a></sup>
+- Allowing inefficient queries from gems like *jsonapi-resources*,<sup><a href="#footnote-9-5-2">56</a></sup> *graphql-ruby*,<sup><a href="#footnote-9-5-3">57</a></sup> *ActiveAdmin*<sup><a href="#footnote-9-5-4">58</a></sup>
 - Allowing lazy loading and N+1s
 - Not cancelling excessively long queries, idle transactions, or schema migrations
 
