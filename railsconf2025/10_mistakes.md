@@ -112,7 +112,7 @@ style: |
       margin:2px;
     }
     .highlight {
-      line-height:1em;
+      line-height:130%;
       padding:2px;
       margin:2px;
       background-color:yellow;
@@ -1265,7 +1265,7 @@ a { color: #fff; }
 <h2>❌ Mistake #1—Rejecting Mechanical Sympathy <span class="corner-fixes">✅ 🛠️ Fixes</span></h2>
 
 - Restructure, reduce, and optimize to minimize CPU, memory, and IO
-- Take control of your SQL (`to_sql()`)<sup><a href="#footnote-9-5-4-1">59</a></sup> and execution plans (`.explain()`)
+- Take control of your SQL (`to_sql`)<sup><a href="#footnote-9-5-4-1">59</a></sup> and execution plans (`.explain()`)
 - Replace high update churn designs with "append-mostly", e.g. *slotted counters*,<sup><a href="#footnote-9-5-5">60</a></sup> Increase *HOT updates*.<sup><a href="#footnote-9-5-6">61</a></sup>
 - Prevent lazy loading with *Strict Loading*<sup><a href="#footnote-9-5-7">62</a></sup>. Start by logging violations.<sup><a href="#footnote-9-5-8">63</a></sup>
 - Add resiliency by setting allowed upper limits on query run times, idle transactions, number of connections
@@ -1307,7 +1307,7 @@ EXPLAIN (ANALYZE, BUFFERS) SELECT "trips".* FROM "trips" ORDER BY "trips"."creat
 ---
 <!-- _color: #fff; -->
 <!-- _backgroundColor: #fff; -->
-<!-- _backgroundImage: linear-gradient(90deg, #000000 40%, #529FD4 50%, #fff 60%); -->
+<!-- _backgroundImage: linear-gradient(90deg, #000000 50%, #529FD4 50% 80%); -->
 
 <style scoped>
 section {
@@ -1318,8 +1318,8 @@ section {
   width:300px;
   float:right;
   position:absolute;
-  right:-70px;
-  top:0;
+  right:0px;
+  top:-50px;
   padding:200px 100px 0 0;
 }
 .qr-code img {
