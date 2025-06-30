@@ -679,8 +679,8 @@ section {
 a { color: #fff; }
 </style>
 
-## Tuples & MVCC
-Which Spiderman is the live tuple?
+## Row versions (Tuples), MVCC
+Which Spiderman is live and "dead"?
 
 ![bg contain right 90%](images/spiderman.png.webp)
 
@@ -699,8 +699,8 @@ section {
 a { color: #fff; }
 </style>
 
-## Fixed-size 8KB Pages
-How do I fit all my data into these small boxes?
+## Table and index data layout, fixed-size 8KB Pages
+How is it laid out in these small boxes?
 
 ![bg contain right 95%](images/records-small.jpg)
 
@@ -999,7 +999,7 @@ a { color: #fff; }
 - Not using safety timeouts for Postgres, MySQL, SQLite
 - Not learning the underlying locking mechanisms, or safer, multi-step alternatives
 
-<div class="corner-label">💵 Longer cycles, maintainability</div>
+<div class="corner-label">💵 Longer cycles, high maintenance</div>
 
 ---
 <style scoped>
@@ -1198,7 +1198,7 @@ a { color: #fff; }
 - Drop unneeded tables, columns, constraints, indexes, functions, triggers, and extensions
 - Rebuild fragmented tables (pg_repack, pg_squeeze,<sup><a href="#footnote-9-4">53</a></sup> `VACUUM FULL`, logical replication, or *copy swap drop*<sup><a href="#footnote-8-5">46</a></sup>)
 - Reindex fragmented indexes (`REINDEX CONCURRENTLY`)
-- Maintain your database like your application code. *Maintainable...Databases?* podcast<sup><a href="#footnote-9-4">53</a></sup>
+- Maintain your database like your application code. *Maintainable...Databases?* podcast<sup><a href="#footnote-9-4">53</a></sup> 🎧
 
 ---
 
