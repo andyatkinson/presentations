@@ -12,7 +12,7 @@ style: |
       font-size:0.6em;
     }
     * {
-      font-family:Avenir, sans-serif;
+      font-family:Red Hat, sans-serif;
     }
     section::after {
         content: 'Slide ' attr(data-marpit-pagination) ' of ' attr(data-marpit-pagination-total);
