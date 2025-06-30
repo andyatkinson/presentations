@@ -1056,7 +1056,7 @@ a { color: #fff; }
 </div>
 
 ## ❌ Mistake #4—Excessive Data Access
-- Querying and retriveing huge sets of 10K+ rows, making users wait
+- Querying and retrieving huge sets of 10K+ rows, making users wait
 - Ineffective filtering and indexing on *low cardinality* columns
 - Missing indexes on *high cardinality* columns or foreign keys for filtering
 - Not using advanced indexing like multicolumn or partial (Postgres)
@@ -1375,7 +1375,7 @@ HTML is generated below from this footnotes source
 2-2,postgres.fm/episodes/over-indexing
 2-3,andyatkinson.com/generating-short-alphanumeric-public-id-postgres
 
-3-1,andyatkinson/presentations/blob/main/pass2024/README.md
+3-1,andyatkinson.com/presentations/blob/main/pass2024/README.md
 3-2,andyatkinson.com/constraint-driven-optimized-responsive-efficient-core-db-design
 3-3,github.com/djezzzl/database_consistency
 
@@ -1479,7 +1479,7 @@ HTML is generated below from this footnotes source
   15. <a href='https://andyatkinson.com/generating-short-alphanumeric-public-id-postgres'>andyatkinson.com/generating-short-alphanumeric-public-id-postgres</a>
 </li>
 <li id='footnote-3-1'>
-  16. <a href='https://andyatkinson/presentations/blob/main/pass2024/README.md'>andyatkinson/presentations/blob/main/pass2024/README.md</a>
+  16. <a href='https://andyatkinson/presentations/blob/main/pass2024/README.md'>andyatkinson.com/presentations/blob/main/pass2024/README.md</a>
 </li>
 <li id='footnote-3-2'>
   17. <a href='https://andyatkinson.com/constraint-driven-optimized-responsive-efficient-core-db-design'>andyatkinson.com/constraint-driven-optimized-responsive-efficient-core-db-design</a>
