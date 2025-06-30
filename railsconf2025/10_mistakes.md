@@ -1307,7 +1307,7 @@ EXPLAIN (ANALYZE, BUFFERS) SELECT "trips".* FROM "trips" ORDER BY "trips"."creat
 ---
 <!-- _color: #fff; -->
 <!-- _backgroundColor: #fff; -->
-<!-- _backgroundImage: linear-gradient(45deg, #000000 15%, #529FD4 55%, #fff 67%); -->
+<!-- _backgroundImage: linear-gradient(90deg, #000000 35%, #529FD4 55%, #fff 67%); -->
 
 <style scoped>
 section {
@@ -1318,7 +1318,7 @@ section {
   width:300px;
   float:right;
   position:absolute;
-  right:0;
+  right:-70px;
   top:0;
   padding:200px 100px 0 0;
 }
