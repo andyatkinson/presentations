@@ -123,10 +123,11 @@ style: |
 ---
 <!-- _color: #fff; -->
 <!-- _backgroundColor: #fff; -->
-<!-- _backgroundImage: linear-gradient(45deg, #000000 15%, #529FD4 55%, #fff 67%); -->
+<!-- _backgroundImage: linear-gradient(75deg, #000000 30%, #529FD4 55%, #fff 67%); -->
 
 <style scoped>
   section {
+    padding:100px;
   }
 h1 { font-size:2.3em;}
 a { color: #fff; }
@@ -157,18 +158,21 @@ img.img {
   max-width:90%;
 }
 .stack-vertical .img.qr {
-  max-width:95%;
+  max-width:100%;
+  position:relative;
+  left:10px;
+  top:-10px;
 }
 .stack-vertical .img.rails {
   position:relative;
-  left:-10px;
-  top:-80px;
+  left:-30px;
+  top:-20px;
 }
 .stack-vertical .img.db {
-  max-width:70%;
+  max-width:50%;
   position:relative;
-  left:-40px;
-  top:-90px;
+  left:-80px;
+  top:-60px;
 }
 </style>
 
@@ -194,23 +198,22 @@ img.img {
   }
   img.rw24 {
     position:relative;
-    bottom:370px;
-    left:420px;
+    bottom:200px;
+    left:620px;
     max-width:400px;
   }
 </style>
 
-#### My Background
-- Rails Developer (2008—)
-- Author
-- Consultant
-
-#### Thank You RailsConf!
+#### My RailsConf History
 - 2010 & 2011 Baltimore 🎟️
 - 2017 Phoenix 🎟️
 - 2022 Portland 🎟️ 🗣️
 - 2024 Detroit 🎟️ 🗣️
 - 2025 Philly 🎟️ 🗣️
+
+Thank you organizers and attendees! 🫶
+
+We'll miss RailsConf! 🥺
 
 <img class="rc17" src="images/railsconf-2017.jpg"/>
 
@@ -448,10 +451,10 @@ a { color: #fff; }
 </div>
 
 ## ❌ Mistake #10—Infrequent Releases
-- Using Gitflow<sup><a href="#footnote-1-1">1</a></sup> for software delivery
-- Not using Feature Flags
+- Using Gitflow<sup><a href="#footnote-1-1">1</a></sup> or similar *legacy* software delivery processes
+- Not using Feature Flags to decoupling releases and feature visibility
 - Not tracking or improving DevOps metrics
-- Performing DDL changes exclusively using ORM Migrations
+- Performing DDL (`create index`, `alter table`, etc.) *exclusively* as Rails Migrations in releases
 
 <div class='corner-label'>💵 Cycle time, incident response</div>
 
@@ -473,8 +476,8 @@ a { color: #fff; }
 
 - Use Trunk-based development (TBD)<sup><a href="#footnote-1-2">2</a></sup> and feature flags. 2024 Rails Survey<sup><a href="#footnote-1-3">3</a></sup>: 20% (500+) "multiple/month", 2% (50+) "multiple/quarter"
 - Track DevOps metrics. DORA,<sup><a href="#footnote-1-4">4</a></sup> SPACE,<sup><a href="#footnote-1-5">5</a></sup> *Accelerate*,<sup><a href="#footnote-1-6">6</a></sup> 2-Minute DORA Quick Check<sup><a href="#footnote-1-7">7</a></sup>
-- Raise test coverage (*Simplecov*),<sup><a href="#footnote-1-8">8</a></sup> increase test speed and reliability
-- Lint migrations for safe DDL: ORM<sup><a href="#footnote-1-9">9</a></sup> and SQL (*Squawk*<sup><a href="#footnote-1-9-1">10</a></sup>)
+- Raise test suite coverage (*Simplecov*),<sup><a href="#footnote-1-8">8</a></sup> increase speed & reliability
+- Lint migrations for safe DDL. Rails<sup><a href="#footnote-1-9">9</a></sup> and SQL (*Squawk*<sup><a href="#footnote-1-9-1">10</a></sup>)
 - Release DDL using ⚓ Anchor Migrations,<sup><a href="#footnote-1-9-2">11</a></sup> safety-linted, non-blocking, idempotent, maintain consistency with Rails<sup><a href="#footnote-1-9-3">12</a></sup>
 
 ---
@@ -597,7 +600,7 @@ a { color: #fff; }
     <div class="group-content">
 
 ## Relational Database
-- Data. Storage and retrieval. SQL, relations, indexes, execution plans, normalization, caches
+- Data access, SQL, relations, indexes, execution plans, normalization, caches
 - Pages, buffers, locks, MVCC & bloat in PostgreSQL
 
   </div>
@@ -661,8 +664,8 @@ a { color: #fff; }
 
 - Hire experience: DB specialists, DBAs, and consultants
 - Grow experience: books, courses, conferences, communities
-- Provide a production-like database for experimenting. Maintain it and use it in your workflow.
-- Use concepts of *pages* and buffers accessed, latency, *selectivity*, *cardinality*, *correlation*, and *locality* in your designs
+- Provide a production-like database clone instance for experimentation. Use it in your workflow.
+- Learn concepts of *pages*, buffers, latency, *selectivity*, *cardinality*, *correlation*, and *locality* in your designs
 - Avoid performance-unfriendly schema designs like random UUID<sup><a href="#footnote-2-3">15</a></sup> primary keys
 
 ---
@@ -680,7 +683,7 @@ section {
 a { color: #fff; }
 </style>
 
-## Row versions (Tuples), MVCC
+## Row versions (Tuples), MVCC, transactions
 Which Spiderman is live and "dead"?
 
 ![bg contain right 90%](images/spiderman.png.webp)
@@ -700,8 +703,8 @@ section {
 a { color: #fff; }
 </style>
 
-## Table and index data layout, fixed-size 8KB Pages
-How is it laid out in these small boxes?
+## Table and index data in fixed-size 8KB Pages
+How is it laid out and how does that correlate with latency?
 
 ![bg contain right 95%](images/records-small.jpg)
 
@@ -749,9 +752,9 @@ a { color: #fff; }
 </div>
 
 ## ❌ Mistake #8—Speculative DB Design
-- Avoiding beneficial database constraints today due to speculation about the future
-- Casting doubt on the technical ability to evolve the schema design
-- *Not* using data normalization good practices by default to avoid duplication
+- Avoiding beneficial database constraints *today* due to speculation about *tomorrow*
+- Casting doubt on evolving the future schema design
+- *Not* using data normalization good practices ([3NF](https://en.wikipedia.org/wiki/Third_normal_form)) by default to avoid duplication
 - Avoiding *all* use of denormalization, even for cases like multi-tenancy<sup><a href="#footnote-3-1">16</a></sup>
 
 <div class="corner-label">💵 Data bugs, high maintenance costs</div>
