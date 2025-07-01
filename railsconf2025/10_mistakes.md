@@ -1179,6 +1179,10 @@ a { color: #fff; }
 <div class="corner-label">💵 Poor performance, security risk, UX</div>
 
 ---
+
+![bg 80%](images/unneeded.jpg)
+
+---
 <style scoped>
 section {
   color:#fff;
@@ -1202,10 +1206,6 @@ a { color: #fff; }
 - Rebuild fragmented tables (pg_repack, pg_squeeze,<sup><a href="#footnote-9-4">53</a></sup> `VACUUM FULL`, logical replication, or *copy swap drop*<sup><a href="#footnote-8-5">46</a></sup>)
 - Reindex fragmented indexes (`REINDEX CONCURRENTLY`)
 - Maintain your database like your application code. *Maintainable...Databases?* podcast<sup><a href="#footnote-9-4">53</a></sup> 🎧
-
----
-
-![bg 80%](images/unneeded.jpg)
 
 ---
 <style scoped>
