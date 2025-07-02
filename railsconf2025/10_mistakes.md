@@ -198,7 +198,7 @@ img.img {
   }
   img.rw24 {
     position:relative;
-    bottom:200px;
+    bottom:220px;
     left:620px;
     max-width:400px;
   }
@@ -213,7 +213,7 @@ img.img {
 
 Thank you organizers and attendees! 🫶
 
-We'll miss RailsConf! 🥺
+We will miss RailsConf! 🥺
 
 <img class="rc17" src="images/railsconf-2017.jpg"/>
 
@@ -239,7 +239,8 @@ We'll miss RailsConf! 🥺
       padding: 1rem;
       border: 1px dashed #ccc;
       position:relative;
-      top:-40px;
+      top:-30px;
+      left:-100px;
 
       background: repeating-linear-gradient(
         0deg,
@@ -361,7 +362,7 @@ We'll miss RailsConf! 🥺
     width:275px;
     font-size: 40px;
     margin:10px 0;
-    padding: 0 20px;
+    padding: 0 25px;
   }
   .group-container {
       display: flex;
@@ -379,11 +380,9 @@ We'll miss RailsConf! 🥺
       padding: 0.5rem;
       border-right: 1px solid #333;
       text-align: center;
-      min-width: 1.5rem;
     }
 
     .group-content {
-      padding-left: 1rem;
       flex: 1;
     }
 </style>
@@ -483,7 +482,7 @@ a { color: #fff; }
 ---
 <style scoped>
   section {
-    font-size: 2em;
+    font-size: 2.1em;
   }
 </style>
 
@@ -788,7 +787,7 @@ a { color: #fff; }
 ---
 <style scoped>
   section {
-    font-size:2em;
+    font-size:2.1em;
   }
 </style>
 
@@ -1042,8 +1041,8 @@ a { color: #fff; }
 🔲 8 grocery bags in 1 trip
 ☑️ 2 trips of 4 bags each
 
-![bg 50% right vertical](images/groceries1.jpg)
-![bg contain](images/groceries2.jpg)
+![bg right vertical](images/groceries1.jpg)
+![bg right vertical](images/groceries2.jpg)
 
 ---
 <style scoped>
@@ -1094,6 +1093,14 @@ a { color: #fff; }
 - Migrate time-based data into a partitioned table<sup><a href="#footnote-7-6">41</a></sup> for improved performance and maintenance
 
 ---
+<style scoped>
+section {
+  font-size:2.5em;
+}
+pre {
+  overflow:hidden;
+}
+</style>
 
 <pre>
 <span class="highlight">pganalyze_lint</span> --dbname rideshare_development \
@@ -1130,6 +1137,10 @@ a { color: #fff; }
 <div class="corner-label">💵 Server costs, user experience</div>
 
 ---
+
+![bg 80%](images/big-deletes.jpg)
+
+---
 <style scoped>
 section {
   color:#fff;
@@ -1150,10 +1161,6 @@ a { color: #fff; }
 - Use partition-friendly gems like *logidze* gem<sup><a href="#footnote-8-6">47</a></sup> or partition your big tables, making necessary Rails compatibility changes<sup><a href="#footnote-8-7">48</a></sup>
 - Archive app data from churned customers, soft deleted rows, and retired features (discover with *Coverband*<sup><a href="#footnote-8-8">49</a></sup>)
 - Replace massive `DELETE` operations by using time-partitioned tables, and efficient `DETACH CONCURRENTLY`
-
----
-
-![bg 80%](images/big-deletes.jpg)
 
 ---
 <style scoped>
@@ -1274,18 +1281,23 @@ a { color: #fff; }
 - Add resiliency by setting allowed upper limits on query run times, idle transactions, number of connections
 
 ---
+<style scoped>
+  strong {
+    font-size:1.3em;
+  }
+</style>
 
 <pre>
 # config/application.rb
-config.active_record.action_on_strict_loading_violation = <span class="highlight">:log</span> 👈
+config.active_record.action_on_strict_loading_violation = <strong class="highlight">:log</strong> 👈
 </pre>
 
 <pre>
-Trip.limit(10).order(created_at: :desc).<strong style="padding:5px;background-color:yellow;color:#000;">to_sql</strong> 👈
+Trip.limit(10).order(created_at: :desc).<strong class="highlight">to_sql</strong> 👈
 </pre>
 
 <pre style="font-size:0.7em;overflow:hidden;padding:10px;">
-rideshare(dev)> Trip.limit(10).order(created_at: :desc).<strong style="font-size:1.5em;padding:5px;background-color:yellow;color:#000;">explain(:analyze, :buffers)</strong> 👈
+rideshare(dev)> Trip.limit(10).order(created_at: :desc).<strong class="highlight">explain(:analyze, :buffers)</strong> 👈
   Trip Load (14.2ms)  SELECT "trips".* FROM "trips" ORDER BY "trips"."created_at" DESC LIMIT $1  [["LIMIT", 10]]
 =>
 EXPLAIN (ANALYZE, BUFFERS) SELECT "trips".* FROM "trips" ORDER BY "trips"."created_at" DESC LIMIT $1 [["LIMIT", 10]]
