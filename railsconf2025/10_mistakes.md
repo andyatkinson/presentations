@@ -1022,7 +1022,7 @@ a { color: #fff; }
 - Use multi-step non-blocking DDL. `ignored_columns`.<sup><a href="#footnote-6-1">32</a></sup> `INVALID` `CHECK` constraint before `NOT NULL`
 - Safety-lint DDL. Active Record & PostgreSQL *strong_migrations,*<sup><a href="#footnote-1-9">9</a></sup> (MySQL/MariaDB) *online_migrations*,<sup><a href="#footnote-6-2">33</a></sup> *Squawk*<sup><a href="#footnote-1-9-1">10</a></sup> for SQL
 - Learn about locks and conflicts using `pglocks.org`
-- Set a low `lock_timeout` to auto-cancel failed lock acquisition DDL, use retries
+- Auto-cancel DDLs that fail lock acquisition with a low `lock_timeout`. Retry.
 
 ---
 <style scoped>
@@ -1057,12 +1057,12 @@ a { color: #fff; }
 </div>
 
 ## ❌ Mistake #4—Excessive Data Access
-- Querying and retrieving huge sets of 10K+ rows, making users wait
+- Querying and retrieving huge sets, 10K+ rows, making users wait
 - Ineffective filtering and indexing on *low cardinality* columns
 - Missing indexes on *high cardinality* columns or foreign keys for filtering
 - Not using advanced indexing strategies or index types
 - Performing slow aggregate queries (`SUM`, `COUNT`) causing users to wait
-- For huge tables of 100GB or more in size, avoiding table partitioning
+- Not breaking up big tables using table partitioning
 
 <div class="corner-label">💵 Server costs, user experience</div>
 
@@ -1087,7 +1087,7 @@ a { color: #fff; }
 - Add "missing indexes"<sup><a href="#footnote-7-2">35</a></sup> on high cardinality columns,<sup><a href="#footnote-7-3">38</a></sup> try out *pganalyze_lint*<sup><a href="#footnote-7-2-1">36</a></sup> (and *hypopg*<sup><a href="#footnote-7-2-2">37</a></sup>)
 - Use advanced indexing like multicolumn, partial indexes, GIN, GiST.
 - Pre-calculate aggregates using *rollup* gem,<sup><a href="#footnote-7-4">39</a></sup> create denormalized materialized views, manage using *scenic* gem<sup><a href="#footnote-7-5">40</a></sup>
-- Migrate time-based data into a partitioned table<sup><a href="#footnote-7-6">41</a></sup> for improved performance and maintenance
+- Migrate huge tables to partitioned tables<sup><a href="#footnote-7-6">41</a></sup> for improved performance and maintenance
 
 ---
 <style scoped>
@@ -1127,7 +1127,7 @@ a { color: #fff; }
 
 ## ❌ Mistake #3—Missing Data Archival
 - Storing a significant proportion of data in tables and indexes that's never queried
-- Storing high growth data using gems like *public_activity*,<sup><a href="#footnote-8-1">42</a></sup> *papertrail*,<sup><a href="#footnote-8-2">43</a></sup> *audited*,<sup><a href="#footnote-8-3">44</a></sup> or *ahoy*,<sup><a href="#footnote-8-4">45</a></sup> and not archiving unneeded data
+- Capturing high growth data using gems like *public_activity*,<sup><a href="#footnote-8-1">42</a></sup> *papertrail*,<sup><a href="#footnote-8-2">43</a></sup> *audited*,<sup><a href="#footnote-8-3">44</a></sup> or *ahoy*,<sup><a href="#footnote-8-4">45</a></sup> and not archiving unneeded data
 - Not archiving app data from churned customers, retired features, or soft deleted rows
 - Performing resource-intensive massive `DELETE` operations
 
@@ -1157,7 +1157,7 @@ a { color: #fff; }
 - Shrink a table using *copy swap drop*<sup><a href="#footnote-8-5">46</a></sup>
 - Use partition-friendly gems like *logidze* gem<sup><a href="#footnote-8-6">47</a></sup> or partition your big tables, making necessary Rails compatibility changes<sup><a href="#footnote-8-7">48</a></sup>
 - Archive app data from churned customers, soft deleted rows, and retired features (discover with *Coverband*<sup><a href="#footnote-8-8">49</a></sup>)
-- Replace massive `DELETE` operations by using time-partitioned tables, and efficient `DETACH CONCURRENTLY`
+- Replace massive `DELETE` operations by migrating to a partitioned table, unlock ability to `DETACH CONCURRENTLY` instead of `DELETE`
 
 ---
 <style scoped>
@@ -1204,12 +1204,12 @@ a { color: #fff; }
 
 <h2>❌ Mistake #2—Missing DB Maintenance <span class="corner-fixes">✅ 🛠️ Fixes</span></h2>
 
-- Upgrade your database. Postgres *why upgrade*?<sup><a href="#footnote-9-1">50</a></sup>
+- Upgrade your database. Postgres *why upgrade*?<sup><a href="#footnote-9-1">50</a></sup> Tune Autovacuum for your workload.
 - *Prune and Tune* indexes,<sup><a href="#footnote-9-2">51</a></sup> use *pg_dba*<sup><a href="#footnote-9-3">52</a></sup> for psql, *rails_best_practices* gem
 - Drop unneeded tables, columns, constraints, indexes, functions, triggers, and extensions
-- Rebuild fragmented tables (pg_repack, pg_squeeze,<sup><a href="#footnote-9-4">53</a></sup> `VACUUM FULL`, logical replication, or *copy swap drop*<sup><a href="#footnote-8-5">46</a></sup>)
+- Rebuild fragmented tables (pg_repack, pg_squeeze,<sup><a href="#footnote-9-4">53</a></sup> `VACUUM FULL`)
 - Reindex fragmented indexes (`REINDEX CONCURRENTLY`)
-- Maintain your database like your application code. *Maintainable...Databases?* podcast<sup><a href="#footnote-9-4">53</a></sup> 🎧
+- *Maintainable...Databases?* podcast<sup><a href="#footnote-9-4">53</a></sup> 🎧
 
 ---
 <style scoped>
@@ -1248,7 +1248,7 @@ a { color: #fff; }
 ## ❌ Mistake #1—Rejecting Mechanical Sympathy
 - Using high-churn designs (updates and deletes) for Postgres that don't work well with tuples, MVCC, and Autovacuum
 - Over-using limited CPU, memory, and IO from inefficient reads and writes
-- Allowing inefficient queries from gems like *jsonapi-resources*,<sup><a href="#footnote-9-5-2">56</a></sup> *graphql-ruby*,<sup><a href="#footnote-9-5-3">57</a></sup> *ActiveAdmin*<sup><a href="#footnote-9-5-4">58</a></sup>
+- Inefficient generated queries from gems like *jsonapi-resources*,<sup><a href="#footnote-9-5-2">56</a></sup> *graphql-ruby*,<sup><a href="#footnote-9-5-3">57</a></sup> *ActiveAdmin*<sup><a href="#footnote-9-5-4">58</a></sup>
 - Allowing lazy loading and N+1s
 - Not preventing excessively long queries, idle transactions
 
@@ -1273,8 +1273,8 @@ a { color: #fff; }
 
 - Take control of your SQL (`to_sql`)<sup><a href="#footnote-9-5-4-1">59</a></sup> and execution plans (`.explain()`)
 - Replace high update churn designs with "append-mostly", e.g. *slotted counters*,<sup><a href="#footnote-9-5-5">60</a></sup> Increase *HOT updates*.<sup><a href="#footnote-9-5-6">61</a></sup>
-- Prevent lazy loading with *Strict Loading*.<sup><a href="#footnote-9-5-7">62</a></sup> Start by logging violations.<sup><a href="#footnote-9-5-8">63</a></sup>
-- Add resiliency by setting allowed upper limits on query run times, idle transactions, number of connections
+- Prevent lazy loading by enabling *Strict Loading*.<sup><a href="#footnote-9-5-7">62</a></sup> Start by logging violations.<sup><a href="#footnote-9-5-8">63</a></sup>
+- Preserve stability by setting upper limits on allowed durations for queries & idle transactions, number of connections
 
 ---
 <style scoped>
@@ -1311,11 +1311,11 @@ EXPLAIN (ANALYZE, BUFFERS) SELECT "trips".* FROM "trips" ORDER BY "trips"."creat
 ---
 <style scoped>
 section {
-  color:#000;
+  color:#fff;
   background-color: var(--theme-mistake-10);
 }
 blockquote {
-  color:#000;
+  color:#fff;
 }
 a { color: #fff; }
 </style>
