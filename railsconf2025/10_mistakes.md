@@ -632,7 +632,6 @@ a { color: #fff; }
 - Not using *cardinality*, *selectivity*, or execution plan `BUFFERS` info in designs
 - Adding indexes haphazardly (over-indexing)<sup><a href="#footnote-2-2">14</a></sup>
 - Choosing schema designs with poor performance
-- Generating AI solutions but lacking skills to verify them
 
 <div class="corner-label">💵 Server costs, Developer time</div>
 
@@ -662,9 +661,9 @@ a { color: #fff; }
 
 - Hire experience: DB specialists, DBAs, and consultants
 - Grow experience: books, courses, conferences, communities
-- Provide a production-like database clone instance for experimentation. Use it in your workflow.
-- Learn concepts of *pages*, buffers, latency, *selectivity*, *cardinality*, *correlation*, and *locality* in your designs
-- Avoid performance-unfriendly schema designs like random UUID<sup><a href="#footnote-2-3">15</a></sup> primary keys
+- Create a production clone instance for experimentation. Use it in your workflow.
+- Use concepts of *pages*, buffers, latency, *selectivity*, *cardinality*, *correlation*, and *locality* to improve your designs
+- Avoid performance-unfriendly designs like random UUID<sup><a href="#footnote-2-3">15</a></sup> primary keys
 
 ---
 <style scoped>
@@ -682,7 +681,7 @@ a { color: #fff; }
 </style>
 
 ## Row versions (Tuples), MVCC, transactions
-Which Spiderman is live and "dead"?
+Which Spiderman is "live" and "dead"?
 
 ![bg contain right 90%](images/spiderman.png.webp)
 
@@ -701,8 +700,8 @@ section {
 a { color: #fff; }
 </style>
 
-## Table and index data in fixed-size 8KB Pages
-How is it laid out and how does that correlate with latency?
+## Fixed-size 8KB Pages
+How is table and index data stored and how does that affect latency?
 
 ![bg contain right 95%](images/records-small.jpg)
 
@@ -751,9 +750,9 @@ a { color: #fff; }
 
 ## ❌ Mistake #8—Speculative DB Design
 - Avoiding beneficial database constraints *today* due to speculation about *tomorrow*
-- Casting doubt on evolving the future schema design
-- *Not* using data normalization good practices ([3NF](https://en.wikipedia.org/wiki/Third_normal_form)) by default to avoid duplication
-- Avoiding *all* use of denormalization, even for cases like multi-tenancy<sup><a href="#footnote-3-1">16</a></sup>
+- Doubting ability to evolve the schema design in the future
+- *Not* using third normal form normalization ([3NF](https://en.wikipedia.org/wiki/Third_normal_form)) by default
+- Avoiding *all* forms of denormalization, even for use cases like multi-tenancy<sup><a href="#footnote-3-1">16</a></sup>
 
 <div class="corner-label">💵 Data bugs, high maintenance costs</div>
 
@@ -780,8 +779,8 @@ a { color: #fff; }
 
 - Use all available constraints for data consistency, integrity, quality (CORE: *constraint-driven*<sup><a href="#footnote-3-2">17</a></sup>)
 - Create matching DB constraints for code validation. Match PK/FK types. Use *database_consistency* gem.<sup><a href="#footnote-3-3">18</a></sup>
-- Normalize by default. Design for today, but anticipate growth in data and query volume.
-- Use denormalization sometimes, for example with multi-tenancy.
+- Normalize by default. Eliminate duplication. Design for today, but anticipate growth in data and query volume.
+- Use denormalization sometimes, for example tenant identifier columns
 
 ---
 <style scoped>
@@ -855,7 +854,7 @@ a { color: #fff; }
 - Log and store SQL query source code line numbers,<sup><a href="#footnote-4-1">19</a></sup> using Query Logs (*SQLCommenter* formatted), visibile in Rails log
 - Collect query execution plans, manually or automatically with *auto_explain*<sup><a href="#footnote-4-2">20</a></sup>
 - Reduce `BUFFERS` counts in execution plans<sup><a href="#footnote-4-3">21</a></sup> to reduce latency
-- Add DB observability. Postgres: *pg_stat_statements*, *PgHero*, *PgAnalyze*, *PgBadger*
+- Observe database processes. Postgres: *pg_stat_statements*, *PgHero*, *PgAnalyze*, *PgBadger*
 - MySQL: *Percona Monitoring and Management (PMM)*, *Oracle Enterprise Manager for MySQL*,<sup><a href="#footnote-4-4">22</a></sup> SQLite: *SQLite Database Analyzer*<sup><a href="#footnote-4-5">23</a></sup>
 
 ---
@@ -906,10 +905,9 @@ a { color: #fff; }
 </div>
 
 ## ❌ Mistake #6—ORM Pitfalls
-- Not refactoring inefficient ORM queries
-- Not restricting column access, always using `SELECT *`<sup><a href="#footnote-5-1">24</a></sup>
-- Using non-scalable query patterns like huge `IN` lists<sup><a href="#footnote-5-2">25</a></sup>
 - Performing unnecessary, costly ORM queries like `COUNT(*)`, `ORDER BY`
+- Using non-scalable query patterns like huge `IN` lists<sup><a href="#footnote-5-2">25</a></sup>
+- Not restricting column access, always using `SELECT *`<sup><a href="#footnote-5-1">24</a></sup>
 - Using inefficient ORM pagination
 - Not using ORM caches
 
