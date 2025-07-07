@@ -476,8 +476,7 @@ a { color: #fff; }
 - Use Trunk-based development (TBD)<sup><a href="#footnote-1-2">2</a></sup> and feature flags. 2024 Rails Survey<sup><a href="#footnote-1-3">3</a></sup>: 20% (500+) "multiple/month", 2% (50+) "multiple/quarter"
 - Track DevOps metrics. DORA,<sup><a href="#footnote-1-4">4</a></sup> SPACE,<sup><a href="#footnote-1-5">5</a></sup> *Accelerate*,<sup><a href="#footnote-1-6">6</a></sup> 2-Minute DORA Quick Check<sup><a href="#footnote-1-7">7</a></sup>
 - Raise test suite coverage (*Simplecov*),<sup><a href="#footnote-1-8">8</a></sup> increase speed & reliability
-- Lint migrations for safe DDL. Rails<sup><a href="#footnote-1-9">9</a></sup> and SQL (*Squawk*<sup><a href="#footnote-1-9-1">10</a></sup>)
-- Release DDL using ⚓ Anchor Migrations,<sup><a href="#footnote-1-9-2">11</a></sup> safety-linted, non-blocking, idempotent, maintain consistency with Rails<sup><a href="#footnote-1-9-3">12</a></sup>
+- Supplement DDL releases using ⚓ Anchor Migrations,<sup><a href="#footnote-1-9-2">11</a></sup> safety-linted SQL, non-blocking, idempotent, maintain consistency with Active Record Migrations<sup><a href="#footnote-1-9-3">12</a></sup>
 
 ---
 <style scoped>
@@ -1023,7 +1022,7 @@ a { color: #fff; }
 
 - Practice DDL changes on a production clone with timing. Understand locks taken and access patterns.
 - Use multi-step non-blocking DDL. `ignored_columns`.<sup><a href="#footnote-6-1">32</a></sup> `INVALID` `CHECK` constraint before `NOT NULL`
-- Safety-lint DDL. Active Record & PostgreSQL *strong_migrations,*<sup><a href="#footnote-1-9">9</a></sup> (MySQL/MariaDB) *online_migrations*,<sup><a href="#footnote-6-2">33</a></sup> *Squawk*<sup><a href="#footnote-1-10">1</a></sup> for SQL
+- Safety-lint DDL. Active Record & PostgreSQL *strong_migrations,*<sup><a href="#footnote-1-9">9</a></sup> (MySQL/MariaDB) *online_migrations*,<sup><a href="#footnote-6-2">33</a></sup> *Squawk*<sup><a href="#footnote-1-9-1">10</a></sup> for SQL
 - Learn about locks and conflicts using `pglocks.org`
 - Set a low `lock_timeout` to auto-cancel failed lock acquisition DDL, use retries
 
