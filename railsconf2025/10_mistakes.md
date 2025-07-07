@@ -855,7 +855,7 @@ a { color: #fff; }
 
 - Log and store SQL query source code line numbers,<sup><a href="#footnote-4-1">19</a></sup> using Query Logs (*SQLCommenter* formatted), visibile in Rails log
 - Collect query execution plans, manually or automatically with *auto_explain*<sup><a href="#footnote-4-2">20</a></sup>
-- Review `BUFFERS` counts from execution plans<sup><a href="#footnote-4-3">21</a></sup> to improve designs
+- Reduce `BUFFERS` counts in execution plans<sup><a href="#footnote-4-3">21</a></sup> to reduce latency
 - Add DB observability. Postgres: *pg_stat_statements*, *PgHero*, *PgAnalyze*, *PgBadger*
 - MySQL: *Percona Monitoring and Management (PMM)*, *Oracle Enterprise Manager for MySQL*,<sup><a href="#footnote-4-4">22</a></sup> SQLite: *SQLite Database Analyzer*<sup><a href="#footnote-4-5">23</a></sup>
 
@@ -907,12 +907,12 @@ a { color: #fff; }
 </div>
 
 ## ❌ Mistake #6—ORM Pitfalls
-- Allowing inefficient queries that are ORM generated
-- Never restricting column access, always using `SELECT *`<sup><a href="#footnote-5-1">24</a></sup>
+- Not refactoring inefficient ORM queries
+- Not restricting column access, always using `SELECT *`<sup><a href="#footnote-5-1">24</a></sup>
 - Using non-scalable query patterns like huge `IN` lists<sup><a href="#footnote-5-2">25</a></sup>
-- Not removing unnecessary `COUNT(*)`, `ORDER BY` queries from ORM defaults
-- Using ORM `LIMIT` / `OFFSET` pagination over alternatives
-- Not using ORM *counter caches* or the *prepared statement* cache
+- Performing unnecessary, costly ORM queries like `COUNT(*)`, `ORDER BY`
+- Using inefficient ORM pagination
+- Not using ORM caches
 
 <div class="corner-label">💵 Overprovisioned, inefficient queries</div>
 
@@ -940,11 +940,11 @@ a { color: #fff; }
 <h2>❌ Mistake #6—ORM Pitfalls <span class="corner-fixes">✅ 🛠️ Fixes</span></h2>
 
 - Put your app on a SQL Query Diet<sup><a href="#footnote-5-3">26</a></sup> (find sources<sup><a href="#footnote-4-1">19</a></sup>)
-- Load only needed columns: `select()`, `pluck()`, for better use of indexes
+- Limit columns to what's needed: `select()`, `pluck()`, better use of indexes
 - Refactor huge `IN`<sup><a href="#footnote-5-2">25</a></sup> lists. Use a join, `VALUES`, or `ANY`+`ARRAY` (Postgres)
 - Use endless (*keyset*) pagination (*pagy* gem<sup><a href="#footnote-5-3">26</a></sup>) over ORM `LIMIT`/`OFFSET`
-- Use the ORM prepared statement cache<sup><a href="#footnote-5-5">28</a></sup> to skip repeated parsing/planning
-- Skip unnecessary count queries with a *counter cache*<sup><a href="#footnote-5-6">29</a></sup>
+- Use the prepared statement cache<sup><a href="#footnote-5-5">28</a></sup> to skip repeated parsing/planning
+- Skip unnecessary count queries by using the *counter cache*<sup><a href="#footnote-5-6">29</a></sup>
 - Use `size()` over `count()` and `length()`
 - Use `EXISTS`,<sup><a href="#footnote-5-7">30</a></sup> set `implicit_order_column`<sup><a href="#footnote-5-8">31</a></sup>
 
@@ -998,9 +998,9 @@ a { color: #fff; }
 ## ❌ Mistake #5—DDL Fear
 - Not linting DDL migrations for safety
 - Creating code workarounds to avoid schema evolution and data backfills
-- Not using a production-like instance to practice big DDL changes
-- Not using safety timeouts for Postgres, MySQL, SQLite
-- Not learning the locks taken for operations, or safer, multi-step alternatives
+- Not practicing big DDL changes on a production DB clone
+- Not auto-canceling contending DDL operations (Postgres, MySQL, SQLite)
+- Using blocking DDL due to not understanding exclusive locks and queueing
 
 <div class="corner-label">💵 Longer cycles, high maintenance</div>
 
@@ -1021,11 +1021,11 @@ a { color: #fff; }
 
 <h2>❌ Mistake #5—DDL Fear <span class="corner-fixes">✅ 🛠️ Fixes</span></h2>
 
-- Practice DDL changes on a production-like instance. Collect timing. Understand which locks and conflicts.
-- Use multi-step safe alternatives. `ignored_columns`,<sup><a href="#footnote-6-1">32</a></sup>. `INVALID` `CHECK` constraint before `NOT NULL`
-- Lint DDL in Active Record (PostgreSQL) *strong_migrations*<sup><a href="#footnote-1-9">9</a></sup> (MySQL/MariaDB) *online_migrations*,<sup><a href="#footnote-6-2">33</a></sup> *Squawk*<sup><a href="#footnote-1-10">1</a></sup> for SQL
-- Learn about locks and conflicts for tables, rows using `pglocks.org`
-- Use a low `lock_timeout` for DDL changes with retries
+- Practice DDL changes on a production clone with timing. Understand locks taken and access patterns.
+- Use multi-step non-blocking DDL. `ignored_columns`.<sup><a href="#footnote-6-1">32</a></sup> `INVALID` `CHECK` constraint before `NOT NULL`
+- Safety-lint DDL. Active Record & PostgreSQL *strong_migrations,*<sup><a href="#footnote-1-9">9</a></sup> (MySQL/MariaDB) *online_migrations*,<sup><a href="#footnote-6-2">33</a></sup> *Squawk*<sup><a href="#footnote-1-10">1</a></sup> for SQL
+- Learn about locks and conflicts using `pglocks.org`
+- Set a low `lock_timeout` to auto-cancel failed lock acquisition DDL, use retries
 
 ---
 <style scoped>
@@ -1277,7 +1277,7 @@ a { color: #fff; }
 - Restructure, reduce, and optimize to minimize CPU, memory, and IO
 - Take control of your SQL (`to_sql`)<sup><a href="#footnote-9-5-4-1">59</a></sup> and execution plans (`.explain()`)
 - Replace high update churn designs with "append-mostly", e.g. *slotted counters*,<sup><a href="#footnote-9-5-5">60</a></sup> Increase *HOT updates*.<sup><a href="#footnote-9-5-6">61</a></sup>
-- Prevent lazy loading with *Strict Loading*<sup><a href="#footnote-9-5-7">62</a></sup>. Start by logging violations.<sup><a href="#footnote-9-5-8">63</a></sup>
+- Prevent lazy loading with *Strict Loading*.<sup><a href="#footnote-9-5-7">62</a></sup> Start by logging violations.<sup><a href="#footnote-9-5-8">63</a></sup>
 - Add resiliency by setting allowed upper limits on query run times, idle transactions, number of connections
 
 ---
