@@ -505,7 +505,7 @@ but reads are still allowed.
   |
 4 | / CREATE INDEX IF NOT EXISTS
 5 | | idx_trips_created_at ON trips (created_at);
-  | |__________________________________________-
+  | |__________________________________________
   |
   <span class="highlight">= help: Use `CONCURRENTLY` to avoid blocking writes.</span> 👈
 
@@ -946,7 +946,6 @@ a { color: #fff; }
 - Use the prepared statement cache<sup><a href="#footnote-5-5">28</a></sup> to skip repeated parsing/planning
 - Skip unnecessary count queries by using the *counter cache*<sup><a href="#footnote-5-6">29</a></sup>
 - Use `size()` over `count()` and `length()`
-- Use `EXISTS`,<sup><a href="#footnote-5-7">30</a></sup> set `implicit_order_column`<sup><a href="#footnote-5-8">31</a></sup>
 
 ---
 <style scoped>
@@ -996,11 +995,12 @@ a { color: #fff; }
 </div>
 
 ## ❌ Mistake #5—DDL Fear
-- Not linting DDL migrations for safety
 - Creating code workarounds to avoid schema evolution and data backfills
+- Using blocking DDL due to not understanding exclusive locks and queueing
+- Not linting DDL migrations for safety
 - Not practicing big DDL changes on a production DB clone
 - Not auto-canceling contending DDL operations (Postgres, MySQL, SQLite)
-- Using blocking DDL due to not understanding exclusive locks and queueing
+
 
 <div class="corner-label">💵 Longer cycles, high maintenance</div>
 
@@ -1063,8 +1063,8 @@ a { color: #fff; }
 - Querying and retrieving huge sets of 10K+ rows, making users wait
 - Ineffective filtering and indexing on *low cardinality* columns
 - Missing indexes on *high cardinality* columns or foreign keys for filtering
-- Not using advanced indexing like multicolumn or partial (Postgres)
-- Performing slow aggregate queries (`SUM`, `COUNT`) on huge tables
+- Not using advanced indexing strategies or index types
+- Performing slow aggregate queries (`SUM`, `COUNT`) causing users to wait
 - For huge tables of 100GB or more in size, avoiding table partitioning
 
 <div class="corner-label">💵 Server costs, user experience</div>
@@ -1089,7 +1089,7 @@ a { color: #fff; }
 - Work with small sets of data.<sup><a href="#footnote-7-1">34</a></sup> Restructure queries to select fewer rows, columns, and perform fewer joins.
 - Add "missing indexes"<sup><a href="#footnote-7-2">35</a></sup> on high cardinality columns,<sup><a href="#footnote-7-3">38</a></sup> try out *pganalyze_lint*<sup><a href="#footnote-7-2-1">36</a></sup> (and *hypopg*<sup><a href="#footnote-7-2-2">37</a></sup>)
 - Use advanced indexing like multicolumn, partial indexes, GIN, GiST.
-- Improve UX by pre-calculating aggregates with *rollup* gem,<sup><a href="#footnote-7-4">39</a></sup> or with materialized views of denormalized data, managed with *scenic*<sup><a href="#footnote-7-5">40</a></sup>
+- Pre-calculate aggregates using *rollup* gem,<sup><a href="#footnote-7-4">39</a></sup> create denormalized materialized views, manage using *scenic* gem<sup><a href="#footnote-7-5">40</a></sup>
 - Migrate time-based data into a partitioned table<sup><a href="#footnote-7-6">41</a></sup> for improved performance and maintenance
 
 ---
@@ -1179,9 +1179,9 @@ a { color: #fff; }
 
 ## ❌ Mistake #2—Missing DB Maintenance
 - Running unsupported versions of Postgres, MySQL, or SQLite
-- Keeping unneeded tables, columns, constraints, indexes, functions, triggers, or extensions in your database
 - Not monitoring or fixing heavily fragmented tables and indexes
 - Leaving Autovacuum and other maintenance parameters untuned
+- Not removing unneeded database objects
 
 <div class="corner-label">💵 Poor performance, security risk, UX</div>
 
@@ -1249,9 +1249,9 @@ a { color: #fff; }
 </div>
 
 ## ❌ Mistake #1—Rejecting Mechanical Sympathy
-- Using designs for Postgres that don't work well with immutable row versions (tuples), MVCC, and Autovacuum
+- Using high-churn designs (updates and deletes) for Postgres that don't work well with tuples, MVCC, and Autovacuum
 - Over-using limited CPU, memory, and IO from inefficient reads and writes
-- Accepting inefficient queries from gems like *jsonapi-resources*,<sup><a href="#footnote-9-5-2">56</a></sup> *graphql-ruby*,<sup><a href="#footnote-9-5-3">57</a></sup> *ActiveAdmin*<sup><a href="#footnote-9-5-4">58</a></sup>
+- Allowing inefficient queries from gems like *jsonapi-resources*,<sup><a href="#footnote-9-5-2">56</a></sup> *graphql-ruby*,<sup><a href="#footnote-9-5-3">57</a></sup> *ActiveAdmin*<sup><a href="#footnote-9-5-4">58</a></sup>
 - Allowing lazy loading and N+1s
 - Not preventing excessively long queries, idle transactions
 
@@ -1274,7 +1274,6 @@ a { color: #fff; }
 
 <h2>❌ Mistake #1—Rejecting Mechanical Sympathy <span class="corner-fixes">✅ 🛠️ Fixes</span></h2>
 
-- Restructure, reduce, and optimize to minimize CPU, memory, and IO
 - Take control of your SQL (`to_sql`)<sup><a href="#footnote-9-5-4-1">59</a></sup> and execution plans (`.explain()`)
 - Replace high update churn designs with "append-mostly", e.g. *slotted counters*,<sup><a href="#footnote-9-5-5">60</a></sup> Increase *HOT updates*.<sup><a href="#footnote-9-5-6">61</a></sup>
 - Prevent lazy loading with *Strict Loading*.<sup><a href="#footnote-9-5-7">62</a></sup> Start by logging violations.<sup><a href="#footnote-9-5-8">63</a></sup>
@@ -1313,8 +1312,18 @@ EXPLAIN (ANALYZE, BUFFERS) SELECT "trips".* FROM "trips" ORDER BY "trips"."creat
 </pre>
 
 ---
+<style scoped>
+section {
+  color:#000;
+  background-color: var(--theme-mistake-10);
+}
+blockquote {
+  color:#000;
+}
+a { color: #fff; }
+</style>
 
-## 🌱 ***Cultivate*** Mechanical Sympathy
+## 🌱 ***Embrace*** Mechanical Sympathy
 > When you understand how a system is designed to be used, you can align with the design to gain optimal performance.
 
 🏎️ 🌬️
