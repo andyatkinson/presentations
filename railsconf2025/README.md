@@ -5,7 +5,7 @@
 ## Tools
 First, delete the last slide footnotes HTML.
 
-Generate the HTML for the footnotes, replace all the inner text throughout the presentaiton.
+Generate the HTML for the footnotes, replace all the inner text throughout the presentation.
 
 ```sh
 ./footnote_fixer.rb 10_mistakes.md
