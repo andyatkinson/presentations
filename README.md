@@ -8,6 +8,7 @@
 
 ## Presentations with Markdown
 > Create decks like a hacker!
+
 Quote inspired by: [blog like a hacker](https://tom.preston-werner.com/2008/11/17/blogging-like-a-hacker.html)
 
 Often a slide deck is the best way to present information. Since I'm keeping notes in Markdown anyway, Marp allows me to add a minimal amount of formatting to create a slide deck presentation, and export it to a PDF.
