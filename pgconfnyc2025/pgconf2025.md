@@ -198,27 +198,6 @@ img.img {
   }
 </style>
 
-#### Origin of talk
-- Around 10 Postgres instances with single DB
-- Mix of single-tenant and multi-tenant
-- Some with barely any use, over-provisioned, costly
-
----
-<style scoped>
-  img.rc17 {
-    position:absolute;
-    top:50px;
-    right:30px;
-    max-width:600px;
-  }
-  img.rw24 {
-    position:relative;
-    bottom:220px;
-    left:620px;
-    max-width:400px;
-  }
-</style>
-
 #### Context for talk
 - Around 10 Postgres instances with single DB
 - Mix of single-tenant and multi-tenant
@@ -234,7 +213,7 @@ img.img {
   }
   img.rw24 {
     position:relative;
-    bottom:220px;
+    bottom:50px;
     left:620px;
     max-width:400px;
   }
@@ -242,140 +221,11 @@ img.img {
 
 #### My Background
 - Backend web developer, mostly Ruby on Rails
-- Book author: High Performance PostgreSQL for Rails
+- Book author: High Performance PostgreSQL for Rails (2024)
+- Honored with a Postgres coin in 2024!
 - Postgres Specialist!
 
-<img class="rc17" src="images/railsconf-2017.jpg"/>
-
 <img class="rw24" src="images/collage-railsworld-2024.jpg"/>
-
----
-<style scoped>
-  footer {
-    color:#000;
-  }
-  section::after {
-    color:#000;
-  }
-
-  section {
-    border: 10px dashed green;
-    background:lightgreen;
-  }
-    .receipt {
-      margin: 0 0 0 20%;
-      height:90%;
-      width: 750px;
-      padding: 1rem;
-      border: 1px dashed #ccc;
-      position:relative;
-      top:-30px;
-      left:-100px;
-
-      background: repeating-linear-gradient(
-        0deg,
-        #fefefe,
-        #fefefe 28px,
-        #f9f9f9 29px,
-        #f9f9f9 30px
-      );
-      border: 1px dashed #ccc;
-      box-shadow:
-        inset 0 0 6px rgba(0,0,0,0.05),
-        0 4px 12px rgba(0,0,0,0.1);
-    }
-    .receipt-header {
-      text-align: center;
-      padding:0;
-      margin:0;
-      border-bottom: 1px dashed #ccc;
-      color:#000;
-    }
-    .receipt-header, .receipt-header h2 {
-       margin-top:-10px;
-    }
-    .receipt-header, .receipt-header h2 {
-      font-size: 0.8rem;
-    }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-    }
-    th, td {
-      text-align: left;
-      font-size: 1rem;
-    }
-    th {
-      border-bottom: 1px dashed #ccc;
-    }
-    td.qty, td.price, td.total {
-      text-align: right;
-    }
-    .summary td {
-      font-weight: bold;
-      font-size: 0.5rem;
-    }
-    .dashed {
-      border-top: 1px dashed #ccc;
-      margin: 0.5rem 0;
-    }
-
-    .corner-label.overrides {
-      background:#333;
-      color:#fff;
-      border:1px solid #000;
-      font-style:italic;
-      font-family:Helvetica,Arial;
-    }
-</style>
-
-<div class="receipt">
-  <div class="receipt-header">
-    <h3>Bill: Costly DB Mistakes</h3>
-    <div>July 8, 2025</div>
-  </div>
-  <table>
-    <thead>
-      <tr>
-        <th>Item</th>
-        <th class="qty">Qty</th>
-        <th class="price">Price</th>
-        <th class="total">Total</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td>Bigger server costs</td>
-        <td class="qty">12</td>
-        <td class="price">$500.00</td>
-        <td class="total">$6,000.00</td>
-      </tr>
-      <tr>
-        <td>Customer downgrades, churn (5K ARR)</td>
-        <td class="qty">5</td>
-        <td class="price">$5,000</td>
-        <td class="total">$25,000.00</td>
-      </tr>
-    </tbody>
-    <tr>
-      <td>Dev time triage, resolution, 5 devs, 5 hours/month, $150/hr</td>
-      <td class="qty">300</td>
-      <td class="price">$150.00</td>
-      <td class="total">$30,000.00</td>
-    </tr>
-    <tfoot>
-      <tr class="dashed"><td colspan="4"></td></tr>
-      <tr class="summary">
-        <td colspan="3">Total</td>
-        <td class="total">$61,000.00</td>
-      </tr>
-    </tfoot>
-  </table>
-</div>
-
-
-<div class='corner-label overrides'>🍬 Thanks for your business!</div>
-
 
 ---
 <style scoped>
@@ -426,17 +276,17 @@ img.img {
 <div style="display: flex; gap: 2rem;">
   <div style="flex: 1; margin: -30px px; border-radius: 5px;">
     <ul style="list-style-type:none;margin:10px 10px 10px 10px;padding:0;">
-      <li><div class='list-item mistake-1'>10. Infrequent Releases</div></li>
-      <li><div class='list-item mistake-2'>9. DB Inexperience</div></li>
-      <li><div class="list-item mistake-3">8. Speculative DB Design</div></li>
-      <li><div class="list-item mistake-4">7. Missing DB Monitoring</div></li>
+      <li><div class='list-item mistake-1'>Single Big DB</div></li>
+      <li><div class='list-item mistake-2'>Composite Primary Keys</div></li>
+      <li><div class="list-item mistake-3">Tenant Data Logs</div></li>
+      <li><div class="list-item mistake-4">Tenant Query Logs</div></li>
     </ul>
   </div>
 
   <div style="flex: 1; padding: 1rem; border-radius: 8px; list-style-type: none; color:#000;">
     <ul style="list-style-type:none;margin:10px 10px 10px 10px;padding:0;">
-      <li><div class="list-item mistake-5">6. ORM Pitfalls</div></li>
-      <li><div class="list-item mistake-6">5. DDL Fear</div></li>
+      <li><div class="list-item mistake-5">Row Level Security</div></li>
+      <li><div class="list-item mistake-6">Partitioned Orders</div></li>
       <li><div class="list-item mistake-7">4. Excessive Data Access</div></li>
     </ul>
   </div>
@@ -459,19 +309,6 @@ section {
   background-color: var(--theme-mistake-1);
 }
 a { color: #fff; }
-.corner-label {
-  position: fixed;
-  bottom: 200px;
-  right: 0;
-  background: lightgreen;
-  color: green;
-  padding:10px;
-  font-weight: bold;
-  font-size:0.8em;
-  transform: rotate(-30deg);
-  transform-origin: bottom right;
-  border: 10px dashed green;
-}
 </style>
 <div class="top-bar">
   <div class="active">Forming</div>
@@ -479,13 +316,14 @@ a { color: #fff; }
   <div class="inactive">Optimizing</div>
 </div>
 
-## ❌ Mistake #10—Infrequent Releases
-- Using Gitflow<sup><a href="#footnote-1-1">1</a></sup> or similar *legacy* software delivery processes
-- Not using Feature Flags to decoupling releases and feature visibility
-- Not tracking or improving DevOps metrics
-- Performing DDL (`create index`, `alter table`, etc.) *exclusively* as Rails Migrations in releases
+<h2>Opportunities and Challenges</h2>
 
-<div class='corner-label'>💵 Cycle time, incident response</div>
+- Opportunities: Cost savings, fewer instances
+- Opportunities: Less operational complexity, fewer instances
+- Opportunities: Improved monitoring, fewer instances
+- Challenges: More shared compute resources
+- Challenges: Shared Postgres resources (Autovacuum, shared_buffers)
+- Challenges: Lacking tenant-scoped monitoring
 
 ---
 <style scoped>
@@ -501,12 +339,72 @@ a { color: #fff; }
   <div class="inactive">Optimizing</div>
 </div>
 
-<h2>❌ Mistake #10—Infrequent Releases <span class="corner-fixes">✅ 🛠️ Fixes</span></h2>
+<h2>Single Big Instance</h2>
 
-- Use Trunk-based development (TBD)<sup><a href="#footnote-1-2">2</a></sup> and feature flags. 2024 Rails Survey<sup><a href="#footnote-1-3">3</a></sup>: 20% (500+) "multiple/month", 2% (50+) "multiple/quarter"
-- Track DevOps metrics. DORA,<sup><a href="#footnote-1-4">4</a></sup> SPACE,<sup><a href="#footnote-1-5">5</a></sup> *Accelerate*,<sup><a href="#footnote-1-6">6</a></sup> 2-Minute DORA Quick Check<sup><a href="#footnote-1-7">7</a></sup>
-- Raise test suite coverage (*Simplecov*),<sup><a href="#footnote-1-8">8</a></sup> increase speed & reliability
-- Supplement DDL releases using ⚓ Anchor Migrations,<sup><a href="#footnote-1-9-2">11</a></sup> safety-linted SQL, non-blocking, idempotent, maintain consistency with Active Record Migrations<sup><a href="#footnote-1-9-3">12</a></sup>
+- Push limits of (managed) Postgres vertical instance scaling
+- GCP: 96 vCPUs, 624 GB
+- MS Azure: 96 vCores, 672 GiB
+- AWS RDS most CPUs: [db.r8g.48xlarge](https://instances.vantage.sh/aws/rds/db.r8g.48xlarge?currency=USD), 192 vCPUs, 1536GB (1.5 TiB) memory, 210K annually on-demand (17.5k/month), 140K 1-year reservation
+
+---
+<style scoped>
+section {
+  color:#fff;
+  background-color: var(--theme-mistake-1);
+}
+a { color: #fff; }
+</style>
+<div class="top-bar">
+  <div class="active">Forming</div>
+  <div class="inactive">Scaling</div>
+  <div class="inactive">Optimizing</div>
+</div>
+
+<h2>Primary Keys</h2>
+
+- Primary key type decisions: UUID or integer (sequences)
+- Single integers, or multiple values (composite primary keys)
+- Let's try out CPKs
+- Let's review caveats
+
+---
+<style scoped>
+section {
+  color:#fff;
+  background-color: var(--theme-mistake-1);
+}
+a { color: #fff; }
+</style>
+<div class="top-bar">
+  <div class="active">Forming</div>
+  <div class="inactive">Scaling</div>
+  <div class="inactive">Optimizing</div>
+</div>
+
+<h2>Primary Keys</h2>
+
+- In Postgres 17 we can use native UUID V7 primary keys
+- This helps us later if we distribute our tables or rows (sharding)
+
+---
+<style scoped>
+section {
+  color:#fff;
+  background-color: var(--theme-mistake-1);
+}
+a { color: #fff; }
+</style>
+<div class="top-bar">
+  <div class="active">Forming</div>
+  <div class="inactive">Scaling</div>
+  <div class="inactive">Optimizing</div>
+</div>
+
+<h2>Tenant Data Logs</h2>
+
+- "Data": Inserts, updates, and deletes
+- Create a Suppliers `supplier_data_changes` table
+
 
 ---
 <style scoped>

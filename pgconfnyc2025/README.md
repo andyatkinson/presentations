@@ -1,13 +1,13 @@
 # PGConf NYC 2025
 
 ## Multitenancy Patterns Community Postgres
-- Use Docker Postgres 18
+- Use Docker Postgres 18 Beta 3
 - `create_db.sh` script
-- DB: Creates pass user, explicit grants
+- DB: Creates user, explicit grants
 - DB: Creates App-Schema
 - Populates data
 
-## Run Postgres 17 on Docker
+## Run Postgres 18 Beta 3 on Docker
 ```sh
 docker pull postgres:18beta3
 
