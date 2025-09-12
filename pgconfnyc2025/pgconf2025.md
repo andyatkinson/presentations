@@ -315,11 +315,11 @@ a { color: #fff; }
 <h2>Opportunities and Challenges</h2>
 
 - Opportunities: Cost savings, fewer instances
-- Opportunities: Less operational complexity, fewer instances
-- Opportunities: Improved monitoring, fewer instances
-- Challenges: More shared compute resources
-- Challenges: Shared Postgres resources (Autovacuum, shared_buffers)
-- Challenges: Lacking tenant-scoped monitoring
+- Opportunities: Fewer instances, less complexity, less inconsistency
+- Opportunities: Easier management for monitoring, access
+- Challenges: Shared compute resources!
+- Challenges: Shared Postgres resources (Autovacuum, buffer cache)
+- Challenges: Lacking tenant-scoped observability out of the box
 
 ---
 <style scoped>
@@ -335,21 +335,21 @@ a { color: #fff; }
   <div class="inactive">Optimizing</div>
 </div>
 
-<h2>Our Multi-tenant design</h2>
+<h2>Start of an e-commerce app multi-tenant DB design</h2>
 
-- Single Postgres schema, single Postgres database
-- Table: `suppliers` (The tenant)
+- Single database `pgconf`, single schema `pgconf`, single instance
+- Table: `suppliers` (Our "tenant")
 - Table: `customers`
 - Table: `orders` (FK `supplier_id`, FK `customer_id`)
 
-Barebones e-commerce use case: Customers places orders for items from suppliers
+Basic use case: Customers create orders, orders are for items from suppliers
 
 ---
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐
 │                                                                 │
-│     Server instance (Postgres 18, X CPUs, X Memory, etc.)       │
+│     Server instance (Postgres 18: CPUs, Memory, cache etc.)     │
 │                                                                 │
 │      ┌────────────────────────────────────────────────────┐     │
 │      │                                                    │     │
@@ -376,27 +376,27 @@ Barebones e-commerce use case: Customers places orders for items from suppliers
 
 ---
 
-## Cost-efficient design
+# Simple, efficient design to start
 
-- Same server, same database, same (single) schema
-- Suppliers are the tenant, and they're stored in a `suppliers` table, their is identified with a `supplier_id` column
-- Distribute the supplier identifier column (`supplier_id`) on every table for simple queries and indexing (this means some denormalization)
-- Use `bigint` data type. 4 bytes too few. 16 bytes UUID v4 size and randomness is not desirable for space and performance unless 100% needed.
+- Triple simple simplicity: one server, database, schema
+- Tenant `suppliers`, their row data is identified with a `supplier_id` column
+- Add the tenant id column (`supplier_id`) to every table for simple queries and indexing (a form of denormalization)
+- Goldilocks `bigint` 8 bytes data type. `integer` 4 bytes too small. 16 bytes UUID is too big.
 
 ---
 
-# Why `supplier_id` on every table?
+# Tenant id column `supplier_id` on every table
 
-- Easy identification
-- Less complex queries to parse, plan, execute (one less `JOIN`)
-- Use multicolumn indexes with the `supplier_id` column
-- Easier row data movement: e.g. copying tenant data to a lower environment or demo environment
+- Easy tenant data identification, easy queries, no joins
+- Less work for query planner to parse, plan, execute tenant queries
+- Can use multicolumn indexes that include the `supplier_id` column
+- Easier possible row data movement later, copying to lower environment, demo environment
 
 ---
 
 # Demos
 
-- `github.com/ andyatkinson/ presentations / pass2024 / README.md`
+- `github.com/ andyatkinson/ presentations / pgconf2025 / README.md`
 - Boot a Docker Postgres 18 Beta 3 instance
 - Run: `sh create_db.sh`
 
@@ -420,10 +420,10 @@ a { color: #fff; }
 
 <h2>Single Big Instance</h2>
 
-- Push limits of (managed) Postgres vertical instance scaling
-- GCP: 96 vCPUs, 624 GB
-- MS Azure: 96 vCores, 672 GiB
-- AWS RDS most CPUs: [db.r8g.48xlarge](https://instances.vantage.sh/aws/rds/db.r8g.48xlarge?currency=USD), 192 vCPUs, 1536GB (1.5 TiB) memory, 210K annually on-demand (17.5k/month), 140K 1-year reservation
+- Maintain triple single simplicity, but add power with vertically scaling Postgres instance
+- Major cloud offerings (Sep. 2025): GCP: 96 vCPUs, 624 GB
+- MS Azure: 96 vCores, 672 GB
+- AWS RDS [db.r8g.48xlarge](https://instances.vantage.sh/aws/rds/db.r8g.48xlarge?currency=USD), 192 vCPUs, 1536 GB (1.5 TB) memory, 210K annually on-demand (17.5k/month), 140K 1-year reservation
 
 ---
 <style scoped>
@@ -439,12 +439,11 @@ a { color: #fff; }
   <div class="inactive">Optimizing</div>
 </div>
 
-<h2>Primary Keys</h2>
+<h2>Primary Keys Decision Point</h2>
 
-- Primary key type decisions: UUID or integer (sequences)
-- Single integers, or multiple values (composite primary keys)
-- Let's use `bigint` (8 bytes) for all tables
-- Let's try out CPKs
+- Primary key data types: UUID or integers (+ sequences)
+- Within integers: Single values or multiple values (Composite primary keys, tenant-scoped)
+- We'll demo `bigint` (8 bytes) single and CPKs
 - Let's review caveats
 
 ---
@@ -461,10 +460,10 @@ a { color: #fff; }
   <div class="inactive">Optimizing</div>
 </div>
 
-<h2>Primary Keys</h2>
+<h2>UUID Primary Keys</h2>
 
-- In Postgres 17 we can use native UUID V7 primary keys
-- This helps us later if we distribute our tables or rows (sharding)
+- Although we're not using them here, Postgres 18 supports native UUID V7 time-orderable primary keys
+- This could also help make distribution of tables and rows using sharding, easier later on
 
 ---
 <style scoped>
@@ -475,8 +474,8 @@ section {
 a { color: #fff; }
 </style>
 <div class="top-bar">
-  <div class="active">Starting up</div>
-  <div class="inactive">Learning</div>
+  <div class="inactive">Starting up</div>
+  <div class="active">Learning</div>
   <div class="inactive">Optimizing</div>
 </div>
 
@@ -496,8 +495,8 @@ section {
 a { color: #fff; }
 </style>
 <div class="top-bar">
-  <div class="active">Starting up</div>
-  <div class="inactive">Learning</div>
+  <div class="inactive">Starting up</div>
+  <div class="active">Learning</div>
   <div class="inactive">Optimizing</div>
 </div>
 
@@ -516,9 +515,9 @@ section {
 a { color: #fff; }
 </style>
 <div class="top-bar">
-  <div class="active">Starting up</div>
+  <div class="inactive">Starting up</div>
   <div class="inactive">Learning</div>
-  <div class="inactive">Optimizing</div>
+  <div class="active">Optimizing</div>
 </div>
 
 <h2>Row Level Security</h2>
@@ -534,9 +533,9 @@ section {
 a { color: #fff; }
 </style>
 <div class="top-bar">
-  <div class="active">Starting up</div>
+  <div class="inactive">Starting up</div>
   <div class="inactive">Learning</div>
-  <div class="inactive">Optimizing</div>
+  <div class="active">Optimizing</div>
 </div>
 
 <h2>Partitioned Tables</h2>
@@ -555,12 +554,12 @@ section {
 a { color: #fff; }
 </style>
 <div class="top-bar">
-  <div class="active">Starting up</div>
+  <div class="inactive">Starting up</div>
   <div class="inactive">Learning</div>
-  <div class="inactive">Optimizing</div>
+  <div class="active">Optimizing</div>
 </div>
 
-<h2>Configs</h2>
+<h2>Partitioned Table Configs</h2>
 
 - Increase maintenance workers for vacuum, monitor parallel workers
 - Automate archival and detachment of aged-out partitions for the tenant tables
