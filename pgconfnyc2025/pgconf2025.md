@@ -199,24 +199,18 @@ img.img {
 </style>
 
 #### Context
-- I helped manage a dozen PostgreSQL instances for a web app
-- Instances were set up at different times, initially all "shared", then single-customer split outs
-- Some were very over-provisioned (over spending), others very under-provisioned (performance problems)
-- On instances, mix of users, permissions, schema objects, tables, indexes
+- We managed a dozen PostgreSQL instances with "copies" of the same database for deployments of the web app.
+- Instances were set up at different times, not using infra-as-code. Initially "multi-customer" environments, then later single-customer split outs
+- Most were provisioned wrong. Over-provisioned (over spending), under-provisioned (performance problems)
+- Poor config consistency. Mix of users, permissions, schema objects, tables, indexes.
 
-How could we do it better next time?
+How could we do better?
 
 ---
 <style scoped>
-  img.rc17 {
-    position:absolute;
-    top:50px;
-    right:30px;
-    max-width:600px;
-  }
   img.rw24 {
     position:relative;
-    bottom:50px;
+    bottom:60px;
     left:620px;
     max-width:400px;
   }
@@ -228,6 +222,51 @@ How could we do it better next time?
 - Received a PostgreSQL Contributor Coin Gift in 2024!<sup><a href="#footnote-1-1">1</a></sup>
 
 <img class="rw24" src="images/collage-railsworld-2024.jpg"/>
+
+
+---
+<style scoped>
+  footer {
+    color:#000;
+  }
+  section::after {
+    color:#000;
+  }
+  section {
+    background-color:#666;
+  }
+  li .list-item {
+    width:275px;
+    font-size: 40px;
+    margin:10px 0;
+    padding: 0 25px;
+  }
+  .group-container {
+      display: flex;
+      align-items: stretch;
+      position: relative;
+      border:1px solid;
+    }
+
+    .group-label {
+      writing-mode: vertical-rl;
+      transform: rotate(180deg);
+      background-color: #f0f0f0;
+      color: #333;
+      font-weight: bold;
+      padding: 0.5rem;
+      border-right: 1px solid #333;
+      text-align: center;
+    }
+
+    .group-content {
+      flex: 1;
+    }
+</style>
+
+## Solution: Multitenancy
+
+Let's explore 6 patterns using community PostgreSQL
 
 ---
 <style scoped>
@@ -298,28 +337,6 @@ How could we do it better next time?
   </div>
 </div>
 
----
-<style scoped>
-section {
-  color:#fff;
-  background-color: var(--theme-mistake-1);
-}
-a { color: #fff; }
-</style>
-<div class="top-bar">
-  <div class="active">Starting up</div>
-  <div class="inactive">Learning</div>
-  <div class="inactive">Optimizing</div>
-</div>
-
-<h2>Opportunities and Challenges</h2>
-
-- Opportunities: Cost savings, fewer instances
-- Opportunities: Fewer instances, less complexity, less inconsistency
-- Opportunities: Easier management for monitoring, access
-- Challenges: Shared compute resources!
-- Challenges: Shared Postgres resources (Autovacuum, buffer cache)
-- Challenges: Lacking tenant-scoped observability out of the box
 
 ---
 <style scoped>
@@ -335,7 +352,49 @@ a { color: #fff; }
   <div class="inactive">Optimizing</div>
 </div>
 
-<h2>Start of an e-commerce app multi-tenant DB design</h2>
+<h2>Multitenancy Opportunities and Challenges</h2>
+
+Opportunities
+- Cost savings, fewer instances
+- Less complexity, less inconsistency
+- Easier management for monitoring, upgrade, administer
+
+Challenges
+- Shared compute resources!
+- Shared Postgres resources (Autovacuum, buffer cache)
+- Lacking tenant-scoped observability out of the box
+
+---
+<style scoped>
+section {
+  color:#fff;
+  background-color: var(--theme-mistake-1);
+}
+a { color: #fff; }
+</style>
+<div class="top-bar">
+  <div class="active">Starting up</div>
+  <div class="inactive">Learning</div>
+  <div class="inactive">Optimizing</div>
+</div>
+
+## Single Big DB
+
+---
+<style scoped>
+section {
+  color:#fff;
+  background-color: var(--theme-mistake-1);
+}
+a { color: #fff; }
+</style>
+<div class="top-bar">
+  <div class="active">Starting up</div>
+  <div class="inactive">Learning</div>
+  <div class="inactive">Optimizing</div>
+</div>
+
+<h2>E-commerce multi-tenant DB design</h2>
 
 - Single database `pgconf`, single schema `pgconf`, single instance
 - Table: `suppliers` (Our "tenant")
@@ -418,7 +477,7 @@ a { color: #fff; }
   <div class="inactive">Optimizing</div>
 </div>
 
-<h2>Single Big Instance</h2>
+<h2>Scaling the Single Big DB</h2>
 
 - Maintain triple single simplicity, but add power with vertically scaling Postgres instance
 - Major cloud offerings (Sep. 2025): GCP: 96 vCPUs, 624 GB
@@ -565,6 +624,44 @@ a { color: #fff; }
 - Automate archival and detachment of aged-out partitions for the tenant tables
 - Automate detachment for "churned" customers
 
+---
+<style scoped>
+section {
+  color:#fff;
+  background-color: var(--theme-mistake-1);
+}
+a { color: #fff; }
+</style>
+<div class="top-bar">
+  <div class="inactive">Starting up</div>
+  <div class="inactive">Learning</div>
+  <div class="active">Optimizing</div>
+</div>
+
+## Beware #1 of 2: RLS Performance
+
+- Row level security pitfalls
+https://di.nmfay.com/rls-performance
+
+---
+<style scoped>
+section {
+  color:#fff;
+  background-color: var(--theme-mistake-1);
+}
+a { color: #fff; }
+</style>
+<div class="top-bar">
+  <div class="inactive">Starting up</div>
+  <div class="inactive">Learning</div>
+  <div class="active">Optimizing</div>
+</div>
+
+## Beware #2 of 2: Triggers at certain scale 
+
+- 50K QPS inserts, adds commit latency, index maintenance, WAL activity
+- Could partition the log table by day
+- Could move to async CDC approach using logical replication (beyond scope here)
 
 ---
 <!-- _color: #fff; -->

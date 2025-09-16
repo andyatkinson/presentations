@@ -1,11 +1,12 @@
 # PGConf NYC 2025
 
 ## Multitenancy Patterns Community Postgres
-- Use Docker Postgres 18 Beta 3
+- Using Docker Desktop on MacOS
+- Install Postgres 18 Beta 3, instructions below
 - `create_db.sh` script
-- DB: Creates user, explicit grants
-- DB: Creates App-Schema
-- Populates data
+    - DB: Creates user, explicit grants
+    - DB: Creates App-Schema
+    - Populates data
 
 ## Run Postgres 18 Beta 3 on Docker
 ```sh
@@ -46,4 +47,10 @@ sh create_db.sh
 ```sh
 sh connect_superuser.sh
 sh connect_user.sh
+```
+
+## Reset DB
+```sh
+sh drop_db.sh
+sh create_db.sh
 ```

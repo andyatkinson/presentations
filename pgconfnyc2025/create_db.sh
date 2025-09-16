@@ -112,7 +112,7 @@ run_psql_file "create_tables.sql"
 # Run as regular user
 # Change to use composite primary key design
 #
-run_psql_file "2-cpk_example.sql"
+# run_psql_file "2-cpk_example.sql"
 
 #
 # Run as regular user

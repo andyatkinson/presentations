@@ -6,6 +6,9 @@
 ## PASS Data Community Summit
 - [pass2024/README.md](pass2024/README.md)
 
+## PGConf NYC 2025
+- [pgconfnyc2025/README.md](pgconfnyc2025/README.md)
+
 ## Presentations with Markdown
 > Create decks like a hacker!
 Quote inspired by: [blog like a hacker](https://tom.preston-werner.com/2008/11/17/blogging-like-a-hacker.html)
@@ -66,10 +69,10 @@ Draw.io
 Not directly supported in Marp Slides. Community:
 - <https://github.com/orgs/marp-team/discussions/150#discussioncomment-7127819>
 
-What I did was use HTML footnotes, then keep a CSV mapping of number to link, then a Ruby script produces an HTML list of links.
+What I did was use HTML footnotes, then keep a CSV mapping of number to link, then a Ruby script (`footnote_fixer.rb`) produces an HTML list of links.
 
 ## Tools
-To install on macOS:
+MacOS:
 ```sh
 brew install shellcheck
 ```
@@ -83,6 +86,7 @@ shellcheck create_db.sh
 - Choose "Trust", not Restricted Mode, which doesn't support all the HTML
 
 ## Magick
+Shrink the sizes of large image files.
 ```sh
 magick images/pghero.png -resize 50% -quality 85 images/pghero.jpg
 ```
