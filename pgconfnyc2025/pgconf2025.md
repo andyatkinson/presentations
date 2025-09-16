@@ -317,22 +317,22 @@ Let's explore 6 patterns using community PostgreSQL
 <div style="display: flex; gap: 2rem;">
   <div style="flex: 1; margin: -30px px; border-radius: 5px;">
     <ul style="list-style-type:none;margin:10px 10px 10px 10px;padding:0;">
-      <li><div class='list-item mistake-1'>Single Big DB</div></li>
-      <li><div class='list-item mistake-2'>Composite Primary Keys</div></li>
+      <li><div class='list-item mistake-1'>#1 Single Big DB</div></li>
+      <li><div class='list-item mistake-2'>#2 Composite Primary Keys</div></li>
     </ul>
   </div>
 
   <div style="flex: 1; padding: 1rem; border-radius: 8px; list-style-type: none; color:#000;">
     <ul style="list-style-type:none;margin:10px 10px 10px 10px;padding:0;">
-      <li><div class="list-item mistake-3">Tenant Data Logs</div></li>
-      <li><div class="list-item mistake-4">Tenant Query Logs</div></li>
+      <li><div class="list-item mistake-3">#3 Tenant Data Logs</div></li>
+      <li><div class="list-item mistake-4">#4 Tenant Query Logs</div></li>
     </ul>
   </div>
 
   <div style="flex: 1; padding: 1rem; border-radius: 8px; list-style-type: none; color:#000;">
     <ul style="list-style-type:none; margin:10px 10px 10px 10px;padding:0;">
-    <li><div class="list-item mistake-5">Row Level Security</div></li>
-    <li><div class="list-item mistake-6">Partitioned Orders</div></li>
+    <li><div class="list-item mistake-5">#5 Row Level Security</div></li>
+    <li><div class="list-item mistake-6">#6 Partitioned Orders</div></li>
     </ul>
   </div>
 </div>
@@ -477,7 +477,7 @@ a { color: #fff; }
   <div class="inactive">Optimizing</div>
 </div>
 
-<h2>Scaling the Single Big DB</h2>
+<h2>#1 Scaling the Single Big DB</h2>
 
 - Maintain triple single simplicity, but add power with vertically scaling Postgres instance
 - Major cloud offerings (Sep. 2025): GCP: 96 vCPUs, 624 GB
@@ -519,10 +519,26 @@ a { color: #fff; }
   <div class="inactive">Optimizing</div>
 </div>
 
+<h2>#2 Composite Primary Keys</h2>
+
+---
+<style scoped>
+section {
+  color:#fff;
+  background-color: var(--theme-mistake-1);
+}
+a { color: #fff; }
+</style>
+<div class="top-bar">
+  <div class="active">Starting up</div>
+  <div class="inactive">Learning</div>
+  <div class="inactive">Optimizing</div>
+</div>
+
 <h2>UUID Primary Keys</h2>
 
-- Although we're not using them here, Postgres 18 supports native UUID V7 time-orderable primary keys
-- This could also help make distribution of tables and rows using sharding, easier later on
+- Although we're not using them here, Postgres 18 generates UUID V7 values natively, useful as primary keys
+- One advantage of UUIDs could be to help future sharding projects to be able to move row data around without collisions
 
 ---
 <style scoped>
@@ -538,7 +554,7 @@ a { color: #fff; }
   <div class="inactive">Optimizing</div>
 </div>
 
-<h2>Tenant Data Logs</h2>
+<h2>#3 Tenant Data Logs</h2>
 
 - "Data": Inserts, updates, and deletes
 - Create a Suppliers `supplier_data_changes` table
@@ -559,7 +575,7 @@ a { color: #fff; }
   <div class="inactive">Optimizing</div>
 </div>
 
-<h2>Tenant Query Logs</h2>
+<h2>#4 Tenant Query Logs</h2>
 
 - We have pg_stat_statements (PGSS) for all queries
 - PGSS is not scoped to a tenant
@@ -575,11 +591,29 @@ a { color: #fff; }
 </style>
 <div class="top-bar">
   <div class="inactive">Starting up</div>
+  <div class="active">Learning</div>
+  <div class="inactive">Optimizing</div>
+</div>
+
+<h2>#4 Tenant Query Logs</h2>
+
+Demo
+
+---
+<style scoped>
+section {
+  color:#fff;
+  background-color: var(--theme-mistake-1);
+}
+a { color: #fff; }
+</style>
+<div class="top-bar">
+  <div class="inactive">Starting up</div>
   <div class="inactive">Learning</div>
   <div class="active">Optimizing</div>
 </div>
 
-<h2>Row Level Security</h2>
+<h2>#5 Row Level Security</h2>
 
 - In Postgres, we can limit access to certain rows using a policy
 
@@ -597,12 +631,48 @@ a { color: #fff; }
   <div class="active">Optimizing</div>
 </div>
 
-<h2>Partitioned Tables</h2>
+<h2>#5 Row Level Security</h2>
+
+Demo
+
+---
+<style scoped>
+section {
+  color:#fff;
+  background-color: var(--theme-mistake-1);
+}
+a { color: #fff; }
+</style>
+<div class="top-bar">
+  <div class="inactive">Starting up</div>
+  <div class="inactive">Learning</div>
+  <div class="active">Optimizing</div>
+</div>
+
+<h2>#6 Partitioned Tables</h2>
 
 - Our e-commerce tenant may have a big `orders` table, let's partition it
 - Partitioned tables are a way to break up massive tables into chunks, so each chunk can be queried faster or chunks can be managed better
 - Our partitioned table uses a CPK (`supplier_id`, `id`)
 - Let's enable parallel vacuum
+
+---
+<style scoped>
+section {
+  color:#fff;
+  background-color: var(--theme-mistake-1);
+}
+a { color: #fff; }
+</style>
+<div class="top-bar">
+  <div class="inactive">Starting up</div>
+  <div class="inactive">Learning</div>
+  <div class="active">Optimizing</div>
+</div>
+
+<h2>#6 Partitioned Tables</h2>
+
+Demo
 
 ---
 <style scoped>
@@ -638,7 +708,7 @@ a { color: #fff; }
   <div class="active">Optimizing</div>
 </div>
 
-## Beware #1 of 2: RLS Performance
+## Warnings #1 of 2: RLS Performance
 
 - Row level security pitfalls
 https://di.nmfay.com/rls-performance
@@ -657,11 +727,11 @@ a { color: #fff; }
   <div class="active">Optimizing</div>
 </div>
 
-## Beware #2 of 2: Triggers at certain scale 
+## Warnings #2 of 2: Trigger overhead performance
 
-- 50K QPS inserts, adds commit latency, index maintenance, WAL activity
-- Could partition the log table by day
-- Could move to async CDC approach using logical replication (beyond scope here)
+- Imagine 50K Inserts/second, trigger functions add commit latency, there's index maintenance, WAL activity, this might be a scalability problem
+- Could mitigate by partitioning a big append-mostly table
+- Likely need to move to async approach at some point. E.g. using logical replication (beyond scope here)
 
 ---
 <!-- _color: #fff; -->
