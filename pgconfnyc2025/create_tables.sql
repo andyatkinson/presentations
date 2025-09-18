@@ -13,7 +13,12 @@ CREATE TABLE suppliers (
 CREATE TABLE customers (
   id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
   name text NOT NULL,
-  email text UNIQUE NOT NULL
+  email text UNIQUE NOT NULL,
+  supplier_id BIGINT NOT NULL
+  -- We'd want this FK to enforce referential integrity
+  -- CONSTRAINT fk_supplier_id
+  --   FOREIGN KEY (supplier_id)
+  --   REFERENCES suppliers(id)
 );
 
 -- single column primary key

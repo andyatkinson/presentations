@@ -357,10 +357,11 @@ a { color: #fff; }
 Opportunities
 - Cost savings, fewer instances
 - Less complexity, less inconsistency
+- Tenant data isolation
 - Easier management for monitoring, upgrade, administer
 
 Challenges
-- Shared compute resources!
+- Shared servier instance resources (CPU, Memory, IOPS)
 - Shared Postgres resources (Autovacuum, buffer cache)
 - Lacking tenant-scoped observability out of the box
 
@@ -500,7 +501,13 @@ a { color: #fff; }
 
 <h2>#2 Composite Primary Keys</h2>
 
-- CPKs could help with tenant data extraction, dedicated instance, while still getting performance benefits of integers
+- CPKs enforce unique tenant-data via primary key
+- Check ORM Support. Active Record (Ruby on Rails) supports them.
+- Tenant data isolation
+- Longer foreign key definitions:
+```
+FOREIGN KEY (supplier_id, id) REFERENCES suppliers(supplier_id, id)
+```
 
 DEMO
 
