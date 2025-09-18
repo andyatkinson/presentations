@@ -1,14 +1,12 @@
 # PGConf NYC 2025
 
 ## Multitenancy Patterns Community Postgres
-- Using Docker Desktop on MacOS
-- Install Postgres 18 Beta 3, instructions below
+Created using:
+- Docker Desktop for MacOS
+- Postgres 18 Beta 3
 - `create_db.sh` script
-    - DB: Creates user, explicit grants
-    - DB: Creates App-Schema
-    - Populates data
 
-## Run Postgres 18 Beta 3 on Docker
+## Run Postgres 18 on Docker
 ```sh
 docker pull postgres:18beta3
 
@@ -32,9 +30,7 @@ postgres=# select version();
 ## pg_stat_statements
 ```sql
 CREATE EXTENSION IF NOT EXISTS pg_stat_statements;
-
 SELECT * FROM pg_stat_statements;
-
 select pg_stat_statements_reset();
 ```
 

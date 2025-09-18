@@ -396,7 +396,7 @@ a { color: #fff; }
 
 <h2>E-commerce multi-tenant DB design</h2>
 
-- Single database `pgconf`, single schema `pgconf`, single instance
+- Triple single: single database `pgconf`, schema `pgconf`, instance
 - Table: `suppliers` (Our "tenant")
 - Table: `customers`
 - Table: `orders` (FK `supplier_id`, FK `customer_id`)
@@ -435,29 +435,29 @@ Basic use case: Customers create orders, orders are for items from suppliers
 
 ---
 
-# Simple, efficient design to start
+# Schema Design: Single Integer Primary Keys
 
-- Triple simple simplicity: one server, database, schema
-- Tenant `suppliers`, their row data is identified with a `supplier_id` column
-- Add the tenant id column (`supplier_id`) to every table for simple queries and indexing (a form of denormalization)
-- Goldilocks `bigint` 8 bytes data type. `integer` 4 bytes too small. 16 bytes UUID is too big.
+- Identify `suppliers` tenant data with a `supplier_id` column
+- Add `supplier_id` to every table for simple queries and indexing (a form of denormalization) (more on next slide)
+- Goldilocks PK data type: `bigint` 8 bytes. `integer` 4 bytes too small. 16 bytes UUID too big.
 
 ---
 
 # Tenant id column `supplier_id` on every table
 
 - Easy tenant data identification, easy queries, no joins
-- Less work for query planner to parse, plan, execute tenant queries
-- Can use multicolumn indexes that include the `supplier_id` column
-- Easier possible row data movement later, copying to lower environment, demo environment
+- Uniformity for scripts, use `generated column` on `suppliers` table
+- Less joins: Less work for query planner to parse, plan, execute tenant queries
+- Use multicolumn indexes with `supplier_id` leading column
+- Easier row data movement, copy tenant rows to other environments: staging, demo
 
 ---
 
 # Demos
 
-- `github.com/ andyatkinson/ presentations / pgconf2025 / README.md`
-- Boot a Docker Postgres 18 Beta 3 instance
-- Run: `sh create_db.sh`
+- `github.com / andyatkinson / presentations / pgconf2025 / README.md`
+- Docker Postgres 18 instance
+- Entrypoint script: `sh create_db.sh`
 
 From there, we’ll look at corresponding SQL files for each pattern
 
@@ -479,7 +479,7 @@ a { color: #fff; }
 
 <h2>#1 Scaling the Single Big DB</h2>
 
-- Maintain triple single simplicity, but add power with vertically scaling Postgres instance
+- Scale Postgres instance vertically as long as possible
 - Major cloud offerings (Sep. 2025): GCP: 96 vCPUs, 624 GB
 - MS Azure: 96 vCores, 672 GB
 - AWS RDS [db.r8g.48xlarge](https://instances.vantage.sh/aws/rds/db.r8g.48xlarge?currency=USD), 192 vCPUs, 1536 GB (1.5 TB) memory, 210K annually on-demand (17.5k/month), 140K 1-year reservation
@@ -498,29 +498,12 @@ a { color: #fff; }
   <div class="inactive">Optimizing</div>
 </div>
 
-<h2>Primary Keys Decision Point</h2>
-
-- Primary key data types: UUID or integers (+ sequences)
-- Within integers: Single values or multiple values (Composite primary keys, tenant-scoped)
-- We'll demo `bigint` (8 bytes) single and CPKs
-- Let's review caveats
-
----
-<style scoped>
-section {
-  color:#fff;
-  background-color: var(--theme-mistake-1);
-}
-a { color: #fff; }
-</style>
-<div class="top-bar">
-  <div class="active">Starting up</div>
-  <div class="inactive">Learning</div>
-  <div class="inactive">Optimizing</div>
-</div>
-
 <h2>#2 Composite Primary Keys</h2>
 
+- CPKs could help with tenant data extraction, dedicated instance, while still getting performance benefits of integers
+
+DEMO
+
 ---
 <style scoped>
 section {
@@ -535,10 +518,10 @@ a { color: #fff; }
   <div class="inactive">Optimizing</div>
 </div>
 
-<h2>UUID Primary Keys</h2>
+<h2>Alternative: UUID Primary Keys</h2>
 
-- Although we're not using them here, Postgres 18 generates UUID V7 values natively, useful as primary keys
-- One advantage of UUIDs could be to help future sharding projects to be able to move row data around without collisions
+- Postgres 18 can generate UUID V7 values natively, useful as primary keys
+- UUIDs avoid integer conflicts with multiple primary instances, which could be a reason to chose them
 
 ---
 <style scoped>
