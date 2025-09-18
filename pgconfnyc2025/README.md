@@ -29,7 +29,7 @@ postgres=# select version();
 
 ## pg_stat_statements
 ```sql
-CREATE EXTENSION IF NOT EXISTS pg_stat_statements;
+CREATE EXTENSION IF NOT EXISTS pg_stat_statements SCHEMA pgconf;
 SELECT * FROM pg_stat_statements;
 select pg_stat_statements_reset();
 ```

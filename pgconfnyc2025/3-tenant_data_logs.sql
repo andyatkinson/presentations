@@ -79,22 +79,37 @@ UPDATE suppliers SET name = name || '-v2' where id = 1;
 
 UPDATE customers SET name = name || ' AdditionalSurname' where id = 1;
 
--- Churned customer, archive then delete their orders
+-- "Churned" customer, archive first (soft delete), then delete their orders
+-- We want to flag them with "(Deleted)" in their name
 UPDATE suppliers SET name = name || ' (Deleted)' where id = (select id from suppliers where name = 'Jett.com');
 SELECT * FROM suppliers;
 
-DELETE FROM suppliers WHERE name LIKE '%(Deleted)';
 
 -- Update an order quantity
 UPDATE orders SET quantity = quantity + 1 where id = (select max(id) from orders);
 
-
+-- Let's see what's happening:
 SELECT * from supplier_data_changes;
 
--- Could pluck out the supplier specific ones
--- To get an operations count per supplier
--- For example:
+-- Let's hard-delete the supplier orders, and supplier
+BEGIN;
+WITH to_delete AS (
+  SELECT id FROM suppliers WHERE name LIKE '%(Deleted)'
+)
+DELETE FROM orders WHERE supplier_id = (SELECT id from to_delete);
+WITH to_delete AS (
+  SELECT id FROM suppliers WHERE name LIKE '%(Deleted)'
+)
+DELETE FROM suppliers WHERE id = (SELECT id from to_delete);
+COMMIT;
 
+-- Let's see what's happening:
+SELECT * from supplier_data_changes;
+
+-- Plucl out the supplier specific ones
+-- To get an operations count per supplier
+-- Or to see differences old_data/new_data
+-- For example:
 SELECT
     old_data,
     new_data

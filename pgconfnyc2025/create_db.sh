@@ -66,12 +66,14 @@ check_db_exists() {
 
 # Run as Superuser
 # CREATE ROLE/USER/OWNER of DB IF NOT EXISTS
+# Grant pg_monitor
 create_user_ddl=$(cat <<EOF
 CREATE ROLE $DB_USER WITH
  LOGIN
  ENCRYPTED PASSWORD '$DB_PASSWORD';
 
 ALTER ROLE $DB_USER SET search_path TO $DB_SCHEMA;
+GRANT pg_monitor TO $DB_USER;
 EOF
 )
 result=$(run_psql_superuser "SELECT 1 FROM pg_roles WHERE rolname='$DB_USER';")

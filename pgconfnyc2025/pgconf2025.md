@@ -505,8 +505,10 @@ a { color: #fff; }
 - Check ORM Support. Active Record (Ruby on Rails) supports them.
 - Tenant data isolation
 - Longer foreign key definitions:
-```
-FOREIGN KEY (supplier_id, id) REFERENCES suppliers(supplier_id, id)
+```sql
+  CONSTRAINT fk_customer
+      FOREIGN KEY (supplier_id, id)
+      REFERENCES customers (supplier_id, id)
 ```
 
 DEMO
@@ -546,30 +548,12 @@ a { color: #fff; }
 
 <h2>#3 Tenant Data Logs</h2>
 
-- "Data": Inserts, updates, and deletes
-- Create a Suppliers `supplier_data_changes` table
-- Trigger-based system, probably not recommended at a certain TPS (transactions per second) scale, e.g. 500
+- "Data" here is Inserts, Updates, and Deletes for Tenants
+- Create table: `supplier_data_changes` to capture these
+- Use triggers to capture changes
+- Store and query using JSON formatted data
 
-
----
-<style scoped>
-section {
-  color:#fff;
-  background-color: var(--theme-mistake-1);
-}
-a { color: #fff; }
-</style>
-<div class="top-bar">
-  <div class="inactive">Starting up</div>
-  <div class="active">Learning</div>
-  <div class="inactive">Optimizing</div>
-</div>
-
-<h2>#4 Tenant Query Logs</h2>
-
-- We have pg_stat_statements (PGSS) for all queries
-- PGSS is not scoped to a tenant
-- We can make our own query logs table, scoped to tenants
+DEMO
 
 ---
 <style scoped>
@@ -587,7 +571,11 @@ a { color: #fff; }
 
 <h2>#4 Tenant Query Logs</h2>
 
-Demo
+- What about our reads for tenants?
+- We have `pg_stat_statements` (PGSS) but due to query grouping, we actually lose the `supplier_id` field, so we can't see queries by tenant easily
+- To correct this, we can make our own query logs table scoped to tenants
+
+DEMO
 
 ---
 <style scoped>

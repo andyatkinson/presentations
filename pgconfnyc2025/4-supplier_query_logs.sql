@@ -55,10 +55,14 @@ $$
 LANGUAGE plpgsql;
 
 
--- Original SQL query
--- Fulfillment
+-- We're going to need to change our queries.
+-- Here's the original SQL query:
+-- For "Fulfillment"
 -- No usage of functions or PL/pgSQL
 --
+-- Let's reset (as superuser):
+-- select pgconf.pg_stat_statements_reset();
+-- Let's run 'em:
 SELECT
   id AS order_id,
   customer_id,
@@ -79,6 +83,7 @@ FROM orders WHERE supplier_id = 3;
 
 
 --
+-- Let's now use the new function
 -- Same query, but inside of a supplier_query() function
 --
 SELECT * FROM supplier_query('SELECT id AS order_id, customer_id, quantity FROM orders WHERE supplier_id = 1')
