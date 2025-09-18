@@ -13,7 +13,7 @@ DB_SCHEMA="passdata"
 
 run_psql_superuser() {
   local sql_query=$1
-  echo "Running as superuser=$DB_SUPERUSER SQL=$sql_query"
+  echo "Running as superuser=$DB_SUPERUSER SQL=$sql_query" >&2
 
   PGPASSWORD=$DB_SUPERUSER_PWD psql \
     -U $DB_SUPERUSER \

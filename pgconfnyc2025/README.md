@@ -47,6 +47,5 @@ sh connect_user.sh
 
 ## Reset DB
 ```sh
-sh drop_db.sh
-sh create_db.sh
+sh teardown.sh
 ```
