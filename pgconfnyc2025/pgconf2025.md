@@ -595,23 +595,7 @@ a { color: #fff; }
 
 - In Postgres, we can limit access to certain rows using a policy
 
----
-<style scoped>
-section {
-  color:#fff;
-  background-color: var(--theme-mistake-1);
-}
-a { color: #fff; }
-</style>
-<div class="top-bar">
-  <div class="inactive">Starting up</div>
-  <div class="inactive">Learning</div>
-  <div class="active">Optimizing</div>
-</div>
-
-<h2>#5 Row Level Security</h2>
-
-Demo
+DEMO
 
 ---
 <style scoped>
@@ -634,23 +618,7 @@ a { color: #fff; }
 - Our partitioned table uses a CPK (`supplier_id`, `id`)
 - Let's enable parallel vacuum
 
----
-<style scoped>
-section {
-  color:#fff;
-  background-color: var(--theme-mistake-1);
-}
-a { color: #fff; }
-</style>
-<div class="top-bar">
-  <div class="inactive">Starting up</div>
-  <div class="inactive">Learning</div>
-  <div class="active">Optimizing</div>
-</div>
-
-<h2>#6 Partitioned Tables</h2>
-
-Demo
+DEMO
 
 ---
 <style scoped>
