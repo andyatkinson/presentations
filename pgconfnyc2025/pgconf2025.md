@@ -591,9 +591,11 @@ a { color: #fff; }
   <div class="active">Optimizing</div>
 </div>
 
-<h2>#5 Row Level Security</h2>
+<h2>#5 Row Level Security For Suppliers</h2>
 
-- In Postgres, we can limit access to certain rows using a policy
+- In Postgres, we can limit access to certain row data using a policy
+- We'll use our suppliers, and a new supplier_data table.
+- Verify we can create data as each user, and when we select all rows, we only see the rows we have access to
 
 DEMO
 
