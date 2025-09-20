@@ -216,12 +216,12 @@ How could we do better?
   }
 </style>
 
-#### My Background
-- Web developer for 20 years, 15 w/ Ruby on Rails, 10 primarily PostgreSQL
-- Book author: High Performance PostgreSQL for Rails (2024)
-- Received a PostgreSQL Contributor Coin Gift in 2024!<sup><a href="#footnote-1-1">1</a></sup>
+![bg right 90%](images/collage-railsworld-2024.jpg)
 
-<img class="rw24" src="images/collage-railsworld-2024.jpg"/>
+#### My Background
+- Web developer, 20 years, 10 with PostgreSQL
+- Author: High Performance PostgreSQL for Rails (2024)
+- Received a PostgreSQL Contributor Coin Gift (2024)<sup><a href="#footnote-1-1">1</a></sup>
 
 
 ---
