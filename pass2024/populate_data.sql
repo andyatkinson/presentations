@@ -3,7 +3,7 @@ VALUES ('Big River Store');
 SELECT * FROM suppliers;
 
 INSERT INTO suppliers (name)
-VALUES ('Red Cicle Store');
+VALUES ('Red Circle Store');
 SELECT * FROM suppliers;
 
 INSERT INTO suppliers (name)

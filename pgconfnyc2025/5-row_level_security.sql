@@ -3,82 +3,96 @@
 -- \! clear
 -- NOTE: superusers override RLS
 -- To test, connect as regular user, or use SET ROLE
+
+-- We'll create a shared app schema for all suppliers
+-- However, suppliers within the shared schema will only be able to
+-- access their own row data
 --
-CREATE USER bob;
-CREATE USER jane;
-CREATE SCHEMA my_schema;
-GRANT USAGE ON SCHEMA my_schema TO bob;
-GRANT USAGE ON SCHEMA my_schema TO jane;
 
-ALTER DEFAULT PRIVILEGES IN SCHEMA my_schema
-GRANT INSERT, SELECT, UPDATE, DELETE ON TABLES TO bob;
+-- Create usernames that match suppliers.username
+CREATE USER bigriverst;
+CREATE USER redcircles;
 
-ALTER DEFAULT PRIVILEGES IN SCHEMA my_schema
-GRANT INSERT, SELECT, UPDATE, DELETE ON TABLES TO jane;
+-- Shared schema
+CREATE SCHEMA IF NOT EXISTS pgconf;
 
-SET search_path = my_schema, public;
+GRANT USAGE ON SCHEMA pgconf TO bigriverst;
+GRANT USAGE ON SCHEMA pgconf TO redcircles;
+
+ALTER DEFAULT PRIVILEGES IN SCHEMA pgconf
+GRANT INSERT, SELECT, UPDATE, DELETE ON TABLES TO bigriverst;
+
+ALTER DEFAULT PRIVILEGES IN SCHEMA pgconf
+GRANT INSERT, SELECT, UPDATE, DELETE ON TABLES TO redcircles;
+
+SET search_path = pgconf, public;
 
 -- postgres
 SELECT CURRENT_USER;
 
-CREATE TABLE IF NOT EXISTS my_schema.users (
-  user_id serial PRIMARY KEY,
-  username text UNIQUE NOT NULL
-);
-INSERT INTO my_schema.users (username)
-VALUES ('bob'), ('jane');
+-- The suppliers table should exist from earlier and have records
+-- CREATE TABLE IF NOT EXISTS suppliers (
+--   id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+--   name text UNIQUE NOT NULL,
+--   supplier_id BIGINT NOT NULL GENERATED ALWAYS AS (id) STORED
+-- );
+-- select * from pgconf.suppliers;
 
-CREATE TABLE my_schema.user_data (data TEXT, user_id INTEGER);
+-- Create supplier-specific data in a table called "supplier_data"
+CREATE TABLE pgconf.supplier_data (data TEXT, supplier_id BIGINT);
 
-GRANT SELECT ON my_schema.users TO bob;
-GRANT SELECT ON my_schema.users TO jane;
+GRANT SELECT ON pgconf.suppliers TO bigriverst;
+GRANT SELECT ON pgconf.suppliers TO redcircles;
 
-SELECT has_table_privilege('bob', 'my_schema.users', 'SELECT') AS can_read;
-SELECT has_table_privilege('jane', 'my_schema.users', 'SELECT') AS can_read;
+SELECT has_table_privilege('bigriver', 'pgconf.suppliers', 'SELECT') AS can_read;
+SELECT has_table_privilege('redcircle', 'pgconf.suppliers', 'SELECT') AS can_read;
 
 
 -- As the postgres user
 -- Create this function in the public schema
--- Get the users 'id' value
-CREATE OR REPLACE FUNCTION current_user_id() RETURNS int AS $$
+-- Get the suppliers supplier_id value
+CREATE OR REPLACE FUNCTION current_supplier_id() RETURNS BIGINT AS $$
 DECLARE
-found_user_id int;
+found_supplier_id BIGINT;
 BEGIN
-  SELECT user_id INTO found_user_id FROM my_schema.users WHERE username = CURRENT_USER;
-  RETURN found_user_id;
+  SELECT supplier_id INTO found_supplier_id FROM pgconf.suppliers WHERE username = CURRENT_USER;
+  RETURN found_supplier_id;
   EXCEPTION WHEN NO_DATA_FOUND THEN
     RETURN NULL; -- or raise an exception, depending on your requirements
 END;
 $$ LANGUAGE plpgsql STABLE;
 
--- No user id for postgres, not in users table
-select current_user_id();
+-- No supplier id for postgres, not in suppliers table
+select current_supplier_id();
 
--- Try again for bob and jane
-SET ROLE bob;
-select current_user_id();
+-- Try again for bigriver and redcircle
+SET ROLE bigriverst;
+select current_supplier_id();
 
--- Imagine Bob and Jane writing data into the table
-INSERT INTO user_data (data, user_id)
-VALUES ('bob data', current_user_id());
+-- bigriver and redcircle writing data into the supplier data table
+INSERT INTO supplier_data (data, supplier_id)
+VALUES ('bigriver data', current_supplier_id());
 
-SET ROLE jane;
-select current_user_id();
-INSERT INTO user_data (data, user_id)
-VALUES ('jane data', current_user_id());
+SET ROLE redcircles;
+select current_supplier_id();
+INSERT INTO supplier_data (data, supplier_id)
+VALUES ('redcircle data', current_supplier_id());
 
 select current_user;
 SET ROLE postgres;
 
 -- Must be owner of table
--- Enable for user_data
-ALTER TABLE user_data DISABLE ROW LEVEL SECURITY;
+-- Enable for supplier_data
+ALTER TABLE supplier_data DISABLE ROW LEVEL SECURITY;
 
+-- ===================
+-- POLICY
+-- =========
 -- As the postgres role:
--- Policy for user_data
-CREATE POLICY select_user_own_data_policy ON user_data
+-- Policy for supplier_data
+CREATE POLICY select_supplier_own_data_policy ON supplier_data
 FOR SELECT
-  USING (user_id = current_user_id());
+  USING (supplier_id = current_supplier_id());
 
 -- Make sure it's set to ON
 SET row_security TO ON;
@@ -86,20 +100,22 @@ SET row_security TO ON;
 -- As postgres superuser:
 -- Can still see all data
 -- Also: RLS is disabled
-SELECT * FROM user_data;
+SELECT * FROM supplier_data;
 
 -- Enable RLS as postgres
 set role postgres;
-ALTER TABLE user_data ENABLE ROW LEVEL SECURITY;
+ALTER TABLE supplier_data ENABLE ROW LEVEL SECURITY;
 
--- Now set role to Bob
--- Now we should only see Bob's data
-set role bob;
-select * from user_data;
+-- Now set role to bigriverst
+-- Now we should only see bigriver's data
+set role bigriverst;
+select * from supplier_data;
 
-set role jane;
-select * from user_data;
+-- Sample for red circle
+set role redcircles;
+select * from supplier_data;
 
+-- View the policy defined for the table
 SELECT polname, polcmd, pg_get_expr(polqual, polrelid), pg_get_expr(polwithcheck, polrelid)
 FROM pg_policy
-WHERE polrelid = 'user_data'::regclass;
+WHERE polrelid = 'supplier_data'::regclass;
