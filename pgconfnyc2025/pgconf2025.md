@@ -658,7 +658,7 @@ a { color: #fff; }
 
 ## Warnings #1 of 3: RLS Performance
 
-- RLS adds performance overhead. Dian Fay: Row level security pitfalls<sup><a href="#footnote-1-2">1</a></sup> Check your query execution plans for queries that use policies (and functions).
+- RLS adds performance overhead. Dian Fay: Row level security pitfalls<sup><a href="#footnote-1-2">2</a></sup> Check your query execution plans for queries that use policies (and functions).
 
 ---
 <style scoped>
@@ -735,7 +735,7 @@ section {
 <style scoped>
 section li, section li a { 
   color: #fff; 
-  font-size:11px;
+  font-size:20px;
 }
 .footnote {
   position:relative;
@@ -760,3 +760,11 @@ HTML is generated below from this footnotes source
 1-2,di.nmfay.com/rls-performance
 }}
 -->
+
+<div class='footnote'><ul class='two-column-list'><li id='footnote-1-1'>
+  1. <a href='https://wiki.postgresql.org/wiki/Contributor_Gifts'>wiki.postgresql.org/wiki/Contributor_Gifts</a>
+</li>
+<li id='footnote-1-2'>
+  2. <a href='https://di.nmfay.com/rls-performance'>di.nmfay.com/rls-performance</a>
+</li>
+</ul></div>
