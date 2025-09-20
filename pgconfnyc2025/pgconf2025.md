@@ -615,10 +615,10 @@ a { color: #fff; }
 
 <h2>#6 Partitioned Tables</h2>
 
-- Our e-commerce tenant may have a big `orders` table, let's partition it
-- Partitioned tables are a way to break up massive tables into chunks, so each chunk can be queried faster or chunks can be managed better
+- The `orders` table will grow very large, it's for all suppliers, let's partition it
+- Partitioned tables are a way to break up massive tables. Each smaller table can be queried and modified faster than one jumbo table.
 - Our partitioned table uses a CPK (`supplier_id`, `id`)
-- Let's enable parallel vacuum
+- Partitions can run vacuum in parallel
 
 DEMO
 
@@ -656,10 +656,30 @@ a { color: #fff; }
   <div class="active">Optimizing</div>
 </div>
 
-## Warnings #1 of 2: RLS Performance
+## Warnings #1 of 3: RLS Performance
 
-- Row level security pitfalls
-https://di.nmfay.com/rls-performance
+- RLS adds performance overhead. Dian Fay: Row level security pitfalls<sup><a href="#footnote-1-2">1</a></sup> Check your query execution plans for queries that use policies (and functions).
+
+---
+<style scoped>
+section {
+  color:#fff;
+  background-color: var(--theme-mistake-1);
+}
+a { color: #fff; }
+</style>
+<div class="top-bar">
+  <div class="inactive">Starting up</div>
+  <div class="inactive">Learning</div>
+  <div class="active">Optimizing</div>
+</div>
+
+## Warnings #3 of 3: Partitioning still limited to single instance
+
+- Requires a full row copy from unpartitioned table into partitioned table
+- Can parallelize vacuum
+- Faster individual partition operations, like adding an index or constraint
+- Still can hit CPU, memory, and IOPS instance resource limits
 
 ---
 <style scoped>
@@ -737,5 +757,6 @@ ul.two-column-list {
 HTML is generated below from this footnotes source
 {{
 1-1,wiki.postgresql.org/wiki/Contributor_Gifts
+1-2,di.nmfay.com/rls-performance
 }}
 -->
