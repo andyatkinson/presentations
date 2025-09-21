@@ -696,7 +696,7 @@ a { color: #fff; }
 - Requires a big row data migration to get row data into partitioned table
 - Benefits: can perform vacuum on partitions concurrently
 - Operations like adding indexes or constraints can be faster on partitions vs. jumbo table
-- Downside: can still breach CPU, memory, and IOPS instance resource limits
+- Downside: can still breach CPU, memory, and IOPS instance resource limits, for that may need sharded solution (See: SaaS on Rails on PostgreSQL<sup><a href="#footnote-1-3">3</a></sup>)
 
 ---
 <!-- _color: #fff; -->
@@ -755,6 +755,7 @@ HTML is generated below from this footnotes source
 {{
 1-1,wiki.postgresql.org/wiki/Contributor_Gifts
 1-2,di.nmfay.com/rls-performance
+1-3,andyatkinson.com/blog/2024/07/13/SaaS-on-Rails-on-PostgreSQL-POSETTE-2024-andrew-atkinson
 }}
 -->
 
