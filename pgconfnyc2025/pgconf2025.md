@@ -201,8 +201,8 @@ img.img {
 #### Context
 - We managed a dozen PostgreSQL instances with "copies" of the same database for deployments of the web app.
 - Instances were set up at different times, not using infra-as-code. Initially "multi-customer" environments, then later single-customer split outs
-- Most were provisioned wrong. Over-provisioned (over spending), under-provisioned (performance problems)
 - Poor config consistency. Mix of users, permissions, schema objects, tables, indexes.
+- Most were either over-provisioned (over spending), or under-provisioned (performance problems).
 
 How could we do better?
 
@@ -220,7 +220,7 @@ How could we do better?
 
 #### My Background
 - Web developer, 20 years, 10 with PostgreSQL
-- Author: High Performance PostgreSQL for Rails (2024)
+- Author: *High Performance PostgreSQL for Rails* (2024)
 - Received a PostgreSQL Contributor Coin Gift (2024)<sup><a href="#footnote-1-1">1</a></sup>
 
 
@@ -352,15 +352,29 @@ a { color: #fff; }
   <div class="inactive">Optimizing</div>
 </div>
 
-<h2>Multitenancy Opportunities and Challenges</h2>
+## Multitenancy Opportunities
 
-Opportunities
 - Cost savings, fewer instances
 - Less complexity, less inconsistency
 - Tenant data isolation
 - Easier management for monitoring, upgrade, administer
 
-Challenges
+---
+<style scoped>
+section {
+  color:#fff;
+  background-color: var(--theme-mistake-1);
+}
+a { color: #fff; }
+</style>
+<div class="top-bar">
+  <div class="active">Starting up</div>
+  <div class="inactive">Learning</div>
+  <div class="inactive">Optimizing</div>
+</div>
+
+## Multitenancy Challenges
+
 - Shared servier instance resources (CPU, Memory, IOPS)
 - Shared Postgres resources (Autovacuum, buffer cache)
 - Lacking tenant-scoped observability out of the box
@@ -379,30 +393,14 @@ a { color: #fff; }
   <div class="inactive">Optimizing</div>
 </div>
 
-## Single Big DB
-
----
-<style scoped>
-section {
-  color:#fff;
-  background-color: var(--theme-mistake-1);
-}
-a { color: #fff; }
-</style>
-<div class="top-bar">
-  <div class="active">Starting up</div>
-  <div class="inactive">Learning</div>
-  <div class="inactive">Optimizing</div>
-</div>
-
 <h2>E-commerce multi-tenant DB design</h2>
 
-- Triple single: single database `pgconf`, schema `pgconf`, instance
+- Keep it simple: single database `pgconf`, schema `pgconf`, instance
 - Table: `suppliers` (Our "tenant")
 - Table: `customers`
 - Table: `orders` (FK `supplier_id`, FK `customer_id`)
 
-Basic use case: Customers create orders, orders are for items from suppliers
+🛒 Customers create orders, orders are for items from suppliers
 
 ---
 
@@ -461,8 +459,6 @@ Basic use case: Customers create orders, orders are for items from suppliers
 - Entrypoint script: `sh create_db.sh`
 
 From there, we’ll look at corresponding SQL files for each pattern
-
-
 
 ---
 <style scoped>
@@ -594,8 +590,8 @@ a { color: #fff; }
 <h2>#5 Row Level Security For Suppliers</h2>
 
 - In Postgres, we can limit access to certain row data using a policy
-- We'll use our suppliers, and a new supplier_data table.
-- Verify we can create data as each user, and when we select all rows, we only see the rows we have access to
+- We'll use our "suppliers" tenant and create a `supplier_data` table
+- We'll verify that suppliers can only access their own data
 
 DEMO
 
@@ -620,8 +616,6 @@ a { color: #fff; }
 - Our partitioned table uses a CPK (`supplier_id`, `id`)
 - Partitions can run vacuum in parallel
 
-DEMO
-
 ---
 <style scoped>
 section {
@@ -636,11 +630,13 @@ a { color: #fff; }
   <div class="active">Optimizing</div>
 </div>
 
-<h2>Partitioned Table Configs</h2>
+## Why partition the table?
 
 - Increase maintenance workers for vacuum, monitor parallel workers
-- Automate archival and detachment of aged-out partitions for the tenant tables
-- Automate detachment for "churned" customers
+- Opens up "detachment" (`detach concurrently`) of unneeded tenant data, less resource intensive than deleting rows
+- When suppliers leave the platform, we can automatically detach and archive their data
+
+DEMO
 
 ---
 <style scoped>
@@ -658,7 +654,28 @@ a { color: #fff; }
 
 ## Warnings #1 of 3: RLS Performance
 
-- RLS adds performance overhead. Dian Fay: Row level security pitfalls<sup><a href="#footnote-1-2">2</a></sup> Check your query execution plans for queries that use policies (and functions).
+- RLS adds performance overhead. Dian Fay: Row level security pitfalls<sup><a href="#footnote-1-2">2</a></sup> Compare your query execution plans without policies (and their functions) to understand how much overhead is added.
+
+---
+<style scoped>
+section {
+  color:#fff;
+  background-color: var(--theme-mistake-1);
+}
+a { color: #fff; }
+</style>
+<div class="top-bar">
+  <div class="inactive">Starting up</div>
+  <div class="inactive">Learning</div>
+  <div class="active">Optimizing</div>
+</div>
+
+## Warnings #2 of 3: Trigger overhead performance
+
+- Imagine 50K Inserts/second, trigger functions add commit latency, there's index maintenance, WAL activity, this might be a scalability problem
+- Could mitigate with a partitioned table and append-mostly pattern, and minimal indexes and constraints
+- Otherwise: Likely need to move to async approach e.g. logical replication, CDC etc. (beyond this scope)
+
 
 ---
 <style scoped>
@@ -676,30 +693,10 @@ a { color: #fff; }
 
 ## Warnings #3 of 3: Partitioning still limited to single instance
 
-- Requires a full row copy from unpartitioned table into partitioned table
-- Can parallelize vacuum
-- Faster individual partition operations, like adding an index or constraint
-- Still can hit CPU, memory, and IOPS instance resource limits
-
----
-<style scoped>
-section {
-  color:#fff;
-  background-color: var(--theme-mistake-1);
-}
-a { color: #fff; }
-</style>
-<div class="top-bar">
-  <div class="inactive">Starting up</div>
-  <div class="inactive">Learning</div>
-  <div class="active">Optimizing</div>
-</div>
-
-## Warnings #2 of 2: Trigger overhead performance
-
-- Imagine 50K Inserts/second, trigger functions add commit latency, there's index maintenance, WAL activity, this might be a scalability problem
-- Could mitigate by partitioning a big append-mostly table
-- Likely need to move to async approach at some point. E.g. using logical replication (beyond scope here)
+- Requires a big row data migration to get row data into partitioned table
+- Benefits: can perform vacuum on partitions concurrently
+- Operations like adding indexes or constraints can be faster on partitions vs. jumbo table
+- Downside: can still breach CPU, memory, and IOPS instance resource limits
 
 ---
 <!-- _color: #fff; -->

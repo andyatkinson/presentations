@@ -1,5 +1,9 @@
 # PGConf NYC 2025
 
+```sh
+marp --pdf --html --author "Andrew Atkinson" --allow-local-files pgconf2025.md
+```
+
 ## Multitenancy Patterns Community Postgres
 Created using:
 - Docker Desktop for MacOS
