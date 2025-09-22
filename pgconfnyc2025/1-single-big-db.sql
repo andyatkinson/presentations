@@ -44,12 +44,10 @@ order by count(orders.id) desc;
 create index idx_orders_supplier_id ON orders (supplier_id);
 
 
--- ISSUE #1: PGSS has instance wide stats
--- ISSUE #2: Removes critical supplier_id info
-select * from pgconf.suppliers;
-select * from pgconf.customers;
-select * from pgconf.orders where supplier_id = 1;
-select * from pgconf.orders where supplier_id = 2;
-select * from pgconf.orders where supplier_id = 3;
+-- A non-superuser can query all supplier data,
+-- we're relying on application level authentication and authorization
+
+-- We don't have tenant-based write and read traffic information
+-- We don't have tenant-based query performance information to help us manage our instance sizing
 
 \! clear

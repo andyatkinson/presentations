@@ -375,7 +375,7 @@ a { color: #fff; }
 
 ## Multitenancy Challenges
 
-- Shared servier instance resources (CPU, Memory, IOPS)
+- Shared server instance resources (CPU, Memory, IOPS)
 - Shared Postgres resources (Autovacuum, buffer cache)
 - Lacking tenant-scoped observability out of the box
 

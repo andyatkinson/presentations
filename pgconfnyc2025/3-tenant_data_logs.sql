@@ -15,41 +15,24 @@ CREATE TABLE IF NOT EXISTS supplier_data_changes (
 -- TG_TABLE_NAME: The table name related to the trigger
 -- NEW: reference to the new row
 -- OLD: reference to the old row
--- Returns nothing: "void"
 --
 CREATE OR REPLACE FUNCTION log_supplier_data_changes()
 RETURNS TRIGGER AS $$
-DECLARE
-    supplier_id BIGINT;
-    column_exists BOOLEAN;
 BEGIN
-  SELECT EXISTS (
-    SELECT 1
-    FROM information_schema.columns
-    WHERE TG_TABLE_NAME = table_name
-    AND column_name = 'supplier_id'
-  ) INTO column_exists;
-
-  IF column_exists THEN
-    supplier_id = OLD.supplier_id;
-  ELSE
-    supplier_id = NULL;
-  END IF;
-
   IF (TG_OP = 'DELETE') THEN
     -- Log the deleted row
     INSERT INTO supplier_data_changes(supplier_id, table_name, operation_type, old_data)
-    VALUES (supplier_id, TG_TABLE_NAME, 'DELETE', row_to_json(OLD)::jsonb);
+    VALUES (NEW.supplier_id, TG_TABLE_NAME, 'DELETE', row_to_json(OLD)::jsonb);
 
   ELSIF (TG_OP = 'UPDATE') THEN
     -- Log the updated row, with both old and new data
     INSERT INTO supplier_data_changes(supplier_id, table_name, operation_type, old_data, new_data)
-    VALUES (supplier_id, TG_TABLE_NAME, 'UPDATE', row_to_json(OLD)::jsonb, row_to_json(NEW)::jsonb);
+    VALUES (NEW.supplier_id, TG_TABLE_NAME, 'UPDATE', row_to_json(OLD)::jsonb, row_to_json(NEW)::jsonb);
 
   ELSIF (TG_OP = 'INSERT') THEN
     -- Log the inserted row
     INSERT INTO supplier_data_changes(supplier_id, table_name, operation_type, new_data)
-    VALUES (supplier_id, TG_TABLE_NAME, 'INSERT', row_to_json(NEW)::jsonb);
+    VALUES (NEW.supplier_id, TG_TABLE_NAME, 'INSERT', row_to_json(NEW)::jsonb);
   END IF;
 
   RETURN NULL;
@@ -59,22 +42,22 @@ $$ LANGUAGE plpgsql;
 
 -- Trigger "log_changes"
 -- Calls function "log_changes()" for table "suppliers"
-CREATE TRIGGER log_changes_suppliers
+CREATE OR REPLACE TRIGGER log_changes_suppliers
 AFTER INSERT OR UPDATE OR DELETE ON suppliers
 FOR EACH ROW EXECUTE FUNCTION log_supplier_data_changes();
 
-CREATE TRIGGER log_changes_customers
+CREATE OR REPLACE TRIGGER log_changes_customers
 AFTER INSERT OR UPDATE OR DELETE ON customers
 FOR EACH ROW EXECUTE FUNCTION log_supplier_data_changes();
 
-CREATE TRIGGER log_changes_orders
+CREATE OR REPLACE TRIGGER log_changes_orders
 AFTER INSERT OR UPDATE OR DELETE ON orders
 FOR EACH ROW EXECUTE FUNCTION log_supplier_data_changes();
 
 -- Initially empty
 select * from supplier_data_changes;
 
--- Make some changes:
+-- Let's make some updates across a bunch of suppliers
 UPDATE suppliers SET name = name || '-v2' where id = 1;
 
 UPDATE customers SET name = name || ' AdditionalSurname' where id = 1;
@@ -103,10 +86,16 @@ WITH to_delete AS (
 DELETE FROM suppliers WHERE id = (SELECT id from to_delete);
 COMMIT;
 
+-- Let's add a new supplier
+INSERT INTO suppliers (name)
+VALUES ('BigYellowTag');
+
+SELECT * FROM suppliers;
+
 -- Let's see what's happening:
 SELECT * from supplier_data_changes;
 
--- Plucl out the supplier specific ones
+-- Pluck out the supplier specific ones
 -- To get an operations count per supplier
 -- Or to see differences old_data/new_data
 -- For example:
@@ -120,8 +109,8 @@ WHERE
     AND old_data ->> 'id' = '1';
 
 
--- Use JSON_TABLE
--- Extract and present regular fields
+-- Use JSON_TABLE functionality in Postgres 17
+-- Extract and present JSON data as more like regular table fields
 SELECT
     id,
     old_name,
