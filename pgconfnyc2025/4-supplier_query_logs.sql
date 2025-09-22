@@ -2,6 +2,8 @@
 
 -- Run through PGSS setup:
 -- select * from pg_stat_statements where query LIKE 'select * from orders%';
+
+
 --
 -- Gist of implementation is to use a function to select: select_from_table()
 -- Which acts as a hook point to collect some data (watch out for scalability)
@@ -60,39 +62,28 @@ LANGUAGE plpgsql;
 -- For "Fulfillment"
 -- No usage of functions or PL/pgSQL
 --
--- Let's reset (as superuser):
--- select pgconf.pg_stat_statements_reset();
--- Let's run 'em:
-SELECT
-  id AS order_id,
-  customer_id,
-  quantity
-FROM orders WHERE supplier_id = 1;
+-- Regular query without the function, as regular user
 
-SELECT
-  id AS order_id,
-  customer_id,
-  quantity
-FROM orders WHERE supplier_id = 2;
+-- select id, customer_id, quantity from orders where supplier_id = 1;
+-- select id, customer_id, quantity from orders where supplier_id = 2;
+-- select id, customer_id, quantity from orders where supplier_id = 3;
+-- select * from pg_stat_statements;
 
-SELECT
-  id AS order_id,
-  customer_id,
-  quantity
-FROM orders WHERE supplier_id = 3;
-
+-- Initially empty
+select * from supplier_query_logs;
 
 --
 -- Let's now use the new function
+-- Query results are the same "shape"
 -- Same query, but inside of a supplier_query() function
 --
-SELECT * FROM supplier_query('SELECT id AS order_id, customer_id, quantity FROM orders WHERE supplier_id = 1')
+SELECT * FROM supplier_query('SELECT id, customer_id, quantity FROM orders WHERE supplier_id = 1')
 AS t(order_id bigint, customer_id bigint, quantity int);
 
-SELECT * FROM supplier_query('SELECT id AS order_id, customer_id, quantity FROM orders WHERE supplier_id = 2')
+SELECT * FROM supplier_query('SELECT id, customer_id, quantity FROM orders WHERE supplier_id = 2')
 AS t(order_id bigint, customer_id bigint, quantity int);
 
-SELECT * FROM supplier_query('SELECT id AS order_id, customer_id, quantity FROM orders WHERE supplier_id = 3')
+SELECT * FROM supplier_query('SELECT id, customer_id, quantity FROM orders WHERE supplier_id = 3')
 AS t(order_id bigint, customer_id bigint, quantity int);
 
 select * from supplier_query_logs;

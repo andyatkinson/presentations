@@ -10,7 +10,8 @@
 --
 
 -- Create usernames that match suppliers.username
-CREATE USER bigriverst;
+-- Connect as superuser
+CREATE USER bigriverst; -- <-- "username" from suppliers
 CREATE USER redcircles;
 
 -- Shared schema
@@ -44,8 +45,9 @@ CREATE TABLE pgconf.supplier_data (data TEXT, supplier_id BIGINT);
 GRANT SELECT ON pgconf.suppliers TO bigriverst;
 GRANT SELECT ON pgconf.suppliers TO redcircles;
 
-SELECT has_table_privilege('bigriver', 'pgconf.suppliers', 'SELECT') AS can_read;
-SELECT has_table_privilege('redcircle', 'pgconf.suppliers', 'SELECT') AS can_read;
+-- We want "t" here, both can read from the table
+SELECT has_table_privilege('bigriverst', 'pgconf.suppliers', 'SELECT') AS can_read;
+SELECT has_table_privilege('redcircles', 'pgconf.suppliers', 'SELECT') AS can_read;
 
 
 -- As the postgres user
@@ -69,20 +71,26 @@ select current_supplier_id();
 SET ROLE bigriverst;
 select current_supplier_id();
 
+set role redcircles;
+select current_supplier_id();
+
 -- bigriver and redcircle writing data into the supplier data table
+set role bigriverst;
 INSERT INTO supplier_data (data, supplier_id)
 VALUES ('bigriver data', current_supplier_id());
 
 SET ROLE redcircles;
-select current_supplier_id();
 INSERT INTO supplier_data (data, supplier_id)
 VALUES ('redcircle data', current_supplier_id());
 
+-- Currently all suppliers can see all supplier_data
+select * from supplier_data;
 select current_user;
 SET ROLE postgres;
 
 -- Must be owner of table
 -- Enable for supplier_data
+-- Explicit disable, then enable
 ALTER TABLE supplier_data DISABLE ROW LEVEL SECURITY;
 
 -- ===================
@@ -109,6 +117,10 @@ ALTER TABLE supplier_data ENABLE ROW LEVEL SECURITY;
 -- Now set role to bigriverst
 -- Now we should only see bigriver's data
 set role bigriverst;
+select * from supplier_data;
+
+-- We can see it in the query execution plan
+explain analyze
 select * from supplier_data;
 
 -- Sample for red circle
