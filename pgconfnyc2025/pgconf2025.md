@@ -198,10 +198,10 @@ img.img {
   }
 </style>
 
-### Was there a better architecture?
-- A dozen PostgreSQL instances set up at different times without infra-as-code.
-- A mix of used by multiple cusotmers or single customers
-- Configuration inconsistencies. Different Postgres users, grants, schema objects, tables, and indexes.
+### Postgres Instances Operational Challenges
+- A dozen PostgreSQL instances set up at different times without infra-as-code
+- A mix of multiple cusotmer use and single customer use
+- Configuration inconsistencies: Postgres users, grants, schema objects, tables, and indexes.
 - Most instances were over-provisioned resulting in over spending, or under-provisioned  resulting in performance problems
 
 ---
@@ -221,7 +221,7 @@ img.img {
 ---
 
 ### ❤️ Postgres
-- Received a PostgreSQL 17 Contributor Coin Gift (2024)<sup><a href="#footnote-1-1">1</a></sup>
+Received a PostgreSQL 17 Contributor Coin (2024)<sup><a href="#footnote-1-1">1</a></sup>
 
 ![bg right 80% contain](images/postgres-17-coin.png)
 
@@ -265,28 +265,37 @@ img.img {
     }
 </style>
 
-## 🏢 Better Architecture: Multitenancy
+## 🏢 Better DB Architecture: Multitenancy
 
-Let's explore 6 patterns using community PostgreSQL
-
+Let's explore 6 patterns and their benefits and limitations
 
 ---
 
-## ✨ Opportunities with Multi-tenant DB design
+## Benefits and drawbacks of non-tenancy
 
-- Cost savings from fewer instances
-- Less complexity and inconsistency
-- Tenant data uniqueness and isolation
-- Easier instance administration, monitoring, upgrades
+- Benefit: Compute isolation
+- Benefit: Strong data isolation
+- Possibly less code or schema design changes needed
+- Drawback: Increased costs from overprovisioned instances
+- Drawback: Complexity from managing a fleet, upgrades, monitoring
+
+---
+
+## ✨ Opportunities with Multi-tenant DB consolidation
+
+- Cost savings, greater resource efficiency
+- Avoiding or deferring "fleet management" challenges
+- Can leverage features for tenant data uniqueness and isolation
+- Can distribute the computing a bit within limits of single instance
 
 ---
 
 ## 🫠 Multitenancy Challenges
 
-- Eventually limited by physical server resources (CPU, Memory, IOPS)
-- Shared Postgres subsystems (Autovacuum, buffer cache)
-- Lacking native tenant concept or scoping
-- Requires some upfront architecture planning or migrations
+- Lacking native tenant primitives, need to build in more pieces using database features or application-level features
+- Can't achieve full compute isolation and may eventually exceed single instance
+- Can be limited by shared Postgres subsystems (Autovacuum, buffer cache)
+- Requires some upfront architecture planning or costly schema/data migrations
 
 ---
 <style scoped>
