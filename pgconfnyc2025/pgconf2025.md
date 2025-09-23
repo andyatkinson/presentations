@@ -198,13 +198,11 @@ img.img {
   }
 </style>
 
-#### Context
-- We managed a dozen PostgreSQL instances with "copies" of the same database for deployments of the web app.
-- Instances were set up at different times, not using infra-as-code. Initially "multi-customer" environments, then later single-customer split outs
-- Poor config consistency. Mix of users, permissions, schema objects, tables, indexes.
-- Most were either over-provisioned (over spending), or under-provisioned (performance problems).
-
-How could we do better?
+### Was there a better architecture?
+- A dozen PostgreSQL instances set up at different times without infra-as-code.
+- A mix of used by multiple cusotmers or single customers
+- Configuration inconsistencies. Different Postgres users, grants, schema objects, tables, and indexes.
+- Most instances were over-provisioned resulting in over spending, or under-provisioned  resulting in performance problems
 
 ---
 <style scoped>
@@ -216,13 +214,16 @@ How could we do better?
   }
 </style>
 
-![bg right 90%](images/collage-railsworld-2024.jpg)
+![bg contain 90%](images/book-sales.png)
 
-#### My Background
-- Web developer, 20 years, 10 with PostgreSQL
-- Author: *High Performance PostgreSQL for Rails* (2024)
-- Received a PostgreSQL Contributor Coin Gift (2024)<sup><a href="#footnote-1-1">1</a></sup>
+![bg contain 90%](images/collage-railsworld-2024.jpg)
 
+---
+
+### ❤️ Postgres
+- Received a PostgreSQL 17 Contributor Coin Gift (2024)<sup><a href="#footnote-1-1">1</a></sup>
+
+![bg right 80% contain](images/postgres-17-coin.png)
 
 ---
 <style scoped>
@@ -264,9 +265,28 @@ How could we do better?
     }
 </style>
 
-## Solution: Multitenancy
+## Better Architecture: Multitenancy
 
 Let's explore 6 patterns using community PostgreSQL
+
+
+---
+
+## ✨ Opportunities with Multi-tenant DB design
+
+- Cost savings from fewer instances
+- Less complexity and inconsistency
+- Tenant data uniqueness and isolation
+- Easier instance administration, monitoring, upgrades
+
+---
+
+## 🫠 Multitenancy Challenges
+
+- Eventually limited by physical server resources (CPU, Memory, IOPS)
+- Shared Postgres subsystems (Autovacuum, buffer cache)
+- Lacking native tenant concept or scoping
+- Requires some upfront architecture planning or migrations
 
 ---
 <style scoped>
@@ -352,50 +372,9 @@ a { color: #fff; }
   <div class="inactive">Optimizing</div>
 </div>
 
-## Multitenancy Opportunities
+<h2>#1 Single Big DB: E-commerce Multitenant design</h2>
 
-- Cost savings, fewer instances
-- Less complexity, less inconsistency
-- Tenant data isolation
-- Easier management for monitoring, upgrade, administer
-
----
-<style scoped>
-section {
-  color:#fff;
-  background-color: var(--theme-mistake-1);
-}
-a { color: #fff; }
-</style>
-<div class="top-bar">
-  <div class="active">Starting up</div>
-  <div class="inactive">Learning</div>
-  <div class="inactive">Optimizing</div>
-</div>
-
-## Multitenancy Challenges
-
-- Shared server instance resources (CPU, Memory, IOPS)
-- Shared Postgres resources (Autovacuum, buffer cache)
-- Lacking tenant-scoped observability out of the box
-
----
-<style scoped>
-section {
-  color:#fff;
-  background-color: var(--theme-mistake-1);
-}
-a { color: #fff; }
-</style>
-<div class="top-bar">
-  <div class="active">Starting up</div>
-  <div class="inactive">Learning</div>
-  <div class="inactive">Optimizing</div>
-</div>
-
-<h2>E-commerce multi-tenant DB design</h2>
-
-- Keep it simple: single database `pgconf`, schema `pgconf`, instance
+Triple single: one database `pgconf`, schema `pgconf` and instance
 - Table: `suppliers` (Our "tenant")
 - Table: `customers`
 - Table: `orders` (FK `supplier_id`, FK `customer_id`)
@@ -434,20 +413,20 @@ a { color: #fff; }
 
 ---
 
-# Schema Design: Single Integer Primary Keys
+## Primary Keys decision point
 
-- Identify `suppliers` tenant data with a `supplier_id` column
-- Add `supplier_id` to every table for simple queries and indexing (a form of denormalization) (more on next slide)
 - Goldilocks PK data type: `bigint` 8 bytes. `integer` 4 bytes too small. 16 bytes UUID too big.
+- The `suppliers` primary key `id` are our tenant
+- Add `supplier_id` foreign key to all tables (a form of denormalization)
+
 
 ---
 
-# Tenant id column `supplier_id` on every table
+## Tenant data identification
 
-- Easy tenant data identification, easy queries, no joins
-- Uniformity for scripts, use `generated column` on `suppliers` table
-- Less joins: Less work for query planner to parse, plan, execute tenant queries
-- Use multicolumn indexes with `supplier_id` leading column
+- Identify tenant data using `supplier_id` foreign key, no join needed
+- Uniformity in scripts, use `generated column` on `suppliers` table to generate `supplier_id` column
+- Multicolumn indexes with `(supplier_id, id)` to likely offer good performance as data grows
 - Easier row data movement, copy tenant rows to other environments: staging, demo
 
 ---
@@ -630,9 +609,8 @@ a { color: #fff; }
   <div class="active">Optimizing</div>
 </div>
 
-## Why partition the table?
+## Partitioning and multi-tenancy
 
-- Increase maintenance workers for vacuum, monitor parallel workers
 - Opens up "detachment" (`detach concurrently`) of unneeded tenant data, less resource intensive than deleting rows
 - When suppliers leave the platform, we can automatically detach and archive their data
 

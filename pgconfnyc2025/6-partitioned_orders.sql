@@ -31,6 +31,7 @@ CREATE TABLE orders_default PARTITION OF orders_partitioned
 
 --
 -- INSERT and distribute roughly evenly among the partitions
+-- Make sure schema search path includes "pgconf"
 --
 WITH supplier_list AS (
   SELECT id, row_number() OVER () - 1 AS rn
@@ -62,6 +63,8 @@ FROM
 
 show enable_partition_pruning;
 
+-- Performance advantage is to include supplier_id in the WHERE clause
+-- Then Postgres can query only the specific partition that contains that supplier data
 EXPLAIN ANALYZE SELECT customer_id FROM orders_partitioned WHERE supplier_id = 2;
 
 \d orders_supplier_2
