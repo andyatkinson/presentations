@@ -200,9 +200,9 @@ img.img {
 
 ### Postgres Instances Operational Challenges
 - A dozen PostgreSQL instances set up at different times without infra-as-code
-- A mix of multiple cusotmer use and single customer use
+- Postgres instances were a mix of multiple customer and single customer uses
 - Configuration inconsistencies: Postgres users, grants, schema objects, tables, and indexes.
-- Most instances were over-provisioned resulting in over spending, or under-provisioned  resulting in performance problems
+- Most instances weren't perfectly provisioned. Over-provisioned resulted in excessive spending under-provisioned had performance problems
 
 ---
 <style scoped>
@@ -446,7 +446,7 @@ Triple single: one database `pgconf`, schema `pgconf` and instance
 - Docker Postgres 18 instance
 - Entrypoint script: `sh create_db.sh`
 
-From there, we’ll look at corresponding SQL files for each pattern
+DEMO
 
 ---
 <style scoped>

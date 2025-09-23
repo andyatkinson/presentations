@@ -1,13 +1,4 @@
--- Add:
--- PgBouncer
--- https://www.pgbouncer.org
---
--- Set an application_name from from client app
--- Visibile in pg_stat_activity
---
--- Param Tuning
-
--- sh create_db.sh
+-- Expects to have run: sh create_db.sh
 
 -- Connect as superuser
 -- sh connect_superuser.sh
@@ -32,7 +23,7 @@ select
   sum(orders.quantity) as total_quantity
 from customers
 join orders ON customers.id = orders.customer_id
-where orders.supplier_id = 3 -- "Big-Mart" customer, generated data has orders
+where orders.supplier_id = 1 -- May need to change based on random data generation
 group by customers.id, orders.supplier_id
 order by count(orders.id) desc;
 
@@ -43,6 +34,8 @@ order by count(orders.id) desc;
 -- columns, depending on our queries (not the focus of this presentation)
 create index idx_orders_supplier_id ON orders (supplier_id);
 
+-- Or multi-column index (test with queries)
+create index idx_orders_supplier_multi ON orders (supplier_id, id);
 
 -- A non-superuser can query all supplier data,
 -- we're relying on application level authentication and authorization
