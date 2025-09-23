@@ -4,7 +4,7 @@ theme: default
 class: invert
 size: 16:9
 paginate: true
-footer: 'Multitenancy Patterns'
+footer: 'Multitenancy Patterns - PGConf NYC 2025'
 style: |
     footer {
       color:#bbb;
@@ -265,7 +265,7 @@ img.img {
     }
 </style>
 
-## Better Architecture: Multitenancy
+## 🏢 Better Architecture: Multitenancy
 
 Let's explore 6 patterns using community PostgreSQL
 
@@ -372,7 +372,7 @@ a { color: #fff; }
   <div class="inactive">Optimizing</div>
 </div>
 
-<h2>#1 Single Big DB: E-commerce Multitenant design</h2>
+<h2>💪 #1 Single Big DB: E-commerce Multitenant design</h2>
 
 Triple single: one database `pgconf`, schema `pgconf` and instance
 - Table: `suppliers` (Our "tenant")
@@ -413,7 +413,7 @@ Triple single: one database `pgconf`, schema `pgconf` and instance
 
 ---
 
-## Primary Keys decision point
+## 🔑 Primary Keys decision point
 
 - Goldilocks PK data type: `bigint` 8 bytes. `integer` 4 bytes too small. 16 bytes UUID too big.
 - The `suppliers` primary key `id` are our tenant
@@ -422,7 +422,7 @@ Triple single: one database `pgconf`, schema `pgconf` and instance
 
 ---
 
-## Tenant data identification
+## 🔍 Tenant data identification
 
 - Identify tenant data using `supplier_id` foreign key, no join needed
 - Uniformity in scripts, use `generated column` on `suppliers` table to generate `supplier_id` column
@@ -453,12 +453,11 @@ a { color: #fff; }
   <div class="inactive">Optimizing</div>
 </div>
 
-<h2>#1 Scaling the Single Big DB</h2>
+<h2>#1 Single Big DB: Vertically scale as long as possible</h2>
 
-- Scale Postgres instance vertically as long as possible
-- Major cloud offerings (Sep. 2025): GCP: 96 vCPUs, 624 GB
-- MS Azure: 96 vCores, 672 GB
-- AWS RDS [db.r8g.48xlarge](https://instances.vantage.sh/aws/rds/db.r8g.48xlarge?currency=USD), 192 vCPUs, 1536 GB (1.5 TB) memory, 210K annually on-demand (17.5k/month), 140K 1-year reservation
+- Google Cloud PostgreSQL: 96 vCPUs, 624 GB
+- Microsoft Azure: 96 vCores, 672 GB
+- AWS RDS db.r8g.48xlarge, 192 vCPUs, 1536 GB (1.5 TB) memory (210K annually on-demand, 140K 1-year reservation per Vantage.sh<sup><a href="#footnote-1-4">4</a></sup>)
 
 ---
 <style scoped>
@@ -474,12 +473,12 @@ a { color: #fff; }
   <div class="inactive">Optimizing</div>
 </div>
 
-<h2>#2 Composite Primary Keys</h2>
+<h2>#2 Primary Key Alternative: Composite Primary Keys</h2>
 
-- CPKs enforce unique tenant-data via primary key
-- Check ORM Support. Active Record (Ruby on Rails) supports them.
-- Tenant data isolation
-- Longer foreign key definitions:
+- We can choose the tenant identifier and a unique integer as the primary key
+- Improves ability to isolate or relocate data
+- Active Record ORM in Ruby on Rails supports composite primary keys
+- Downside: Longer key definitions
 ```sql
   CONSTRAINT fk_customer
       FOREIGN KEY (supplier_id, id)
@@ -502,10 +501,10 @@ a { color: #fff; }
   <div class="inactive">Optimizing</div>
 </div>
 
-<h2>Alternative: UUID Primary Keys</h2>
+<h2>Primary Key Alternative: UUID v7</h2>
 
-- Postgres 18 can generate UUID V7 values natively, useful as primary keys
-- UUIDs avoid integer conflicts with multiple primary instances, which could be a reason to chose them
+- Postgres 18 can generate UUID V7 values natively using `uuidv7()` function<sup><a href="#footnote-1-5">5</a></sup>
+- UUIDs avoid primary key conflicts when generating from multiple instances. We can also achieve that with CPKs and discrete tenant placement.
 
 ---
 <style scoped>
@@ -521,12 +520,12 @@ a { color: #fff; }
   <div class="inactive">Optimizing</div>
 </div>
 
-<h2>#3 Tenant Data Logs</h2>
+<h2>📄 #3 Tenant Data Logs</h2>
 
-- "Data" here is Inserts, Updates, and Deletes for Tenants
-- Create table: `supplier_data_changes` to capture these
-- Use triggers to capture changes
-- Store and query using JSON formatted data
+- Let's explore a pattern to report the Inserts, Updates, and Deletes from suppliers
+- Create table: `supplier_data_changes` to capture these events
+- Use triggers and trigger functions to capture changes and metadata
+- Store data using JSON columns
 
 DEMO
 
@@ -544,11 +543,10 @@ a { color: #fff; }
   <div class="inactive">Optimizing</div>
 </div>
 
-<h2>#4 Tenant Query Logs</h2>
+<h2>⚡ #4 Tenant-scoped Query Activity</h2>
 
-- What about our reads for tenants?
-- We have `pg_stat_statements` (PGSS) but due to query grouping, we actually lose the `supplier_id` field, so we can't see queries by tenant easily
-- To correct this, we can make our own query logs table scoped to tenants
+- While `pg_stat_statements` (PGSS) reports our queries as groups, since normalization removes the `supplier_id` values, so we can't report on query activity by tenant
+- Let's make a query logs table that's scoped to tenants
 
 DEMO
 
@@ -566,11 +564,10 @@ a { color: #fff; }
   <div class="active">Optimizing</div>
 </div>
 
-<h2>#5 Row Level Security For Suppliers</h2>
+<h2>🔒 #5 Row Level Security For Suppliers</h2>
 
-- In Postgres, we can limit access to certain row data using a policy
-- We'll use our "suppliers" tenant and create a `supplier_data` table
-- We'll verify that suppliers can only access their own data
+- How do we add more security so suppliers only see their own row data?
+- Let's demo a Row Level Security Policy to limit access to supplier data
 
 DEMO
 
@@ -588,12 +585,11 @@ a { color: #fff; }
   <div class="active">Optimizing</div>
 </div>
 
-<h2>#6 Partitioned Tables</h2>
+<h2>🍕 #6 Partitioned Tables</h2>
 
-- The `orders` table will grow very large, it's for all suppliers, let's partition it
-- Partitioned tables are a way to break up massive tables. Each smaller table can be queried and modified faster than one jumbo table.
+- As the `orders` table grows large, it's more difficult to modify and performance worsens 
+- Let's use table partitioning to break it up, and keep it easier to modify and with good performance despite row growth
 - Our partitioned table uses a CPK (`supplier_id`, `id`)
-- Partitions can run vacuum in parallel
 
 ---
 <style scoped>
@@ -609,10 +605,11 @@ a { color: #fff; }
   <div class="active">Optimizing</div>
 </div>
 
-## Partitioning and multi-tenancy
+## 🍕 #6 Partitioning and Multi-tenancy
 
-- Opens up "detachment" (`detach concurrently`) of unneeded tenant data, less resource intensive than deleting rows
-- When suppliers leave the platform, we can automatically detach and archive their data
+- Partitioned tables can be "detached" (`DETACH CONCURRENTLY`) which is a less resource intensive way to delete rows compared with `DELETE` operations
+- Let's store supplier data in their own partition, imaginging we have < 1000 suppliers
+- When suppliers leave the platform, we detach their partition, archive the data, then drop the partition
 
 DEMO
 
@@ -630,7 +627,7 @@ a { color: #fff; }
   <div class="active">Optimizing</div>
 </div>
 
-## Warnings #1 of 3: RLS Performance
+## ⚠️ Warnings #1 of 3: RLS Performance
 
 - RLS adds performance overhead. Dian Fay: Row level security pitfalls<sup><a href="#footnote-1-2">2</a></sup> Compare your query execution plans without policies (and their functions) to understand how much overhead is added.
 
@@ -648,7 +645,7 @@ a { color: #fff; }
   <div class="active">Optimizing</div>
 </div>
 
-## Warnings #2 of 3: Trigger overhead performance
+## ⚠️ Warnings #2 of 3: Trigger overhead performance
 
 - Imagine 50K Inserts/second, trigger functions add commit latency, there's index maintenance, WAL activity, this might be a scalability problem
 - Could mitigate with a partitioned table and append-mostly pattern, and minimal indexes and constraints
@@ -669,12 +666,11 @@ a { color: #fff; }
   <div class="active">Optimizing</div>
 </div>
 
-## Warnings #3 of 3: Partitioning still limited to single instance
+## ⚠️ Warnings #3 of 3: Partitioning challenges
 
-- Requires a big row data migration to get row data into partitioned table
-- Benefits: can perform vacuum on partitions concurrently
-- Operations like adding indexes or constraints can be faster on partitions vs. jumbo table
-- Downside: can still breach CPU, memory, and IOPS instance resource limits, for that may need sharded solution (See: SaaS on Rails on PostgreSQL<sup><a href="#footnote-1-3">3</a></sup>)
+- Requires a big row data migration vs. in-place change if starting from an unpartitioned table
+- `LIST` partitioning may no longer be a good solution with thousands of tenants (See: *5.12.6. Best Practices for Declarative Partitioning*<sup><a href="#footnote-1-6">1</a></sup>)
+- May exceed instance limits and need a sharded solution (See: *SaaS on Rails on PostgreSQL*<sup><a href="#footnote-1-3">3</a></sup>)
 
 ---
 <!-- _color: #fff; -->
@@ -734,6 +730,9 @@ HTML is generated below from this footnotes source
 1-1,wiki.postgresql.org/wiki/Contributor_Gifts
 1-2,di.nmfay.com/rls-performance
 1-3,andyatkinson.com/blog/2024/07/13/SaaS-on-Rails-on-PostgreSQL-POSETTE-2024-andrew-atkinson
+1-4,instances.vantage.sh/aws/rds/db.r8g.48xlarge?currency=USD
+1-5,thenile.dev/blog/uuidv7
+1-6,postgresql.org/docs/current/ddl-partitioning.html#DDL-PARTITIONING-DECLARATIVE-BEST-PRACTICES
 }}
 -->
 
