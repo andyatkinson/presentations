@@ -35,6 +35,17 @@ style: |
       border-radius: 1em;
     }
 
+    .opener-logo {
+      position: fixed;
+      bottom: 90px;
+      right: 50px;
+      transform: rotate(10deg);
+      transform-origin: bottom right;
+    }
+    .opener-logo img {
+      width: 300px;
+    }
+
     li .list-item {
       color:#fff;
       padding:10px;
@@ -123,7 +134,7 @@ style: |
 ---
 <!-- _color: #fff; -->
 <!-- _backgroundColor: #fff; -->
-<!-- _backgroundImage: linear-gradient(75deg, #000000 30%, #529FD4 55%, #fff 77%); -->
+<!-- _backgroundImage: linear-gradient(110deg, #000000 5%, #006bb6 40%, #f58330 80%); -->
 
 <style scoped>
   section {
@@ -182,8 +193,14 @@ img.img {
 
 <code style="font-size:2em;">🌐 <a href="https://bit.ly/XXX">bit.ly/XXX</a></code>
 
+<div class='opener-logo'><img src="images/pgconfnyc_logo_vertical.png"/></div>
+
+
 ---
 <style scoped>
+  section {
+    background-color:#006bb6;
+  }
   img.rc17 {
     position:absolute;
     top:50px;
@@ -208,6 +225,9 @@ img.img {
 
 ---
 <style scoped>
+  section {
+    background-color:#006bb6;
+  }
   img.rw24 {
     position:relative;
     bottom:60px;
@@ -221,6 +241,14 @@ img.img {
 ![bg contain 90%](images/collage-railsworld-2024.jpg)
 
 ---
+<style scoped>
+  section {
+    background-color:#f58330;
+  }
+  img {
+    rotate:10deg;
+  }
+</style>
 
 ### ❤️ Postgres
 Received a PostgreSQL 17 Contributor Coin (2024)<sup><a href="#footnote-1-1">1</a></sup>
@@ -707,9 +735,12 @@ section {
 
 ### 👋 Thank you!
 
-✉️ Newsletter [pgrailsbook.com](pgrailsbook.com)
+💻 Repo [github.com/andyatkinson](https://github.com/andyatkinson/presentations)
+📚 [*High Performance PostgreSQL for Rails*](https://andyatkinson.com/pgrailsbook)
 🦋 [@andyatkinson.com](https://bsky.app/profile/andyatkinson.com)
+🛝 Slides [speakerdeck.com/andyatkinson](https://speakerdeck.com/andyatkinson)
 💼 Consulting [Refined Pages, LLC](refinedpages.com)
+✉️ Newsletter [pgrailsbook.com](pgrailsbook.com)
 
 ---
 <style scoped>
