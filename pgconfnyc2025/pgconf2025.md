@@ -678,7 +678,7 @@ a { color: #fff; }
 ## ⚠️ Warnings #3 of 3: Partitioning challenges
 
 - Requires a big row data migration vs. in-place change if starting from an unpartitioned table
-- `LIST` partitioning may no longer be a good solution with thousands of tenants (See: *5.12.6. Best Practices for Declarative Partitioning*<sup><a href="#footnote-1-6">1</a></sup>)
+- `LIST` partitioning may no longer be a good solution with thousands of tenants (See: *5.12.6. Best Practices for Declarative Partitioning*<sup><a href="#footnote-1-6">6</a></sup>)
 - May exceed instance limits and need a sharded solution (See: *SaaS on Rails on PostgreSQL*<sup><a href="#footnote-1-3">3</a></sup>)
 
 ---
@@ -731,6 +731,9 @@ ul.two-column-list {
   padding: 10px 0 0 0;
   list-style-position: inside;
 }
+section .links {
+  padding:50px 0;
+}
 </style>
 
 <!--
@@ -745,10 +748,24 @@ HTML is generated below from this footnotes source
 }}
 -->
 
+<h1 class='links'>Links</h1>
+
 <div class='footnote'><ul class='two-column-list'><li id='footnote-1-1'>
   1. <a href='https://wiki.postgresql.org/wiki/Contributor_Gifts'>wiki.postgresql.org/wiki/Contributor_Gifts</a>
 </li>
 <li id='footnote-1-2'>
   2. <a href='https://di.nmfay.com/rls-performance'>di.nmfay.com/rls-performance</a>
+</li>
+<li id='footnote-1-3'>
+  3. <a href='https://andyatkinson.com/blog/2024/07/13/SaaS-on-Rails-on-PostgreSQL-POSETTE-2024-andrew-atkinson'>andyatkinson.com/blog/2024/07/13/SaaS-on-Rails-on-PostgreSQL-POSETTE-2024-andrew-atkinson</a>
+</li>
+<li id='footnote-1-4'>
+  4. <a href='https://instances.vantage.sh/aws/rds/db.r8g.48xlarge?currency=USD'>instances.vantage.sh/aws/rds/db.r8g.48xlarge?currency=USD</a>
+</li>
+<li id='footnote-1-5'>
+  5. <a href='https://thenile.dev/blog/uuidv7'>thenile.dev/blog/uuidv7</a>
+</li>
+<li id='footnote-1-6'>
+  6. <a href='https://postgresql.org/docs/current/ddl-partitioning.html#DDL-PARTITIONING-DECLARATIVE-BEST-PRACTICES'>postgresql.org/docs/current/ddl-partitioning.html#DDL-PARTITIONING-DECLARATIVE-BEST-PRACTICES</a>
 </li>
 </ul></div>
