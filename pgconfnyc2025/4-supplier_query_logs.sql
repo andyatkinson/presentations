@@ -3,6 +3,21 @@
 -- Run through PGSS setup:
 -- select * from pg_stat_statements where query LIKE 'select * from orders%';
 
+-- ```sh
+-- sh connect_superuser.sh
+-- ```
+-- ```sql
+-- CREATE EXTENSION IF NOT EXISTS pg_stat_statements SCHEMA pgconf;
+-- SELECT * FROM pgconf.pg_stat_statements;
+-- select pgconf.pg_stat_statements_reset();
+-- ```
+-- ```sh
+-- sh connect_user.sh
+-- ```
+-- select id, customer_id, quantity from orders where supplier_id = 1;
+-- select id, customer_id, quantity from orders where supplier_id = 2;
+-- select id, customer_id, quantity from orders where supplier_id = 3;
+-- select * from pg_stat_statements;
 
 --
 -- Gist of implementation is to use a function to select: select_from_table()
@@ -64,13 +79,14 @@ LANGUAGE plpgsql;
 --
 -- Regular query without the function, as regular user
 
+-- Initially empty
+select * from supplier_query_logs;
+
+-- Let's run some normal queries again:
 -- select id, customer_id, quantity from orders where supplier_id = 1;
 -- select id, customer_id, quantity from orders where supplier_id = 2;
 -- select id, customer_id, quantity from orders where supplier_id = 3;
--- select * from pg_stat_statements;
-
--- Initially empty
-select * from supplier_query_logs;
+-- select id, customer_id, quantity from orders where supplier_id = 4;
 
 --
 -- Let's now use the new function
@@ -84,6 +100,9 @@ SELECT * FROM supplier_query('SELECT id, customer_id, quantity FROM orders WHERE
 AS t(order_id bigint, customer_id bigint, quantity int);
 
 SELECT * FROM supplier_query('SELECT id, customer_id, quantity FROM orders WHERE supplier_id = 3')
+AS t(order_id bigint, customer_id bigint, quantity int);
+
+SELECT * FROM supplier_query('SELECT id, customer_id, quantity FROM orders WHERE supplier_id = 4')
 AS t(order_id bigint, customer_id bigint, quantity int);
 
 select * from supplier_query_logs;

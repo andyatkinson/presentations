@@ -61,10 +61,27 @@ SELECT
 FROM
     orders_partitioned;
 
+-- Performance advantage: partition pruning
+-- As long as WHERE clause includes partition information
+-- e.g. WHERE supplier_id = 2;
 show enable_partition_pruning;
 
 -- Performance advantage is to include supplier_id in the WHERE clause
 -- Then Postgres can query only the specific partition that contains that supplier data
+-- Will scan only the relevant partition Seq Scan on "orders_supplier_1" of table "orders_partitioned"
 EXPLAIN ANALYZE SELECT customer_id FROM orders_partitioned WHERE supplier_id = 2;
 
 \d orders_supplier_2
+
+
+
+-- Detachment
+-- First, we have to drop the default partition
+DROP TABLE orders_default;
+
+-- Now we can detach the partition
+ALTER TABLE orders_partitioned DETACH PARTITION orders_supplier_4 CONCURRENTLY;
+
+-- \d+ orders_partitioned -- no longer see child table
+\d orders_supplier_4;
+-- We can then archive the data (pg_dump etc.) and then drop it

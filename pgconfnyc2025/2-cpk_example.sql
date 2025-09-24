@@ -9,14 +9,13 @@ ALTER TABLE orders
 ADD CONSTRAINT orders_cpk
 PRIMARY KEY (supplier_id, id);
 
-
--- Alternative:
 -- Convert "customers" from single PK to CPK
 ALTER TABLE customers DROP CONSTRAINT customers_pkey CASCADE;
 ALTER TABLE customers
 ADD CONSTRAINT customers_cpk
 PRIMARY KEY (supplier_id, id);
 
+-- Alternative: Create a new table orders_with_cpk
 -- Create multi-column primary key and foreign key
 DROP TABLE IF EXISTS orders_with_cpk;
 CREATE TABLE orders_with_cpk (
@@ -45,7 +44,7 @@ CREATE SEQUENCE IF NOT EXISTS supplier_2_seq;
 CREATE SEQUENCE IF NOT EXISTS supplier_3_seq;
 
 -- Let's reset everything
-truncate orders_with_seq;
+truncate orders_with_seq; -- if exists
 ALTER SEQUENCE supplier_1_seq RESTART WITH 1;
 ALTER SEQUENCE supplier_2_seq RESTART WITH 1;
 ALTER SEQUENCE supplier_3_seq RESTART WITH 1;

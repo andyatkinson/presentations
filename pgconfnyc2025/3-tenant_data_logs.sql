@@ -1,4 +1,4 @@
--- NOTE: connect as pgconf user
+-- NOTE: sh connect_user.sh connect as regular user - pgconf
 -- Changes to our tenant, "suppliers"
 -- Allow NULLs for new_data since it could be deleted
 CREATE TABLE IF NOT EXISTS supplier_data_changes (
@@ -22,7 +22,7 @@ BEGIN
   IF (TG_OP = 'DELETE') THEN
     -- Log the deleted row
     INSERT INTO supplier_data_changes(supplier_id, table_name, operation_type, old_data)
-    VALUES (NEW.supplier_id, TG_TABLE_NAME, 'DELETE', row_to_json(OLD)::jsonb);
+    VALUES (OLD.supplier_id, TG_TABLE_NAME, 'DELETE', row_to_json(OLD)::jsonb);
 
   ELSIF (TG_OP = 'UPDATE') THEN
     -- Log the updated row, with both old and new data

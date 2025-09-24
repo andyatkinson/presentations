@@ -8,6 +8,7 @@
 -- However, suppliers within the shared schema will only be able to
 -- access their own row data
 --
+ET search_path = pgconf, public;
 
 -- Create usernames that match suppliers.username
 -- Connect as superuser
@@ -110,7 +111,10 @@ SET row_security TO ON;
 -- Also: RLS is disabled
 SELECT * FROM supplier_data;
 
+---
+-- NOW WE ENABLE IT HERE
 -- Enable RLS as postgres
+---
 set role postgres;
 ALTER TABLE supplier_data ENABLE ROW LEVEL SECURITY;
 

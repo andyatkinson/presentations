@@ -531,7 +531,7 @@ a { color: #fff; }
 
 <h2>📄 #3 Tenant Data Logs</h2>
 
-- Let's explore a pattern to report the Inserts, Updates, and Deletes from suppliers
+- Report on Inserts, Updates, and Deletes from suppliers
 - Create table: `supplier_data_changes` to capture these events
 - Use triggers and trigger functions to capture changes and metadata
 - Store data using JSON columns

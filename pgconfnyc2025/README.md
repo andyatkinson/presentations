@@ -38,7 +38,7 @@ sh connect_superuser.sh
 ```sql
 CREATE EXTENSION IF NOT EXISTS pg_stat_statements SCHEMA pgconf;
 SELECT * FROM pgconf.pg_stat_statements;
-select pg_stat_statements_reset();
+select pgconf.pg_stat_statements_reset();
 ```
 ```sh
 sh connect_user.sh
