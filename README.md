@@ -1,13 +1,13 @@
 # Presentations
 
+## PGConf NYC 2025
+- [pgconfnyc2025/README.md](pgconfnyc2025/README.md)
+
 ## RailsConf 2025
 - [railsconf2025/README.md](railsconf2025/README.md)
 
 ## PASS Data Community Summit
 - [pass2024/README.md](pass2024/README.md)
-
-## PGConf NYC 2025
-- [pgconfnyc2025/README.md](pgconfnyc2025/README.md)
 
 ## Presentations with Markdown
 > Create decks like a hacker!

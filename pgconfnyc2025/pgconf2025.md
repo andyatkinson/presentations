@@ -216,7 +216,7 @@ img.img {
   }
 </style>
 
-![bg contain 90%](images/book-sales.png)
+![bg contain 90%](images/book-sales.jpg)
 
 ![bg contain 90%](images/collage-railsworld-2024.jpg)
 
@@ -225,7 +225,7 @@ img.img {
 ### ❤️ Postgres
 Received a PostgreSQL 17 Contributor Coin (2024)<sup><a href="#footnote-1-1">1</a></sup>
 
-![bg right 80% contain](images/postgres-17-coin.png)
+![bg right 80% contain](images/postgres-17-coin.jpg)
 
 ---
 <style scoped>
