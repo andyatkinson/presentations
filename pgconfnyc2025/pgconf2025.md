@@ -23,16 +23,16 @@ style: |
 
     .corner-label {
       position: fixed;
-      bottom: 200px;
-      right: 0;
-      background: lightgreen;
-      color: green;
-      padding:10px;
-      font-weight: bold;
+      bottom: 180px;
+      right: 20px;
+      background: #444;
+      color: white;
+      padding:15px;
       font-size:0.8em;
-      transform: rotate(-30deg);
+      transform: rotate(-20deg);
       transform-origin: bottom right;
-      border: 10px dashed green;
+      border: 5px dashed #555;
+      border-radius: 1em;
     }
 
     li .list-item {
@@ -198,11 +198,13 @@ img.img {
   }
 </style>
 
-### Postgres Instances Operational Challenges
-- A dozen PostgreSQL instances set up at different times without infra-as-code
-- Postgres instances were a mix of multiple customer and single customer uses
-- Configuration inconsistencies: Postgres users, grants, schema objects, tables, and indexes.
-- Most instances weren't perfectly provisioned. Over-provisioned resulted in excessive spending under-provisioned had performance problems
+### Inspiration for this talk: Operating lots of Postgres instances
+- A dozen PostgreSQL instances serving different user segments
+- A mix of multi-customer and single-customer databases
+- Configuration inconsistencies: users, grants, schema objects, tables, indexes
+- Over-provisioned instances had excessive spending, under-provisioned instances had performance problems
+
+<div class='corner-label'>What if there was a better way? 🤔</div>
 
 ---
 <style scoped>
@@ -265,35 +267,35 @@ Received a PostgreSQL 17 Contributor Coin (2024)<sup><a href="#footnote-1-1">1</
     }
 </style>
 
-## 🏢 Better DB Architecture: Multitenancy
+## 🏢 A Multi-tenant DBs is that better way
 
-Let's explore 6 patterns and their benefits and limitations
+Let's explore the benefits and limitations of 6 patterns
 
 ---
 
-## Benefits and drawbacks of non-tenancy
+## 🚫 🏢 Benefits and drawbacks without multi-tenancy
 
-- Benefit: Compute isolation
-- Benefit: Strong data isolation
-- Possibly less code or schema design changes needed
-- Drawback: Increased costs from overprovisioned instances
-- Drawback: Complexity from managing a fleet, upgrades, monitoring
+✅ Compute isolation
+✅ Strong data isolation
+Possibly less code or schema design changes needed
+🔴 Increased costs from overprovisioned instances
+🔴 Complexity from managing a fleet like administration, upgrades, monitoring
 
 ---
 
 ## ✨ Opportunities with Multi-tenant DB consolidation
 
-- Cost savings, greater resource efficiency
-- Avoiding or deferring "fleet management" challenges
-- Can leverage features for tenant data uniqueness and isolation
-- Can distribute the computing a bit within limits of single instance
+💵 Cost savings, greater resource efficiency
+✅ Avoiding or deferring "fleet management" challenges
+✅ Can achieve (weaker) forms of tenant data uniqueness and isolation
+✅ Can distribute some computation work but ultimately limited by single instance
 
 ---
 
 ## 🫠 Multitenancy Challenges
 
-- Lacking native tenant primitives, need to build in more pieces using database features or application-level features
-- Can't achieve full compute isolation and may eventually exceed single instance
+- Lacking native tenant primitives, need to build in more pieces using database or application-level features
+- Can't achieve full compute isolation
 - Can be limited by shared Postgres subsystems (Autovacuum, buffer cache)
 - Requires some upfront architecture planning or costly schema/data migrations
 
@@ -383,12 +385,10 @@ a { color: #fff; }
 
 <h2>💪 #1 Single Big DB: E-commerce Multitenant design</h2>
 
-Triple single: one database `pgconf`, schema `pgconf` and instance
+🛒 Triple single: one database `pgconf`, schema `pgconf` and instance
 - Table: `suppliers` (Our "tenant")
 - Table: `customers`
 - Table: `orders` (FK `supplier_id`, FK `customer_id`)
-
-🛒 Customers create orders, orders are for items from suppliers
 
 ---
 
@@ -446,7 +446,7 @@ Triple single: one database `pgconf`, schema `pgconf` and instance
 - Docker Postgres 18 instance
 - Entrypoint script: `sh create_db.sh`
 
-DEMO
+<div class='corner-label'>DEMO #1</div>
 
 ---
 <style scoped>
@@ -494,7 +494,7 @@ a { color: #fff; }
       REFERENCES customers (supplier_id, id)
 ```
 
-DEMO
+<div class='corner-label'>DEMO #2</div>
 
 ---
 <style scoped>
@@ -536,7 +536,7 @@ a { color: #fff; }
 - Use triggers and trigger functions to capture changes and metadata
 - Store data using JSON columns
 
-DEMO
+<div class='corner-label'>DEMO #3</div>
 
 ---
 <style scoped>
@@ -557,7 +557,7 @@ a { color: #fff; }
 - While `pg_stat_statements` (PGSS) reports our queries as groups, since normalization removes the `supplier_id` values, so we can't report on query activity by tenant
 - Let's make a query logs table that's scoped to tenants
 
-DEMO
+<div class='corner-label'>DEMO #4</div>
 
 ---
 <style scoped>
@@ -578,7 +578,7 @@ a { color: #fff; }
 - How do we add more security so suppliers only see their own row data?
 - Let's demo a Row Level Security Policy to limit access to supplier data
 
-DEMO
+<div class='corner-label'>DEMO #5</div>
 
 ---
 <style scoped>
@@ -620,7 +620,7 @@ a { color: #fff; }
 - Let's store supplier data in their own partition, imaginging we have < 1000 suppliers
 - When suppliers leave the platform, we detach their partition, archive the data, then drop the partition
 
-DEMO
+<div class='corner-label'>DEMO #6</div>
 
 ---
 <style scoped>
