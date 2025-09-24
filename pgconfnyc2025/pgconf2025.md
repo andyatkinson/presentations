@@ -38,7 +38,7 @@ style: |
     .opener-logo {
       position: fixed;
       bottom: 90px;
-      right: 50px;
+      right: 90px;
       transform: rotate(10deg);
       transform-origin: bottom right;
     }
@@ -134,7 +134,7 @@ style: |
 ---
 <!-- _color: #fff; -->
 <!-- _backgroundColor: #fff; -->
-<!-- _backgroundImage: linear-gradient(110deg, #000000 5%, #006bb6 40%, #f58330 80%); -->
+<!-- _backgroundImage: linear-gradient(110deg, #000000 1%, #006bb6 60%, #f58330 70%); -->
 
 <style scoped>
   section {
