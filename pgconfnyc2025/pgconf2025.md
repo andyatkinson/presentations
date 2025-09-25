@@ -7,7 +7,7 @@ paginate: true
 footer: 'Multitenancy Patterns - PGConf NYC 2025'
 style: |
     footer {
-      color:#bbb;
+      color:#fff;
       font-family:Red Hat, sans-serif;
       font-size:0.6em;
     }
@@ -62,6 +62,9 @@ style: |
       --theme-mistake-8:  #B91C1C; /* Red-700 */
       --theme-mistake-9:  #4D7C0F; /* Lime-800 */
       --theme-mistake-10:  #BE185D; /* Pink-700 */
+
+      --theme-color-1: #006bb6;
+      --theme-color-2: #f58330;
     }
 
     .mistake-1 { background-color: var(--theme-mistake-1); }
@@ -129,6 +132,13 @@ style: |
       background-color:yellow;
       color:#000;
     }
+    section::after {
+    color:#fff;
+    }
+    section {
+      background-color: var(--theme-color-1);
+      color:#fff;
+    }
     
 
 ---
@@ -140,54 +150,52 @@ style: |
   section {
     padding:100px;
   }
-h1 { font-size:2.3em;}
-a { color: #fff; }
-section::after {
+  h1 { font-size:2.3em;}
+  a { color: #fff; }
+  section::after {
     color:#fff;
     }
-img.img {
-  float:right;
-  max-width:250px;
+  img.img {
+    float:right;
+    max-width:250px;
 
-}
-.stack-vertical {
-  width:300px;
-  float:right;
-  margin:0;
-  padding:0;
-}
-.stack-vertical img {
-  display:block;
-  margin:0;
-  padding:0;   
-  width:100%;
-  max-width:300px;
-  position:relative;
-  top:-70px;
-}
-.stack-vertical .img {
-  max-width:90%;
-}
-.stack-vertical .img.qr {
-  max-width:100%;
-  position:relative;
-  left:10px;
-  top:-10px;
-}
-.stack-vertical .img.rails {
-  position:relative;
-  left:-30px;
-  top:-20px;
-}
-.stack-vertical .img.db {
-  max-width:50%;
-  position:relative;
-  left:-80px;
-  top:-60px;
-}
+  }
+  .stack-vertical {
+    width:300px;
+    float:right;
+    margin:0;
+    padding:0;
+  }
+  .stack-vertical img {
+    display:block;
+    margin:0;
+    padding:0;   
+    width:100%;
+    max-width:300px;
+    position:relative;
+    top:-70px;
+  }
+  .stack-vertical .img {
+    max-width:90%;
+  }
+  .stack-vertical .img.qr {
+    max-width:100%;
+    position:relative;
+    left:10px;
+    top:-10px;
+  }
+  .stack-vertical .img.rails {
+    position:relative;
+    left:-30px;
+    top:-20px;
+  }
+  .stack-vertical .img.db {
+    max-width:50%;
+    position:relative;
+    left:-80px;
+    top:-60px;
+  }
 </style>
-
-
 
 # Multitenancy Patterns in Community PostgreSQL
 
@@ -200,18 +208,6 @@ img.img {
 <style scoped>
   section {
     background-color:#006bb6;
-  }
-  img.rc17 {
-    position:absolute;
-    top:50px;
-    right:30px;
-    max-width:600px;
-  }
-  img.rw24 {
-    position:relative;
-    bottom:220px;
-    left:620px;
-    max-width:400px;
   }
 </style>
 
@@ -228,12 +224,6 @@ img.img {
   section {
     background-color:#006bb6;
   }
-  img.rw24 {
-    position:relative;
-    bottom:60px;
-    left:620px;
-    max-width:400px;
-  }
 </style>
 
 ![bg contain 90%](images/book-sales.jpg)
@@ -242,11 +232,12 @@ img.img {
 
 ---
 <style scoped>
-  section {
-    background-color:#f58330;
+  section::after {
+    color:#fff;
   }
-  img {
-    rotate:10deg;
+  section {
+    background-color: var(--theme-color-2);
+    color:#fff;
   }
 </style>
 
@@ -258,41 +249,16 @@ Received a PostgreSQL 17 Contributor Coin (2024)<sup><a href="#footnote-1-1">1</
 ---
 <style scoped>
   footer {
-    color:#000;
+    color:#fff;
   }
   section::after {
-    color:#000;
+    color:#fff;
   }
   section {
-    background-color:#666;
+    background-color: var(--theme-color-1);
+    color:#fff;
   }
-  li .list-item {
-    width:275px;
-    font-size: 40px;
-    margin:10px 0;
-    padding: 0 25px;
-  }
-  .group-container {
-      display: flex;
-      align-items: stretch;
-      position: relative;
-      border:1px solid;
-    }
 
-    .group-label {
-      writing-mode: vertical-rl;
-      transform: rotate(180deg);
-      background-color: #f0f0f0;
-      color: #333;
-      font-weight: bold;
-      padding: 0.5rem;
-      border-right: 1px solid #333;
-      text-align: center;
-    }
-
-    .group-content {
-      flex: 1;
-    }
 </style>
 
 ## 🏢 A Multi-tenant DBs is that better way
@@ -305,7 +271,7 @@ Let's explore the benefits and limitations of 6 patterns
 
 ✅ Compute isolation
 ✅ Strong data isolation
-Possibly less code or schema design changes needed
+🟡 Possibly less code or schema design changes needed
 🔴 Increased costs from overprovisioned instances
 🔴 Complexity from managing a fleet like administration, upgrades, monitoring
 
@@ -322,21 +288,16 @@ Possibly less code or schema design changes needed
 
 ## 🫠 Multitenancy Challenges
 
-- Lacking native tenant primitives, need to build in more pieces using database or application-level features
-- Can't achieve full compute isolation
-- Can be limited by shared Postgres subsystems (Autovacuum, buffer cache)
-- Requires some upfront architecture planning or costly schema/data migrations
+🟡 Lacking native tenant primitives, need to build in more pieces using database or application-level features
+🟡 Can't achieve full compute isolation
+🟡 Can be limited by shared Postgres subsystems (Autovacuum, buffer cache)
+🟡 Requires some upfront architecture planning or costly schema/data migrations
 
 ---
 <style scoped>
-  footer {
-    color:#000;
-  }
-  section::after {
-    color:#000;
-  }
+
   section {
-    background-color:#666;
+    background-color:#000;
   }
   li .list-item {
     width:275px;
@@ -413,12 +374,20 @@ a { color: #fff; }
 
 <h2>💪 #1 Single Big DB: E-commerce Multitenant design</h2>
 
-🛒 Triple single: one database `pgconf`, schema `pgconf` and instance
-- Table: `suppliers` (Our "tenant")
-- Table: `customers`
-- Table: `orders` (FK `supplier_id`, FK `customer_id`)
+Triple single: one database `pgconf`, schema `pgconf` and instance
+
+  ⛁ `suppliers` (Our "tenant")
+  ⛁ `customers`
+  ⛁  `orders` (FK `supplier_id`, FK `customer_id`)
 
 ---
+<style scoped>
+section {
+  color:#fff;
+  background-color: var(--theme-mistake-1);
+}
+a { color: #fff; }
+</style>
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐
@@ -449,15 +418,29 @@ a { color: #fff; }
 ```
 
 ---
+<style scoped>
+section {
+  color:#fff;
+  background-color: var(--theme-mistake-1);
+}
+a { color: #fff; }
+</style>
 
 ## 🔑 Primary Keys decision point
 
-- Goldilocks PK data type: `bigint` 8 bytes. `integer` 4 bytes too small. 16 bytes UUID too big.
-- The `suppliers` primary key `id` are our tenant
-- Add `supplier_id` foreign key to all tables (a form of denormalization)
+⛁ Goldilocks PK data type: `bigint` 8 bytes. `integer` 4 bytes too small. 16 bytes UUID too big.
+⛁ The `suppliers` primary key `id` are our tenant
+⛁ Add `supplier_id` foreign key to all tables (a form of denormalization)
 
 
 ---
+<style scoped>
+section {
+  color:#fff;
+  background-color: var(--theme-mistake-1);
+}
+a { color: #fff; }
+</style>
 
 ## 🔍 Tenant data identification
 
@@ -467,12 +450,19 @@ a { color: #fff; }
 - Easier row data movement, copy tenant rows to other environments: staging, demo
 
 ---
+<style scoped>
+section {
+  color:#fff;
+  background-color: var(--theme-mistake-1);
+}
+a { color: #fff; }
+</style>
 
 # Demos
 
-- `github.com / andyatkinson / presentations / pgconf2025 / README.md`
-- Docker Postgres 18 instance
-- Entrypoint script: `sh create_db.sh`
+👉 `github.com / andyatkinson / presentations / pgconf2025 / README.md`
+✅ Docker Postgres 18 instance
+✅ `sh create_db.sh`
 
 <div class='corner-label'>DEMO #1</div>
 
@@ -500,7 +490,7 @@ a { color: #fff; }
 <style scoped>
 section {
   color:#fff;
-  background-color: var(--theme-mistake-1);
+  background-color: var(--theme-mistake-2);
 }
 a { color: #fff; }
 </style>
@@ -510,9 +500,8 @@ a { color: #fff; }
   <div class="inactive">Optimizing</div>
 </div>
 
-<h2>#2 Primary Key Alternative: Composite Primary Keys</h2>
+<h2>🔑 #2 Primary Key Alternative: Composite Primary Keys</h2>
 
-- We can choose the tenant identifier and a unique integer as the primary key
 - Improves ability to isolate or relocate data
 - Active Record ORM in Ruby on Rails supports composite primary keys
 - Downside: Longer key definitions
@@ -528,9 +517,10 @@ a { color: #fff; }
 <style scoped>
 section {
   color:#fff;
-  background-color: var(--theme-mistake-1);
+  background-color: var(--theme-mistake-2);
 }
 a { color: #fff; }
+</style>
 </style>
 <div class="top-bar">
   <div class="active">Starting up</div>
@@ -538,18 +528,19 @@ a { color: #fff; }
   <div class="inactive">Optimizing</div>
 </div>
 
-<h2>Primary Key Alternative: UUID v7</h2>
+<h2>🔑 Primary Key Alternative: UUID v7</h2>
 
-- Postgres 18 can generate UUID V7 values natively using `uuidv7()` function<sup><a href="#footnote-1-5">5</a></sup>
+- Postgres 18 generates UUID V7 values with `uuidv7()` function<sup><a href="#footnote-1-5">5</a></sup>
 - UUIDs avoid primary key conflicts when generating from multiple instances. We can also achieve that with CPKs and discrete tenant placement.
 
 ---
 <style scoped>
 section {
   color:#fff;
-  background-color: var(--theme-mistake-1);
+  background-color: var(--theme-mistake-3);
 }
 a { color: #fff; }
+</style>
 </style>
 <div class="top-bar">
   <div class="inactive">Starting up</div>
@@ -562,7 +553,7 @@ a { color: #fff; }
 - Report on Inserts, Updates, and Deletes from suppliers
 - Create table: `supplier_data_changes` to capture these events
 - Use triggers and trigger functions to capture changes and metadata
-- Store data using JSON columns
+- Store data using JSON columns, use `JSON_TABLE()`
 
 <div class='corner-label'>DEMO #3</div>
 
@@ -570,7 +561,7 @@ a { color: #fff; }
 <style scoped>
 section {
   color:#fff;
-  background-color: var(--theme-mistake-1);
+  background-color: var(--theme-mistake-4);
 }
 a { color: #fff; }
 </style>
@@ -582,8 +573,8 @@ a { color: #fff; }
 
 <h2>⚡ #4 Tenant-scoped Query Activity</h2>
 
-- While `pg_stat_statements` (PGSS) reports our queries as groups, since normalization removes the `supplier_id` values, so we can't report on query activity by tenant
-- Let's make a query logs table that's scoped to tenants
+- With `pg_stat_statements` (PGSS) query normalization loses our `supplier_id` value. We can't report query activity by tenant
+- Let's fix that with a supplier query logs table
 
 <div class='corner-label'>DEMO #4</div>
 
@@ -591,7 +582,7 @@ a { color: #fff; }
 <style scoped>
 section {
   color:#fff;
-  background-color: var(--theme-mistake-1);
+  background-color: var(--theme-mistake-5);
 }
 a { color: #fff; }
 </style>
@@ -603,8 +594,8 @@ a { color: #fff; }
 
 <h2>🔒 #5 Row Level Security For Suppliers</h2>
 
-- How do we add more security so suppliers only see their own row data?
-- Let's demo a Row Level Security Policy to limit access to supplier data
+- How do we add more security so suppliers see only their data?
+- Let's use Row Level Security to achieve that
 
 <div class='corner-label'>DEMO #5</div>
 
@@ -612,7 +603,7 @@ a { color: #fff; }
 <style scoped>
 section {
   color:#fff;
-  background-color: var(--theme-mistake-1);
+  background-color: var(--theme-mistake-6);
 }
 a { color: #fff; }
 </style>
@@ -625,14 +616,14 @@ a { color: #fff; }
 <h2>🍕 #6 Partitioned Tables</h2>
 
 - As the `orders` table grows large, it's more difficult to modify and performance worsens 
-- Let's use table partitioning to break it up, and keep it easier to modify and with good performance despite row growth
+- Let's use table partitioning to slice it up, maintaining good performance and making modifications easier
 - Our partitioned table uses a CPK (`supplier_id`, `id`)
 
 ---
 <style scoped>
 section {
   color:#fff;
-  background-color: var(--theme-mistake-1);
+  background-color: var(--theme-mistake-6);
 }
 a { color: #fff; }
 </style>
@@ -644,9 +635,9 @@ a { color: #fff; }
 
 ## 🍕 #6 Partitioning and Multi-tenancy
 
-- Partitioned tables can be "detached" (`DETACH CONCURRENTLY`) which is a less resource intensive way to delete rows compared with `DELETE` operations
-- Let's store supplier data in their own partition, imaginging we have < 1000 suppliers
-- When suppliers leave the platform, we detach their partition, archive the data, then drop the partition
+- Let's create a partition per supplier, imaginging we have < 1000
+- Partitioned tables can be "detached" (`DETACH CONCURRENTLY`), a less resource intensive alternative to deleting unneeded rows
+- When suppliers leave the platform, we'll detach their partition, archive the data, then drop the partition
 
 <div class='corner-label'>DEMO #6</div>
 
@@ -654,7 +645,7 @@ a { color: #fff; }
 <style scoped>
 section {
   color:#fff;
-  background-color: var(--theme-mistake-1);
+  background-color: var(--theme-mistake-5);
 }
 a { color: #fff; }
 </style>
@@ -666,13 +657,14 @@ a { color: #fff; }
 
 ## ⚠️ Warnings #1 of 3: RLS Performance
 
-- RLS adds performance overhead. Dian Fay: Row level security pitfalls<sup><a href="#footnote-1-2">2</a></sup> Compare your query execution plans without policies (and their functions) to understand how much overhead is added.
+- Familiarize yourself with RLS latency
+- Dian Fay: Row level security pitfalls.<sup><a href="#footnote-1-2">2</a></sup> Compare your query execution plans without policies (and their functions) to understand how much overhead is added.
 
 ---
 <style scoped>
 section {
   color:#fff;
-  background-color: var(--theme-mistake-1);
+  background-color: var(--theme-mistake-3);
 }
 a { color: #fff; }
 </style>
@@ -684,16 +676,17 @@ a { color: #fff; }
 
 ## ⚠️ Warnings #2 of 3: Trigger overhead performance
 
-- Imagine 50K Inserts/second, trigger functions add commit latency, there's index maintenance, WAL activity, this might be a scalability problem
-- Could mitigate with a partitioned table and append-mostly pattern, and minimal indexes and constraints
-- Otherwise: Likely need to move to async approach e.g. logical replication, CDC etc. (beyond this scope)
+- Triggers are scalable to a point
+- What is that point? 50K inserts/? Trigger functions are one type of commit latency.
+- Could mitigate with a partitioned table, minimal indexes and constraints
+- Otherwise move to async approach e.g. logical replication, CDC etc. (beyond this scope)
 
 
 ---
 <style scoped>
 section {
   color:#fff;
-  background-color: var(--theme-mistake-1);
+  background-color: var(--theme-mistake-6);
 }
 a { color: #fff; }
 </style>
@@ -706,8 +699,8 @@ a { color: #fff; }
 ## ⚠️ Warnings #3 of 3: Partitioning challenges
 
 - Requires a big row data migration vs. in-place change if starting from an unpartitioned table
-- `LIST` partitioning may no longer be a good solution with thousands of tenants (See: *5.12.6. Best Practices for Declarative Partitioning*<sup><a href="#footnote-1-6">6</a></sup>)
-- May exceed instance limits and need a sharded solution (See: *SaaS on Rails on PostgreSQL*<sup><a href="#footnote-1-3">3</a></sup>)
+- `LIST` partitioning may not work with thousands of tenants (See: *5.12.6. Best Practices for Declarative Partitioning*<sup><a href="#footnote-1-6">6</a></sup>)
+- May exceed single instance limits and move to a sharded DB solution (See: *SaaS on Rails on PostgreSQL*<sup><a href="#footnote-1-3">3</a></sup>)
 
 ---
 <!-- _color: #fff; -->
@@ -716,7 +709,10 @@ a { color: #fff; }
 
 <style scoped>
 section {
-    font-size: 2em;
+  font-size: 2em;
+}
+section a {
+  color:#fff;
 }
 .qr-code {
   max-width:300px;
@@ -733,14 +729,14 @@ section {
 }
 </style>
 
+<!-- _backgroundImage: linear-gradient(110deg, #000000 1%, #006bb6 60%, #f58330 70%); -->
+
 ### 👋 Thank you!
 
-💻 Repo [github.com/andyatkinson](https://github.com/andyatkinson/presentations)
+💻 [github.com/andyatkinson/presentations](https://github.com/andyatkinson/presentations)
 📚 [*High Performance PostgreSQL for Rails*](https://andyatkinson.com/pgrailsbook)
 🦋 [@andyatkinson.com](https://bsky.app/profile/andyatkinson.com)
-🛝 Slides [speakerdeck.com/andyatkinson](https://speakerdeck.com/andyatkinson)
 💼 Consulting [Refined Pages, LLC](refinedpages.com)
-✉️ Newsletter [pgrailsbook.com](pgrailsbook.com)
 
 ---
 <style scoped>
