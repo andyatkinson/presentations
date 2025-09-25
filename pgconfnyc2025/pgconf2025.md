@@ -199,7 +199,7 @@ style: |
 
 # Multitenancy Patterns in Community PostgreSQL
 
-<code style="font-size:2em;">🌐 <a href="https://bit.ly/XXX">bit.ly/XXX</a></code>
+<code style="font-size:2em;">🌐 <a href="https://bit.ly/pg-mten">bit.ly/pg-mten</a></code>
 
 <div class='opener-logo'><img src="images/pgconfnyc_logo_vertical.png"/></div>
 
@@ -709,7 +709,7 @@ a { color: #fff; }
 
 <style scoped>
 section {
-  font-size: 2em;
+  font-size: 2.3em;
 }
 section a {
   color:#fff;
@@ -731,7 +731,9 @@ section a {
 
 <!-- _backgroundImage: linear-gradient(110deg, #000000 1%, #006bb6 60%, #f58330 70%); -->
 
-### 👋 Thank you!
+<img style="border-radius:1em;" class="qr-code" src="images/bit.ly_pg-mten-2.png" />
+
+# 👋 Thank you!
 
 💻 [github.com/andyatkinson/presentations](https://github.com/andyatkinson/presentations)
 📚 [*High Performance PostgreSQL for Rails*](https://andyatkinson.com/pgrailsbook)
