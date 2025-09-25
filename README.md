@@ -3,12 +3,12 @@
 ## PGConf NYC 2025
 - [pgconfnyc2025/README.md](pgconfnyc2025/README.md)
 - [Speakerdeck Slides](https://speakerdeck.com/andyatkinson/multitenancy-patterns-in-community-postgresql)
-- [https://bit.ly/pg-mten](bit.ly/pg-mten)
+- [bit.ly/pg-mten](https://bit.ly/pg-mten)
 
 ## RailsConf 2025
 - [railsconf2025/README.md](railsconf2025/README.md)
 - [Speakerdeck Slides](https://speakerdeck.com/andyatkinson/10-costly-database-performance-mistakes-and-how-to-fix-them)
-- [https://bit.ly/rc10m](bit.ly/rc10m)
+- [bit.ly/rc10m](https://bit.ly/rc10m)
 
 ## PASS Data Community Summit
 - [pass2024/README.md](pass2024/README.md)
