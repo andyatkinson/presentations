@@ -635,7 +635,7 @@ a { color: #fff; }
 
 ## 🍕 #6 Partitioning and Multi-tenancy
 
-- Let's create a partition per supplier, imaginging we have < 1000
+- Let's create a partition per supplier, imagining we have < 1000
 - Partitioned tables can be "detached" (`DETACH CONCURRENTLY`), a less resource intensive alternative to deleting unneeded rows
 - When suppliers leave the platform, we'll detach their partition, archive the data, then drop the partition
 
