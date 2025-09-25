@@ -5,6 +5,10 @@ require 'set'
 require 'net/http'
 require 'uri'
 
+# USAGE:
+#
+# ruby footnote_fixer.rb pgconfnyc2025/pgconf2025.md
+#
 class FootnoteFixer
   def initialize(full_text, file_path)
     @full_text = full_text

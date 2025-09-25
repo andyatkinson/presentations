@@ -476,8 +476,7 @@ a { color: #fff; }
 - Use Trunk-based development (TBD)<sup><a href="#footnote-1-2">2</a></sup> and feature flags. 2024 Rails Survey<sup><a href="#footnote-1-3">3</a></sup>: 20% (500+) "multiple/month", 2% (50+) "multiple/quarter"
 - Track DevOps metrics. DORA,<sup><a href="#footnote-1-4">4</a></sup> SPACE,<sup><a href="#footnote-1-5">5</a></sup> *Accelerate*,<sup><a href="#footnote-1-6">6</a></sup> 2-Minute DORA Quick Check<sup><a href="#footnote-1-7">7</a></sup>
 - Raise test suite coverage (*Simplecov*),<sup><a href="#footnote-1-8">8</a></sup> increase speed & reliability
-- Lint migrations for safe DDL. Rails<sup><a href="#footnote-1-9">9</a></sup> and SQL (*Squawk*<sup><a href="#footnote-1-9-1">10</a></sup>)
-- Release DDL using ⚓ Anchor Migrations,<sup><a href="#footnote-1-9-2">11</a></sup> safety-linted, non-blocking, idempotent, maintain consistency with Rails<sup><a href="#footnote-1-9-3">12</a></sup>
+- Supplement DDL releases using ⚓ Anchor Migrations,<sup><a href="#footnote-1-9-2">11</a></sup> safety-linted SQL, non-blocking, idempotent, maintain consistency with Active Record Migrations<sup><a href="#footnote-1-9-3">12</a></sup>
 
 ---
 <style scoped>
@@ -633,7 +632,6 @@ a { color: #fff; }
 - Not using *cardinality*, *selectivity*, or execution plan `BUFFERS` info in designs
 - Adding indexes haphazardly (over-indexing)<sup><a href="#footnote-2-2">14</a></sup>
 - Choosing schema designs with poor performance
-- Generating AI solutions but lacking skills to verify them
 
 <div class="corner-label">💵 Server costs, Developer time</div>
 
@@ -663,9 +661,9 @@ a { color: #fff; }
 
 - Hire experience: DB specialists, DBAs, and consultants
 - Grow experience: books, courses, conferences, communities
-- Provide a production-like database clone instance for experimentation. Use it in your workflow.
-- Learn concepts of *pages*, buffers, latency, *selectivity*, *cardinality*, *correlation*, and *locality* in your designs
-- Avoid performance-unfriendly schema designs like random UUID<sup><a href="#footnote-2-3">15</a></sup> primary keys
+- Create a production clone instance for experimentation. Use it in your workflow.
+- Use concepts of *pages*, buffers, latency, *selectivity*, *cardinality*, *correlation*, and *locality* to improve your designs
+- Avoid performance-unfriendly designs like random UUID<sup><a href="#footnote-2-3">15</a></sup> primary keys
 
 ---
 <style scoped>
@@ -683,7 +681,7 @@ a { color: #fff; }
 </style>
 
 ## Row versions (Tuples), MVCC, transactions
-Which Spiderman is live and "dead"?
+Which Spiderman is "live" and "dead"?
 
 ![bg contain right 90%](images/spiderman.png.webp)
 
@@ -702,8 +700,8 @@ section {
 a { color: #fff; }
 </style>
 
-## Table and index data in fixed-size 8KB Pages
-How is it laid out and how does that correlate with latency?
+## Fixed-size 8KB Pages
+How is table and index data stored and how does that affect latency?
 
 ![bg contain right 95%](images/records-small.jpg)
 
@@ -752,9 +750,9 @@ a { color: #fff; }
 
 ## ❌ Mistake #8—Speculative DB Design
 - Avoiding beneficial database constraints *today* due to speculation about *tomorrow*
-- Casting doubt on evolving the future schema design
-- *Not* using data normalization good practices ([3NF](https://en.wikipedia.org/wiki/Third_normal_form)) by default to avoid duplication
-- Avoiding *all* use of denormalization, even for cases like multi-tenancy<sup><a href="#footnote-3-1">16</a></sup>
+- Doubting ability to evolve the schema design in the future
+- *Not* using third normal form normalization ([3NF](https://en.wikipedia.org/wiki/Third_normal_form)) by default
+- Avoiding *all* forms of denormalization, even for use cases like multi-tenancy<sup><a href="#footnote-3-1">16</a></sup>
 
 <div class="corner-label">💵 Data bugs, high maintenance costs</div>
 
@@ -781,8 +779,8 @@ a { color: #fff; }
 
 - Use all available constraints for data consistency, integrity, quality (CORE: *constraint-driven*<sup><a href="#footnote-3-2">17</a></sup>)
 - Create matching DB constraints for code validation. Match PK/FK types. Use *database_consistency* gem.<sup><a href="#footnote-3-3">18</a></sup>
-- Normalize by default. Design for today, but anticipate growth in data and query volume.
-- Use denormalization sometimes, for example with multi-tenancy.
+- Normalize by default. Eliminate duplication. Design for today, but anticipate growth in data and query volume.
+- Use denormalization sometimes, for example tenant identifier columns
 
 ---
 <style scoped>
@@ -856,7 +854,7 @@ a { color: #fff; }
 - Log and store SQL query source code line numbers,<sup><a href="#footnote-4-1">19</a></sup> using Query Logs (*SQLCommenter* formatted), visibile in Rails log
 - Collect query execution plans, manually or automatically with *auto_explain*<sup><a href="#footnote-4-2">20</a></sup>
 - Reduce `BUFFERS` counts in execution plans<sup><a href="#footnote-4-3">21</a></sup> to reduce latency
-- Add DB observability. Postgres: *pg_stat_statements*, *PgHero*, *PgAnalyze*, *PgBadger*
+- Observe database processes. Postgres: *pg_stat_statements*, *PgHero*, *PgAnalyze*, *PgBadger*
 - MySQL: *Percona Monitoring and Management (PMM)*, *Oracle Enterprise Manager for MySQL*,<sup><a href="#footnote-4-4">22</a></sup> SQLite: *SQLite Database Analyzer*<sup><a href="#footnote-4-5">23</a></sup>
 
 ---
@@ -907,10 +905,9 @@ a { color: #fff; }
 </div>
 
 ## ❌ Mistake #6—ORM Pitfalls
-- Not refactoring inefficient ORM queries
-- Not restricting column access, always using `SELECT *`<sup><a href="#footnote-5-1">24</a></sup>
-- Using non-scalable query patterns like huge `IN` lists<sup><a href="#footnote-5-2">25</a></sup>
 - Performing unnecessary, costly ORM queries like `COUNT(*)`, `ORDER BY`
+- Using non-scalable query patterns like huge `IN` lists<sup><a href="#footnote-5-2">25</a></sup>
+- Not restricting column access, always using `SELECT *`<sup><a href="#footnote-5-1">24</a></sup>
 - Using inefficient ORM pagination
 - Not using ORM caches
 
@@ -1023,9 +1020,9 @@ a { color: #fff; }
 
 - Practice DDL changes on a production clone with timing. Understand locks taken and access patterns.
 - Use multi-step non-blocking DDL. `ignored_columns`.<sup><a href="#footnote-6-1">32</a></sup> `INVALID` `CHECK` constraint before `NOT NULL`
-- Safety-lint DDL. Active Record & PostgreSQL *strong_migrations,*<sup><a href="#footnote-1-9">9</a></sup> (MySQL/MariaDB) *online_migrations*,<sup><a href="#footnote-6-2">33</a></sup> *Squawk*<sup><a href="#footnote-1-10">1</a></sup> for SQL
+- Safety-lint DDL. Active Record & PostgreSQL *strong_migrations,*<sup><a href="#footnote-1-9">9</a></sup> (MySQL/MariaDB) *online_migrations*,<sup><a href="#footnote-6-2">33</a></sup> *Squawk*<sup><a href="#footnote-1-9-1">10</a></sup> for SQL
 - Learn about locks and conflicts using `pglocks.org`
-- Set a low `lock_timeout` to auto-cancel failed lock acquisition DDL, use retries
+- Auto-cancel DDLs that fail lock acquisition with a low `lock_timeout`. Retry.
 
 ---
 <style scoped>
@@ -1060,12 +1057,12 @@ a { color: #fff; }
 </div>
 
 ## ❌ Mistake #4—Excessive Data Access
-- Querying and retrieving huge sets of 10K+ rows, making users wait
+- Querying and retrieving huge sets, 10K+ rows, making users wait
 - Ineffective filtering and indexing on *low cardinality* columns
 - Missing indexes on *high cardinality* columns or foreign keys for filtering
 - Not using advanced indexing strategies or index types
 - Performing slow aggregate queries (`SUM`, `COUNT`) causing users to wait
-- For huge tables of 100GB or more in size, avoiding table partitioning
+- Not breaking up big tables using table partitioning
 
 <div class="corner-label">💵 Server costs, user experience</div>
 
@@ -1090,7 +1087,7 @@ a { color: #fff; }
 - Add "missing indexes"<sup><a href="#footnote-7-2">35</a></sup> on high cardinality columns,<sup><a href="#footnote-7-3">38</a></sup> try out *pganalyze_lint*<sup><a href="#footnote-7-2-1">36</a></sup> (and *hypopg*<sup><a href="#footnote-7-2-2">37</a></sup>)
 - Use advanced indexing like multicolumn, partial indexes, GIN, GiST.
 - Pre-calculate aggregates using *rollup* gem,<sup><a href="#footnote-7-4">39</a></sup> create denormalized materialized views, manage using *scenic* gem<sup><a href="#footnote-7-5">40</a></sup>
-- Migrate time-based data into a partitioned table<sup><a href="#footnote-7-6">41</a></sup> for improved performance and maintenance
+- Migrate huge tables to partitioned tables<sup><a href="#footnote-7-6">41</a></sup> for improved performance and maintenance
 
 ---
 <style scoped>
@@ -1130,7 +1127,7 @@ a { color: #fff; }
 
 ## ❌ Mistake #3—Missing Data Archival
 - Storing a significant proportion of data in tables and indexes that's never queried
-- Storing high growth data using gems like *public_activity*,<sup><a href="#footnote-8-1">42</a></sup> *papertrail*,<sup><a href="#footnote-8-2">43</a></sup> *audited*,<sup><a href="#footnote-8-3">44</a></sup> or *ahoy*,<sup><a href="#footnote-8-4">45</a></sup> and not archiving unneeded data
+- Capturing high growth data using gems like *public_activity*,<sup><a href="#footnote-8-1">42</a></sup> *papertrail*,<sup><a href="#footnote-8-2">43</a></sup> *audited*,<sup><a href="#footnote-8-3">44</a></sup> or *ahoy*,<sup><a href="#footnote-8-4">45</a></sup> and not archiving unneeded data
 - Not archiving app data from churned customers, retired features, or soft deleted rows
 - Performing resource-intensive massive `DELETE` operations
 
@@ -1160,7 +1157,7 @@ a { color: #fff; }
 - Shrink a table using *copy swap drop*<sup><a href="#footnote-8-5">46</a></sup>
 - Use partition-friendly gems like *logidze* gem<sup><a href="#footnote-8-6">47</a></sup> or partition your big tables, making necessary Rails compatibility changes<sup><a href="#footnote-8-7">48</a></sup>
 - Archive app data from churned customers, soft deleted rows, and retired features (discover with *Coverband*<sup><a href="#footnote-8-8">49</a></sup>)
-- Replace massive `DELETE` operations by using time-partitioned tables, and efficient `DETACH CONCURRENTLY`
+- Replace massive `DELETE` operations by migrating to a partitioned table, unlock ability to `DETACH CONCURRENTLY` instead of `DELETE`
 
 ---
 <style scoped>
@@ -1207,12 +1204,12 @@ a { color: #fff; }
 
 <h2>❌ Mistake #2—Missing DB Maintenance <span class="corner-fixes">✅ 🛠️ Fixes</span></h2>
 
-- Upgrade your database. Postgres *why upgrade*?<sup><a href="#footnote-9-1">50</a></sup>
+- Upgrade your database. Postgres *why upgrade*?<sup><a href="#footnote-9-1">50</a></sup> Tune Autovacuum for your workload.
 - *Prune and Tune* indexes,<sup><a href="#footnote-9-2">51</a></sup> use *pg_dba*<sup><a href="#footnote-9-3">52</a></sup> for psql, *rails_best_practices* gem
 - Drop unneeded tables, columns, constraints, indexes, functions, triggers, and extensions
-- Rebuild fragmented tables (pg_repack, pg_squeeze,<sup><a href="#footnote-9-4">53</a></sup> `VACUUM FULL`, logical replication, or *copy swap drop*<sup><a href="#footnote-8-5">46</a></sup>)
+- Rebuild fragmented tables (pg_repack, pg_squeeze,<sup><a href="#footnote-9-4">53</a></sup> `VACUUM FULL`)
 - Reindex fragmented indexes (`REINDEX CONCURRENTLY`)
-- Maintain your database like your application code. *Maintainable...Databases?* podcast<sup><a href="#footnote-9-4">53</a></sup> 🎧
+- *Maintainable...Databases?* podcast<sup><a href="#footnote-9-4">53</a></sup> 🎧
 
 ---
 <style scoped>
@@ -1251,7 +1248,7 @@ a { color: #fff; }
 ## ❌ Mistake #1—Rejecting Mechanical Sympathy
 - Using high-churn designs (updates and deletes) for Postgres that don't work well with tuples, MVCC, and Autovacuum
 - Over-using limited CPU, memory, and IO from inefficient reads and writes
-- Allowing inefficient queries from gems like *jsonapi-resources*,<sup><a href="#footnote-9-5-2">56</a></sup> *graphql-ruby*,<sup><a href="#footnote-9-5-3">57</a></sup> *ActiveAdmin*<sup><a href="#footnote-9-5-4">58</a></sup>
+- Inefficient generated queries from gems like *jsonapi-resources*,<sup><a href="#footnote-9-5-2">56</a></sup> *graphql-ruby*,<sup><a href="#footnote-9-5-3">57</a></sup> *ActiveAdmin*<sup><a href="#footnote-9-5-4">58</a></sup>
 - Allowing lazy loading and N+1s
 - Not preventing excessively long queries, idle transactions
 
@@ -1276,8 +1273,8 @@ a { color: #fff; }
 
 - Take control of your SQL (`to_sql`)<sup><a href="#footnote-9-5-4-1">59</a></sup> and execution plans (`.explain()`)
 - Replace high update churn designs with "append-mostly", e.g. *slotted counters*,<sup><a href="#footnote-9-5-5">60</a></sup> Increase *HOT updates*.<sup><a href="#footnote-9-5-6">61</a></sup>
-- Prevent lazy loading with *Strict Loading*.<sup><a href="#footnote-9-5-7">62</a></sup> Start by logging violations.<sup><a href="#footnote-9-5-8">63</a></sup>
-- Add resiliency by setting allowed upper limits on query run times, idle transactions, number of connections
+- Prevent lazy loading by enabling *Strict Loading*.<sup><a href="#footnote-9-5-7">62</a></sup> Start by logging violations.<sup><a href="#footnote-9-5-8">63</a></sup>
+- Preserve stability by setting upper limits on allowed durations for queries & idle transactions, number of connections
 
 ---
 <style scoped>
@@ -1314,11 +1311,11 @@ EXPLAIN (ANALYZE, BUFFERS) SELECT "trips".* FROM "trips" ORDER BY "trips"."creat
 ---
 <style scoped>
 section {
-  color:#000;
+  color:#fff;
   background-color: var(--theme-mistake-10);
 }
 blockquote {
-  color:#000;
+  color:#fff;
 }
 a { color: #fff; }
 </style>

@@ -1,21 +1,22 @@
 #!/bin/bash
 
 DB_SUPERUSER="postgres"
-DB_POSTGRES="postgres"
 DB_SUPERUSER_PWD="postgres"
 DB_HOST="localhost"
 DB_PORT="15432"
 
-DB_USER="passdata"
-DB_PASSWORD="pass1234"
-DB_NAME="passdata"
-DB_SCHEMA="passdata"
+DB_USER="pgconf"
+DB_PASSWORD="pgconf"
+DB_NAME="pgconf"
+DB_SCHEMA="pgconf"
 
 run_psql_superuser() {
-  local sql_query=$1
+  local sql_query="$1"
+
+  # Debug message to stderr (won't be captured by $(...))
   echo "Running as superuser=$DB_SUPERUSER SQL=$sql_query" >&2
 
-  PGPASSWORD=$DB_SUPERUSER_PWD psql \
+  PGPASSWORD=$DB_SUPERUSER_PWD psql -qAt \
     -U $DB_SUPERUSER \
     -h $DB_HOST \
     -p $DB_PORT \
@@ -23,59 +24,62 @@ run_psql_superuser() {
 }
 
 run_psql_sql() {
-  local sql_query=$1
-  echo "Running as user=$DB_USER SQL=$sql_query"
+ local sql_query=$1
+ echo "Running as user=$DB_USER SQL=$sql_query"
 
-  PGPASSWORD=$DB_PASSWORD psql \
-    -U $DB_USER \
-    -h $DB_HOST \
-    -p $DB_PORT \
-    -c "$sql_query"
+ PGPASSWORD=$DB_PASSWORD psql \
+   -U $DB_USER \
+   -h $DB_HOST \
+   -p $DB_PORT \
+   -c "$sql_query"
 }
 
 run_psql_file() {
-  local file_path=$1
-  echo "Got file: $file_path"
+ local file_path=$1
+ echo "Got file: $file_path"
 
-  PGPASSWORD=$DB_PASSWORD psql \
-    -U $DB_USER \
-    -h $DB_HOST \
-    -p $DB_PORT \
-    -f "$file_path"
+ PGPASSWORD=$DB_PASSWORD psql \
+   -U $DB_USER \
+   -h $DB_HOST \
+   -p $DB_PORT \
+   -f "$file_path"
 }
 
-connect_pass() {
-  PGPASSWORD=$DB_PASSWORD psql \
-    -U $DB_USER \
-    -h $DB_HOST \
-    -p $DB_PORT \
-    -d $DB_NAME
+connect_user() {
+ PGPASSWORD=$DB_PASSWORD psql \
+   -U $DB_USER \
+   -h $DB_HOST \
+   -p $DB_PORT \
+   -d $DB_NAME
 }
 
 check_db_exists() {
-  if PGPASSWORD=$DB_SUPERUSER_PWD psql \
-    -U $DB_SUPERUSER \
-    -h $DB_HOST \
-    -p $DB_PORT -lqt | cut -d \| -f 1 | grep -qw "$1"; then
-    return 0
-  else
-    return 1
-  fi
+ if PGPASSWORD=$DB_SUPERUSER_PWD psql \
+   -U $DB_SUPERUSER \
+   -h $DB_HOST \
+   -p $DB_PORT -lqt | cut -d \| -f 1 | grep -qw "$1"; then
+   return 0
+ else
+   return 1
+ fi
 }
 
 # Run as Superuser
 # CREATE ROLE/USER/OWNER of DB IF NOT EXISTS
+# Grant pg_monitor
 create_user_ddl=$(cat <<EOF
 CREATE ROLE $DB_USER WITH
-  LOGIN
-  ENCRYPTED PASSWORD '$DB_PASSWORD';
+ LOGIN
+ ENCRYPTED PASSWORD '$DB_PASSWORD';
 
 ALTER ROLE $DB_USER SET search_path TO $DB_SCHEMA;
+GRANT pg_monitor TO $DB_USER;
 EOF
 )
-USER_EXISTS=$(run_psql_superuser "SELECT 1 FROM pg_roles WHERE rolname='$DB_USER'")
-if [ "$USER_EXISTS" == "1" ]; then
-  echo "User '$DB_USER' exists."
+result=$(run_psql_superuser "SELECT 1 FROM pg_roles WHERE rolname='$DB_USER';")
+result=$(echo "$result" | xargs)
+if [ "$result" = "1" ]; then
+  echo "User '$DB_USER' already exists, not creating."
 else
   run_psql_superuser "$create_user_ddl"
   echo "User '$DB_USER' created."
@@ -112,7 +116,8 @@ run_psql_file "create_tables.sql"
 # Run as regular user
 # Change to use composite primary key design
 #
-run_psql_file "2-cpk_example.sql"
+# UNCOMMENT and run again to modify existing orders table
+# run_psql_file "2-cpk_example.sql"
 
 #
 # Run as regular user
@@ -121,4 +126,4 @@ run_psql_file "populate_data.sql"
 
 
 # Connect as regular user
-connect_pass
+connect_user
