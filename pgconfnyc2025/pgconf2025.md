@@ -567,7 +567,7 @@ a { color: #fff; }
 ⛁ Table `supplier_data_changes` to capture these events
 
 - Use triggers and trigger functions to capture changes and metadata
-- Store data using JSON columns, use `JSON_TABLE()` (Postgres 17)
+- Store data using JSON columns, use `JSON_TABLE()` (Postgres 17 blog post<sup><a href="#footnote-1-8">8</a></sup>)
 
 <div class='corner-label'>DEMO #3</div>
 
@@ -631,7 +631,7 @@ a { color: #fff; }
 <h2>🍕 6—Partitioned Tables</h2>
 
 ⛁ As the `orders` table grows large, it's more difficult to modify and performance worsens 
-- Let's use declaractive table partitioning<sup><a href="#footnote-1-7">1</a></sup> to slice it up, maintaining good performance and making modifications easier
+- Let's use declaractive table partitioning<sup><a href="#footnote-1-7">7</a></sup> to slice it up, maintaining good performance and making modifications easier
 - Our partitioned table uses a CPK (`supplier_id`, `id`)
 
 ---
@@ -791,10 +791,9 @@ HTML is generated below from this footnotes source
 1-5,thenile.dev/blog/uuidv7
 1-6,postgresql.org/docs/current/ddl-partitioning.html#DDL-PARTITIONING-DECLARATIVE-BEST-PRACTICES
 1-7,postgresql.org/docs/current/ddl-partitioning.html
+1-8,andyatkinson.com/postgresql-17-json-table-merge-returning-updatable-views
 }}
 -->
-
-<h1 class='links'>Links</h1>
 
 <div class='footnote'><ul class='two-column-list'><li id='footnote-1-1'>
   1. <a href='https://wiki.postgresql.org/wiki/Contributor_Gifts'>wiki.postgresql.org/wiki/Contributor_Gifts</a>
@@ -813,5 +812,11 @@ HTML is generated below from this footnotes source
 </li>
 <li id='footnote-1-6'>
   6. <a href='https://postgresql.org/docs/current/ddl-partitioning.html#DDL-PARTITIONING-DECLARATIVE-BEST-PRACTICES'>postgresql.org/docs/current/ddl-partitioning.html#DDL-PARTITIONING-DECLARATIVE-BEST-PRACTICES</a>
+</li>
+<li id='footnote-1-7'>
+  7. <a href='https://postgresql.org/docs/current/ddl-partitioning.html'>postgresql.org/docs/current/ddl-partitioning.html</a>
+</li>
+<li id='footnote-1-8'>
+  8. <a href='https://andyatkinson.com/postgresql-17-json-table-merge-returning-updatable-views'>andyatkinson.com/postgresql-17-json-table-merge-returning-updatable-views</a>
 </li>
 </ul></div>
