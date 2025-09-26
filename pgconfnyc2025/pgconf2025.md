@@ -207,7 +207,7 @@ style: |
 ---
 <style scoped>
   section {
-    background-color:#006bb6;
+    background-image: var(--theme-color-3);
   }
 </style>
 
@@ -261,13 +261,13 @@ Received a PostgreSQL 17 Contributor Coin (2024)<sup><a href="#footnote-1-1">1</
 
 </style>
 
-## 🏢 A Multi-tenant DBs is that better way
+## 🏢 Better Design: Multi-Tenant Database
 
-Let's explore the benefits and limitations of 6 patterns
+Let's explore benefits and limitations of 6 patterns in multi-tenant database design
 
 ---
 
-## 🚫 🏢 Benefits and drawbacks without multi-tenancy
+## 🚫 🏢 Benefits and drawbacks without Multi-Tenancy
 
 ✅ Compute isolation
 ✅ Strong data isolation
@@ -337,22 +337,22 @@ Let's explore the benefits and limitations of 6 patterns
 <div style="display: flex; gap: 2rem;">
   <div style="flex: 1; margin: -30px px; border-radius: 5px;">
     <ul style="list-style-type:none;margin:10px 10px 10px 10px;padding:0;">
-      <li><div class='list-item mistake-1'>#1 Single Big DB</div></li>
-      <li><div class='list-item mistake-2'>#2 Composite Primary Keys</div></li>
+      <li><div class='list-item mistake-1'>💪 1—Single Big DB</div></li>
+      <li><div class='list-item mistake-2'>🔑 2—Composite Primary Keys</div></li>
     </ul>
   </div>
 
   <div style="flex: 1; padding: 1rem; border-radius: 8px; list-style-type: none; color:#000;">
     <ul style="list-style-type:none;margin:10px 10px 10px 10px;padding:0;">
-      <li><div class="list-item mistake-3">#3 Tenant Data Logs</div></li>
-      <li><div class="list-item mistake-4">#4 Tenant Query Logs</div></li>
+      <li><div class="list-item mistake-3">📄 3—Tenant Data Logs</div></li>
+      <li><div class="list-item mistake-4">⚡ 4—Tenant Query Logs</div></li>
     </ul>
   </div>
 
   <div style="flex: 1; padding: 1rem; border-radius: 8px; list-style-type: none; color:#000;">
     <ul style="list-style-type:none; margin:10px 10px 10px 10px;padding:0;">
-    <li><div class="list-item mistake-5">#5 Row Level Security</div></li>
-    <li><div class="list-item mistake-6">#6 Partitioned Orders</div></li>
+    <li><div class="list-item mistake-5">🔒 5—Row Level Security</div></li>
+    <li><div class="list-item mistake-6">🍕 6—Partitioned Tables</div></li>
     </ul>
   </div>
 </div>
@@ -372,9 +372,9 @@ a { color: #fff; }
   <div class="inactive">Optimizing</div>
 </div>
 
-<h2>💪 #1 Single Big DB: E-commerce Multitenant design</h2>
+<h2>💪 1—Single Big DB: E-commerce Multitenant design</h2>
 
-Triple single: one database `pgconf`, schema `pgconf` and instance
+Quad single: database, schema, user, all `pgconf`, on single instance
 
   ⛁ `suppliers` (Our "tenant")
   ⛁ `customers`
@@ -385,11 +385,20 @@ Triple single: one database `pgconf`, schema `pgconf` and instance
 section {
   color:#fff;
   background-color: var(--theme-mistake-1);
+  background-color: #000;
 }
 a { color: #fff; }
+section .diagram {
+  font-size:25px;
+  width:80%;
+  position:relative;
+  top:-60px;
+  margin:4em;
+  padding:0em;
+}
 </style>
 
-```
+<div class="diagram"><pre>
 ┌─────────────────────────────────────────────────────────────────┐
 │                                                                 │
 │     Server instance (Postgres 18: CPUs, Memory, cache etc.)     │
@@ -415,7 +424,7 @@ a { color: #fff; }
 │      └────────────────────────────────────────────────────┘     │
 │                                                                 │
 └─────────────────────────────────────────────────────────────────┘
-```
+</pre></div>
 
 ---
 <style scoped>
@@ -426,7 +435,7 @@ section {
 a { color: #fff; }
 </style>
 
-## 🔑 Primary Keys decision point
+## 🔑 Primary Keys Decision Point
 
 ⛁ Goldilocks PK data type: `bigint` 8 bytes. `integer` 4 bytes too small. 16 bytes UUID too big.
 ⛁ The `suppliers` primary key `id` are our tenant
@@ -442,7 +451,7 @@ section {
 a { color: #fff; }
 </style>
 
-## 🔍 Tenant data identification
+## 🔍 Tenant Data Identification
 
 - Identify tenant data using `supplier_id` foreign key, no join needed
 - Uniformity in scripts, use `generated column` on `suppliers` table to generate `supplier_id` column
@@ -480,7 +489,7 @@ a { color: #fff; }
   <div class="inactive">Optimizing</div>
 </div>
 
-<h2>#1 Single Big DB: Vertically scale as long as possible</h2>
+<h2>1—Single Big DB: Vertically scale as long as possible</h2>
 
 - Google Cloud PostgreSQL: 96 vCPUs, 624 GB
 - Microsoft Azure: 96 vCores, 672 GB
@@ -500,11 +509,13 @@ a { color: #fff; }
   <div class="inactive">Optimizing</div>
 </div>
 
-<h2>🔑 #2 Primary Key Alternative: Composite Primary Keys</h2>
+<h2>🔑 2—Primary Key Alternative: Composite Primary Keys</h2>
 
 - Improves ability to isolate or relocate data
 - Active Record ORM in Ruby on Rails supports composite primary keys
-- Downside: Longer key definitions
+
+🟡 Downside: Longer key definitions
+
 ```sql
   CONSTRAINT fk_customer
       FOREIGN KEY (supplier_id, id)
@@ -528,9 +539,9 @@ a { color: #fff; }
   <div class="inactive">Optimizing</div>
 </div>
 
-<h2>🔑 Primary Key Alternative: UUID v7</h2>
+<h2>🔑 Primary Key Alternative: UUID Version 7</h2>
 
-- Postgres 18 generates UUID V7 values with `uuidv7()` function<sup><a href="#footnote-1-5">5</a></sup>
+- Postgres 18 generates UUID Version 7 values with `uuidv7()` function<sup><a href="#footnote-1-5">5</a></sup>
 - UUIDs avoid primary key conflicts when generating from multiple instances. We can also achieve that with CPKs and discrete tenant placement.
 
 ---
@@ -548,12 +559,15 @@ a { color: #fff; }
   <div class="inactive">Optimizing</div>
 </div>
 
-<h2>📄 #3 Tenant Data Logs</h2>
+<h2>📄 3—Tenant Data Logs</h2>
 
 - Report on Inserts, Updates, and Deletes from suppliers
-- Create table: `supplier_data_changes` to capture these events
+- Use cases: Usage based billing, vertical scale planning, future split outs
+
+⛁ Table `supplier_data_changes` to capture these events
+
 - Use triggers and trigger functions to capture changes and metadata
-- Store data using JSON columns, use `JSON_TABLE()`
+- Store data using JSON columns, use `JSON_TABLE()` (Postgres 17)
 
 <div class='corner-label'>DEMO #3</div>
 
@@ -571,10 +585,11 @@ a { color: #fff; }
   <div class="inactive">Optimizing</div>
 </div>
 
-<h2>⚡ #4 Tenant-scoped Query Activity</h2>
+<h2>⚡ 4—Tenant-scoped Query Activity</h2>
 
-- With `pg_stat_statements` (PGSS) query normalization loses our `supplier_id` value. We can't report query activity by tenant
-- Let's fix that with a supplier query logs table
+Due to `pg_stat_statements` query normalization, we lose our `supplier_id`
+
+⛁ Let's fix that with a `supplier_query_logs` table
 
 <div class='corner-label'>DEMO #4</div>
 
@@ -592,7 +607,7 @@ a { color: #fff; }
   <div class="active">Optimizing</div>
 </div>
 
-<h2>🔒 #5 Row Level Security For Suppliers</h2>
+<h2>🔒 5—Row Level Security For Suppliers</h2>
 
 - How do we add more security so suppliers see only their data?
 - Let's use Row Level Security to achieve that
@@ -613,10 +628,10 @@ a { color: #fff; }
   <div class="active">Optimizing</div>
 </div>
 
-<h2>🍕 #6 Partitioned Tables</h2>
+<h2>🍕 6—Partitioned Tables</h2>
 
-- As the `orders` table grows large, it's more difficult to modify and performance worsens 
-- Let's use table partitioning to slice it up, maintaining good performance and making modifications easier
+⛁ As the `orders` table grows large, it's more difficult to modify and performance worsens 
+- Let's use declaractive table partitioning<sup><a href="#footnote-1-7">1</a></sup> to slice it up, maintaining good performance and making modifications easier
 - Our partitioned table uses a CPK (`supplier_id`, `id`)
 
 ---
@@ -633,11 +648,13 @@ a { color: #fff; }
   <div class="active">Optimizing</div>
 </div>
 
-## 🍕 #6 Partitioning and Multi-tenancy
+## 🍕 6—Partitioning and Multi-Tenancy
 
-- Let's create a partition per supplier, imagining we have < 1000
-- Partitioned tables can be "detached" (`DETACH CONCURRENTLY`), a less resource intensive alternative to deleting unneeded rows
-- When suppliers leave the platform, we'll detach their partition, archive the data, then drop the partition
+⛁ Let's create a `orders_partitioned` table, using `LIST` partitioning, with a partition per supplier
+- Imagine we have < 1000 suppliers
+
+✅ Partitioned tables can be "detached" (`DETACH CONCURRENTLY`), a less resource intensive alternative to deleting unneeded rows
+✅ When suppliers leave, we'll detach their partition, archive its data, then drop it
 
 <div class='corner-label'>DEMO #6</div>
 
@@ -655,7 +672,7 @@ a { color: #fff; }
   <div class="active">Optimizing</div>
 </div>
 
-## ⚠️ Warnings #1 of 3: RLS Performance
+## ⚠️ Warning #1: RLS Performance
 
 - Familiarize yourself with RLS latency
 - Dian Fay: Row level security pitfalls.<sup><a href="#footnote-1-2">2</a></sup> Compare your query execution plans without policies (and their functions) to understand how much overhead is added.
@@ -674,10 +691,10 @@ a { color: #fff; }
   <div class="active">Optimizing</div>
 </div>
 
-## ⚠️ Warnings #2 of 3: Trigger overhead performance
+## ⚠️ Warning #2: Trigger overhead performance
 
 - Triggers are scalable to a point
-- What is that point? 50K inserts/? Trigger functions are one type of commit latency.
+- What is that point? Good up to 50K inserts/second? Trigger functions are one type of commit latency.
 - Could mitigate with a partitioned table, minimal indexes and constraints
 - Otherwise move to async approach e.g. logical replication, CDC etc. (beyond this scope)
 
@@ -696,11 +713,11 @@ a { color: #fff; }
   <div class="active">Optimizing</div>
 </div>
 
-## ⚠️ Warnings #3 of 3: Partitioning challenges
+## ⚠️ Warnings #3: Partitioning challenges
 
 - Requires a big row data migration vs. in-place change if starting from an unpartitioned table
 - `LIST` partitioning may not work with thousands of tenants (See: *5.12.6. Best Practices for Declarative Partitioning*<sup><a href="#footnote-1-6">6</a></sup>)
-- May exceed single instance limits and move to a sharded DB solution (See: *SaaS on Rails on PostgreSQL*<sup><a href="#footnote-1-3">3</a></sup>)
+- May exceed single instance limits and move to a sharded DB solution (See: *SaaS on Rails on PostgreSQL*<sup><a href="#footnote-1-3">3</a></sup>, App-level sharding, Citus)
 
 ---
 <!-- _color: #fff; -->
@@ -738,7 +755,6 @@ section a {
 💻 [github.com/andyatkinson/presentations](https://github.com/andyatkinson/presentations)
 📚 [*High Performance PostgreSQL for Rails*](https://andyatkinson.com/pgrailsbook)
 🦋 [@andyatkinson.com](https://bsky.app/profile/andyatkinson.com)
-💼 Consulting [Refined Pages, LLC](refinedpages.com)
 
 ---
 <style scoped>
@@ -774,6 +790,7 @@ HTML is generated below from this footnotes source
 1-4,instances.vantage.sh/aws/rds/db.r8g.48xlarge?currency=USD
 1-5,thenile.dev/blog/uuidv7
 1-6,postgresql.org/docs/current/ddl-partitioning.html#DDL-PARTITIONING-DECLARATIVE-BEST-PRACTICES
+1-7,postgresql.org/docs/current/ddl-partitioning.html
 }}
 -->
 

@@ -15,8 +15,8 @@ ALTER TABLE customers
 ADD CONSTRAINT customers_cpk
 PRIMARY KEY (supplier_id, id);
 
--- Alternative: Create a new table orders_with_cpk
--- Create multi-column primary key and foreign key
+-- Alternative: Create orders_with_cpk
+-- We've linked this to the CPK for customers
 DROP TABLE IF EXISTS orders_with_cpk;
 CREATE TABLE orders_with_cpk (
   id BIGINT GENERATED ALWAYS AS IDENTITY NOT NULL,
@@ -32,7 +32,8 @@ CREATE TABLE orders_with_cpk (
 
 
 --
--- SEQUENCES
+-- Bonus section: Shared SEQUENCES vs. tenant-scoped sequences
+-- Unlocked because of CPKs
 --
 
 -- Normally we'd share a single sequence across all tenants

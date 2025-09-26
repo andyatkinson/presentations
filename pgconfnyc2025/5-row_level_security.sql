@@ -8,7 +8,7 @@
 -- However, suppliers within the shared schema will only be able to
 -- access their own row data
 --
-ET search_path = pgconf, public;
+SET search_path = pgconf, public;
 
 -- Create usernames that match suppliers.username
 -- Connect as superuser
@@ -27,8 +27,6 @@ GRANT INSERT, SELECT, UPDATE, DELETE ON TABLES TO bigriverst;
 ALTER DEFAULT PRIVILEGES IN SCHEMA pgconf
 GRANT INSERT, SELECT, UPDATE, DELETE ON TABLES TO redcircles;
 
-SET search_path = pgconf, public;
-
 -- postgres
 SELECT CURRENT_USER;
 
@@ -43,10 +41,11 @@ SELECT CURRENT_USER;
 -- Create supplier-specific data in a table called "supplier_data"
 CREATE TABLE pgconf.supplier_data (data TEXT, supplier_id BIGINT);
 
+-- Allow new users to select from existing suppliers table
 GRANT SELECT ON pgconf.suppliers TO bigriverst;
 GRANT SELECT ON pgconf.suppliers TO redcircles;
 
--- We want "t" here, both can read from the table
+-- We want "t" here, both can read from the existing suppliers table
 SELECT has_table_privilege('bigriverst', 'pgconf.suppliers', 'SELECT') AS can_read;
 SELECT has_table_privilege('redcircles', 'pgconf.suppliers', 'SELECT') AS can_read;
 
@@ -72,7 +71,7 @@ select current_supplier_id();
 SET ROLE bigriverst;
 select current_supplier_id();
 
-set role redcircles;
+SET ROLE redcircles;
 select current_supplier_id();
 
 -- bigriver and redcircle writing data into the supplier data table
@@ -87,6 +86,7 @@ VALUES ('redcircle data', current_supplier_id());
 -- Currently all suppliers can see all supplier_data
 select * from supplier_data;
 select current_user;
+
 SET ROLE postgres;
 
 -- Must be owner of table
@@ -95,7 +95,8 @@ SET ROLE postgres;
 ALTER TABLE supplier_data DISABLE ROW LEVEL SECURITY;
 
 -- ===================
--- POLICY
+-- POLICY for table: supplier_data
+-- SELECT rows
 -- =========
 -- As the postgres role:
 -- Policy for supplier_data
@@ -132,6 +133,7 @@ set role redcircles;
 select * from supplier_data;
 
 -- View the policy defined for the table
+-- System view: pg_policy
 SELECT polname, polcmd, pg_get_expr(polqual, polrelid), pg_get_expr(polwithcheck, polrelid)
 FROM pg_policy
 WHERE polrelid = 'supplier_data'::regclass;

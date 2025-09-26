@@ -1,3 +1,4 @@
+\! clear
 set role postgres;
 SET search_path = pgconf, public;
 
@@ -22,6 +23,7 @@ CREATE TABLE orders_supplier_3 PARTITION OF orders_partitioned
 CREATE TABLE orders_supplier_4 PARTITION OF orders_partitioned
     FOR VALUES IN (4);
 
+-- Initially non-matching supplier data goes in here
 CREATE TABLE orders_default PARTITION OF orders_partitioned
     DEFAULT;
 
@@ -82,6 +84,6 @@ DROP TABLE orders_default;
 -- Now we can detach the partition
 ALTER TABLE orders_partitioned DETACH PARTITION orders_supplier_4 CONCURRENTLY;
 
--- \d+ orders_partitioned -- no longer see child table
+\d+ orders_partitioned -- no longer see supplier 4 partition
 \d orders_supplier_4;
 -- We can then archive the data (pg_dump etc.) and then drop it
