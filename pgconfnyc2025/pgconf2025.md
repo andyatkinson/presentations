@@ -401,8 +401,8 @@ section .diagram {
 <div class="diagram"><pre>
 ┌─────────────────────────────────────────────────────────────────┐
 │                                                                 │
-│     Server instance, Postgres 18, hardware resources (CPU, mem) |
-|     User: "postgres" superuser, regular user "pgconf"           |
+│     Server instance, Postgres 18, hardware resources (CPU, mem) │
+│     User: "postgres" superuser, regular user "pgconf"           │
 │                                                                 │
 │      ┌────────────────────────────────────────────────────┐     │
 │      │                                                    │     │
@@ -413,8 +413,8 @@ section .diagram {
 │      │      │   Schema "pgconf"                     │     │     │
 │      │      │                                       │     │     │
 │      │      │  ┌────────────────┐  ┌──────────────┐ │     │     │
-│      │      │  │ pgconf.        |  | pgconf.      | |     |     | 
-|      |      |  | customers      │  │ orders       │ │     │     │
+│      │      │  │ pgconf.        |  | pgconf.      │ │     │     │ 
+|      |      │  │ customers      │  │ orders       │ │     │     │
 │      │      │  │                │  │              │ │     │     │
 │      │      │  │                │  │              │ │     │     │
 │      │      │  │                │  │              │ │     │     │
