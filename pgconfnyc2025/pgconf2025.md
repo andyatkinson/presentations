@@ -401,7 +401,8 @@ section .diagram {
 <div class="diagram"><pre>
 ┌─────────────────────────────────────────────────────────────────┐
 │                                                                 │
-│     Server instance (Postgres 18: CPUs, Memory, cache etc.)     │
+│     Server instance, Postgres 18, hardware resources (CPU, mem) |
+|     User: "postgres" superuser, regular user "pgconf"           |
 │                                                                 │
 │      ┌────────────────────────────────────────────────────┐     │
 │      │                                                    │     │
@@ -412,8 +413,8 @@ section .diagram {
 │      │      │   Schema "pgconf"                     │     │     │
 │      │      │                                       │     │     │
 │      │      │  ┌────────────────┐  ┌──────────────┐ │     │     │
-│      │      │  │ Table          │  │ Table        │ │     │     │
-│      │      │  │ customers      │  │ orders       │ │     │     │
+│      │      │  │ pgconf.        |  | pgconf.      | |     |     | 
+|      |      |  | customers      │  │ orders       │ │     │     │
 │      │      │  │                │  │              │ │     │     │
 │      │      │  │                │  │              │ │     │     │
 │      │      │  │                │  │              │ │     │     │
@@ -438,8 +439,8 @@ a { color: #fff; }
 ## 🔑 Primary Keys Decision Point
 
 ⛁ Goldilocks PK data type: `bigint` 8 bytes. `integer` 4 bytes too small. 16 bytes UUID too big.
-⛁ The `suppliers` primary key `id` are our tenant
-⛁ Add `supplier_id` foreign key to all tables (a form of denormalization)
+⛁ The `suppliers` primary key `id` is the tenant identifier
+⛁ Add `supplier_id` to all tables, a form of denormalization
 
 
 ---
