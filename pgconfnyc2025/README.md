@@ -1,5 +1,10 @@
 # PGConf NYC 2025
 
+View slides on Speakerdeck:
+<https://speakerdeck.com/andyatkinson/multitenancy-patterns-in-community-postgresql>
+
+
+Build these slides from Markdown:
 ```sh
 marp --pdf --html --author "Andrew Atkinson" --allow-local-files pgconf2025.md
 ```

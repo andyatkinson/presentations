@@ -721,6 +721,35 @@ a { color: #fff; }
 - May exceed single instance limits and move to a sharded DB solution (See: *SaaS on Rails on PostgreSQL*<sup><a href="#footnote-1-3">3</a></sup>, App-level sharding, Citus)
 
 ---
+<style scoped>
+
+  .corner-label {
+    position: fixed;
+    bottom: 200px;
+    transform: rotate(-35deg);
+  }
+</style>
+
+<!-- _backgroundColor: #D7DEED; -->
+
+![bg contain](images/pgdata2026.jpg)
+
+<div class='corner-label'>📣 CFP Open Oct. 20</div>
+
+---
+
+# Let's Recap
+
+On open source, community Postgres, without managing a fleet of instances:
+- We can avoid mismatched versions, users, permissions, etc.
+- Many tenants can have data that co-exists that's unique and portable if needed
+- We can still report on tenant read and write activity
+- We can add a layer of security for tenant row data
+- We can split up some work on tenant-specific partitions
+
+
+---
+
 <!-- _color: #fff; -->
 <!-- _backgroundColor: #fff; -->
 <!-- _backgroundImage: linear-gradient(90deg, #000000 50%, #529FD4 50% 80%); -->
