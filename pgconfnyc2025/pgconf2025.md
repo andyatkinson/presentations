@@ -740,12 +740,12 @@ a { color: #fff; }
 
 # Let's Recap
 
-On open source, community Postgres, without managing a fleet of instances:
-- We can avoid mismatched versions, users, permissions, etc.
-- Many tenants can have data that co-exists that's unique and portable if needed
-- We can still report on tenant read and write activity
-- We can add a layer of security for tenant row data
-- We can split up some work on tenant-specific partitions
+Using open source Postgres, without managing a fleet of instances, we can:
+- Avoid inconsistencies in release versions, users, permissions, schemas
+- Store data from many tenants maintaining uniqueness and portability
+- Report on tenant read and write activity
+- Use row level security to limit access
+- Split up some types of work using tenant-specific partitions
 
 
 ---
